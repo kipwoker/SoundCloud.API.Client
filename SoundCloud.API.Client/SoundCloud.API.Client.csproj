@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{68EEC79E-D687-4A1E-AB6A-D6A0F5FD804C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SoundCloud.API.Client</RootNamespace>
+    <AssemblyName>SoundCloud.API.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Assemblies\Json.NET60r8(4.5)\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Internal\Client\Helpers\Api.cs" />
+    <Compile Include="Internal\Client\Helpers\ApiCommand.cs" />
+    <Compile Include="Internal\Client\Helpers\Factories\IUriBuilderFactory.cs" />
+    <Compile Include="Internal\Client\Helpers\Factories\UriBuilderFactory.cs" />
+    <Compile Include="Internal\Client\Helpers\IUriBuilder.cs" />
+    <Compile Include="Internal\Client\Helpers\UriBuilder.cs" />
+    <Compile Include="Internal\Client\ISoundCloudRawClient.cs" />
+    <Compile Include="Internal\Client\SoundCloudRawClient.cs" />
+    <Compile Include="Internal\Infrastructure\Network\Factories\IWebGatewayFactory.cs" />
+    <Compile Include="Internal\Infrastructure\Network\Factories\WebGatewayFactory.cs" />
+    <Compile Include="Internal\Infrastructure\Network\IWebGateway.cs" />
+    <Compile Include="Internal\Infrastructure\Network\WebGateway.cs" />
+    <Compile Include="Internal\Infrastructure\Objects\HttpMethod.cs" />
+    <Compile Include="Internal\Infrastructure\Serialization\ISerializer.cs" />
+    <Compile Include="Internal\Infrastructure\Serialization\JsonSerializer.cs" />
+    <Compile Include="Internal\OAuth\OAuthManager.cs" />
+    <Compile Include="Internal\OAuth\OAuthResponse.cs" />
+    <Compile Include="Internal\Validation\IPaginationValidator.cs" />
+    <Compile Include="Internal\Validation\PaginationValidator.cs" />
+    <Compile Include="ISoundCloudClient.cs" />
+    <Compile Include="ISoundCloudConnector.cs" />
+    <Compile Include="Objects\SCAccessToken.cs" />
+    <Compile Include="Objects\SCComment.cs" />
+    <Compile Include="Objects\SCCredentials.cs" />
+    <Compile Include="Objects\SCResponse.cs" />
+    <Compile Include="Objects\SCGroup.cs" />
+    <Compile Include="Objects\SCPlaylist.cs" />
+    <Compile Include="Objects\SCTrack.cs" />
+    <Compile Include="Objects\SCUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoundCloudClient.cs" />
+    <Compile Include="SoundCloudApiException.cs" />
+    <Compile Include="SoundCloudConnector.cs" />
+    <Compile Include="Subresources\AuthApi.cs" />
+    <Compile Include="Subresources\Factories\ISubresourceFactory.cs" />
+    <Compile Include="Subresources\Factories\SubresourceFactory.cs" />
+    <Compile Include="Subresources\IAuthApi.cs" />
+    <Compile Include="Subresources\IUsersApi.cs" />
+    <Compile Include="Subresources\UsersApi.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
