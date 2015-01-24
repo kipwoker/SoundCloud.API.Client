@@ -10,7 +10,7 @@ namespace SoundCloud.API.Client.Internal.Validation
         private readonly Dictionary<ValidationParams, ValidationModel> validations = new Dictionary<ValidationParams, ValidationModel>
         {
             {ValidationParams.Offset, new ValidationModel{ PublicPropertyName = "offset", MinValue = 0, MaxValue = 8000}},
-            {ValidationParams.Count, new ValidationModel{ PublicPropertyName = "limit", MinValue = 0, MaxValue = 200}},
+            {ValidationParams.Count, new ValidationModel{ PublicPropertyName = "limit", MinValue = 1, MaxValue = 200}},
         };
 
         public bool IsValid(int offset, int count, out string errorMessage)
@@ -19,12 +19,12 @@ namespace SoundCloud.API.Client.Internal.Validation
 
             var errorMessages = new List<string>();
 
-            if (!IsValid(offset, validations[ValidationParams.Offset], out offsetErrorMessage))
+            if (!ValidateRange(offset, validations[ValidationParams.Offset], out offsetErrorMessage))
             {
                 errorMessages.Add(offsetErrorMessage);
             }
 
-            if (!IsValid(count, validations[ValidationParams.Count], out countErrorMessage))
+            if (!ValidateRange(count, validations[ValidationParams.Count], out countErrorMessage))
             {
                 errorMessages.Add(countErrorMessage);
             }
@@ -39,9 +39,9 @@ namespace SoundCloud.API.Client.Internal.Validation
             return true;
         }
 
-        private static bool IsValid(int value, ValidationModel validationModel, out string errorMessage)
+        private static bool ValidateRange(int value, ValidationModel validationModel, out string errorMessage)
         {
-            if (validationModel.MinValue < value || value > validationModel.MaxValue)
+            if (validationModel.MinValue > value || value > validationModel.MaxValue)
             {
                 errorMessage = string.Format("Parameter '{0}' out of range [{1};{2}]. Current value: {3}", validationModel.PublicPropertyName, validationModel.MinValue, validationModel.MaxValue, value);
                 return false;
