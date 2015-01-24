@@ -10,5 +10,10 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers.Factories
         {
             return new UriBuilder(uri);
         }
+
+        public IUriBuilder Create(string url)
+        {
+            return new UriBuilder(new Uri(url));
+        }
     }
 }

@@ -26,5 +26,7 @@ namespace SoundCloud.API.Client.Subresources
         SCGroup[] GetGroups(int offset = 0, int limit = 50);
 
         //todo: GET, PUT, DELETE	/users/{id}/web-profiles	list of web profiles
+
+        SCUser[] SearchUsers(string query, int offset = 0, int limit = 50);
     }
 }

@@ -1,20 +1,14 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-#if DEBUG
-using System.Runtime.CompilerServices;
-[assembly: InternalsVisibleTo("SoundCloud.API.Client.Test")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-#endif
-
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SoundCloud.API.Client")]
+[assembly: AssemblyTitle("SoundCloud.API.Client.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SoundCloud.API.Client")]
+[assembly: AssemblyProduct("SoundCloud.API.Client.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -25,7 +19,7 @@ using System.Runtime.CompilerServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("cd9a2ddc-6937-426b-a47e-6e451c3d0026")]
+[assembly: Guid("eafa3a36-320b-470c-b373-e239ab98c877")]
 
 // Version information for an assembly consists of the following four values:
 //

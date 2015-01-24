@@ -42,12 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Internal\Client\Helpers\Api.cs" />
-    <Compile Include="Internal\Client\Helpers\ApiCommand.cs" />
     <Compile Include="Internal\Client\Helpers\Factories\IUriBuilderFactory.cs" />
     <Compile Include="Internal\Client\Helpers\Factories\UriBuilderFactory.cs" />
     <Compile Include="Internal\Client\Helpers\IUriBuilder.cs" />
+    <Compile Include="Internal\Client\Helpers\Settings.cs" />
     <Compile Include="Internal\Client\Helpers\UriBuilder.cs" />
+    <Compile Include="Internal\Client\Helpers\UrlExtensions.cs" />
     <Compile Include="Internal\Client\ISoundCloudRawClient.cs" />
     <Compile Include="Internal\Client\SoundCloudRawClient.cs" />
     <Compile Include="Internal\Infrastructure\Network\Factories\IWebGatewayFactory.cs" />
@@ -57,18 +57,18 @@
     <Compile Include="Internal\Infrastructure\Objects\HttpMethod.cs" />
     <Compile Include="Internal\Infrastructure\Serialization\ISerializer.cs" />
     <Compile Include="Internal\Infrastructure\Serialization\JsonSerializer.cs" />
-    <Compile Include="Internal\OAuth\OAuthManager.cs" />
-    <Compile Include="Internal\OAuth\OAuthResponse.cs" />
     <Compile Include="Internal\Validation\IPaginationValidator.cs" />
     <Compile Include="Internal\Validation\PaginationValidator.cs" />
     <Compile Include="ISoundCloudClient.cs" />
     <Compile Include="ISoundCloudConnector.cs" />
-    <Compile Include="Objects\SCAccessToken.cs" />
+    <Compile Include="Objects\Auth\SCAccessToken.cs" />
+    <Compile Include="Objects\Auth\SCCredentials.cs" />
+    <Compile Include="Objects\Auth\SCDisplay.cs" />
+    <Compile Include="Objects\Auth\SCScope.cs" />
     <Compile Include="Objects\SCComment.cs" />
-    <Compile Include="Objects\SCCredentials.cs" />
-    <Compile Include="Objects\SCResponse.cs" />
     <Compile Include="Objects\SCGroup.cs" />
     <Compile Include="Objects\SCPlaylist.cs" />
+    <Compile Include="Objects\Auth\SCResponseType.cs" />
     <Compile Include="Objects\SCTrack.cs" />
     <Compile Include="Objects\SCUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +78,7 @@
     <Compile Include="Subresources\AuthApi.cs" />
     <Compile Include="Subresources\Factories\ISubresourceFactory.cs" />
     <Compile Include="Subresources\Factories\SubresourceFactory.cs" />
+    <Compile Include="Subresources\Helpers\ValidationHelper.cs" />
     <Compile Include="Subresources\IAuthApi.cs" />
     <Compile Include="Subresources\IUsersApi.cs" />
     <Compile Include="Subresources\UsersApi.cs" />

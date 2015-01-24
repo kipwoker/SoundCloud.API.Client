@@ -1,6 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#if DEBUG
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("SoundCloud.API.Client.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+#endif
+
 namespace SoundCloud.API.Client.Internal.Validation
 {
     internal class PaginationValidator : IPaginationValidator

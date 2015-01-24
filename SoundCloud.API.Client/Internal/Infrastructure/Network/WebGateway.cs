@@ -3,33 +3,25 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
-using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
-using SoundCloud.API.Client.Objects;
+
+#if DEBUG
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("SoundCloud.API.Client.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+#endif
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Network
 {
     internal class WebGateway : IWebGateway
     {
         private readonly bool enableGZip;
-        private readonly Action apiActionExecuting;
-        private readonly Action<SCResponse> apiActionExecuted;
-        private readonly Action<SCResponse> apiActionError;
-        private readonly ISerializer jsonSerializer;
-        internal WebGateway(
-            bool enableGZip,
-            Action apiActionExecuting,
-            Action<SCResponse> apiActionExecuted,
-            Action<SCResponse> apiActionError,
-            ISerializer jsonSerializer)
+
+        internal WebGateway(bool enableGZip)
         {
             this.enableGZip = enableGZip;
-            this.apiActionExecuting = apiActionExecuting ?? (() => {});
-            this.apiActionExecuted = apiActionExecuted ?? (x => {});
-            this.apiActionError = apiActionError ?? (x => {});
-            this.jsonSerializer = jsonSerializer;
         }
-
-        public T Request<T>(Uri uri, HttpMethod method)
+        
+        public string Request(Uri uri, HttpMethod method)
         {
             var request = WebRequest.Create(uri);
 
@@ -43,31 +35,18 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                 request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
             }
 
-            apiActionExecuting();
-
             try
             {
                 using (var response = (HttpWebResponse)request.GetResponse())
                 using (var responseStream = response.GetResponseStream())
                 {
-                    var isError = IsError(response.StatusCode);
-                    if (responseStream == null && isError)
+                    var content = SmartReadContent(response, responseStream);
+                    if (IsError(response.StatusCode))
                     {
-                        apiActionError(new SCResponse { ResponseContent = "Response is empty", ReturnedType = typeof(T), StatusCode = response.StatusCode });
-                        return default(T);
+                        throw new Exception(string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uri.AbsoluteUri, method, response.StatusCode, content));
                     }
 
-                    var contentEncoding = response.Headers[HttpResponseHeader.ContentEncoding];
-                    if (contentEncoding.Contains("gzip") || contentEncoding.Contains("deflate"))
-                    {
-                        using (var gZipStream = new GZipStream(responseStream, CompressionMode.Decompress))
-                        {
-                            //todo: maybe if catch error should try stream without gZip?
-                            return HandleResponse<T>(response.StatusCode, isError, gZipStream);
-                        }
-                    }
-
-                    return HandleResponse<T>(response.StatusCode, isError, responseStream);
+                    return content;
                 }
             }
             catch (Exception ex)
@@ -76,20 +55,26 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             }
         }
 
-        private T HandleResponse<T>(HttpStatusCode statusCode, bool isError, Stream stream)
+        private static string SmartReadContent(HttpWebResponse response, Stream stream)
+        {
+            var contentEncoding = response.Headers[HttpResponseHeader.ContentEncoding];
+            if (contentEncoding.Contains("gzip") || contentEncoding.Contains("deflate"))
+            {
+                using (var gZipStream = new GZipStream(stream, CompressionMode.Decompress))
+                {
+                    //todo: maybe in catch error case should try stream without gZip?
+                    return ReadContent(gZipStream);
+                }
+            }
+
+            return ReadContent(stream);
+        }
+
+        private static string ReadContent(Stream stream)
         {
             using (var reader = new StreamReader(stream))
             {
-                var content = reader.ReadToEnd();
-                var scEventArgs = new SCResponse { ResponseContent = content, ReturnedType = typeof(T), StatusCode = statusCode };
-                if (isError)
-                {
-                    apiActionError(scEventArgs);
-                    return default(T);
-                }
-
-                apiActionExecuted(scEventArgs);
-                return jsonSerializer.Deserialize<T>(content);
+                return reader.ReadToEnd();
             }
         }
 

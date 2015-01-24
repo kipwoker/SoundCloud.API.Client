@@ -2,8 +2,9 @@
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
 using SoundCloud.API.Client.Internal.Infrastructure.Network.Factories;
+using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Internal.Validation;
-using SoundCloud.API.Client.Objects;
+using SoundCloud.API.Client.Objects.Auth;
 using SoundCloud.API.Client.Subresources;
 using SoundCloud.API.Client.Subresources.Factories;
 
@@ -11,7 +12,7 @@ namespace SoundCloud.API.Client
 {
     public class SoundCloudConnector : ISoundCloudConnector
     {
-        public ISoundCloudClient Connect(string clientId, string clientSecret, string userName, string password, bool enableGZip)
+        public ISoundCloudClient DirectConnect(string clientId, string clientSecret, string userName, string password, bool enableGZip)
         {
             var credentials = new SCCredentials
             {
@@ -22,8 +23,27 @@ namespace SoundCloud.API.Client
             var soundCloudRawClient = CreateSCRawClient(enableGZip, credentials);
             
             IAuthApi authApi = new AuthApi(soundCloudRawClient);
-            var accessToken = authApi.Authorize(userName, password);
+            var accessToken = authApi.AuthorizeByPassword(userName, password);
             
+            soundCloudRawClient.AccessToken = accessToken;
+
+            var soundCloudClient = CreateSoundCloudClient(soundCloudRawClient);
+            return soundCloudClient;
+        }
+
+        public ISoundCloudClient Connect(string clientId, string clientSecret, string code, string redirectUri, bool enableGZip)
+        {
+            var credentials = new SCCredentials
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret
+            };
+
+            var soundCloudRawClient = CreateSCRawClient(enableGZip, credentials);
+
+            IAuthApi authApi = new AuthApi(soundCloudRawClient);
+            var accessToken = authApi.AuthorizeByCode(code, redirectUri);
+
             soundCloudRawClient.AccessToken = accessToken;
 
             var soundCloudClient = CreateSoundCloudClient(soundCloudRawClient);
@@ -42,7 +62,7 @@ namespace SoundCloud.API.Client
             return soundCloudClient;
         }
 
-        public Uri GetRequestTokenUri(string clientId, string responseUri)
+        public Uri GetRequestTokenUri(string clientId, string redirectUri, SCResponseType responseType, SCScope scope, SCDisplay display, string state)
         {
             var credentials = new SCCredentials
             {
@@ -51,11 +71,11 @@ namespace SoundCloud.API.Client
 
             var soundCloudRawClient = CreateSCRawClient(false, credentials);
             IAuthApi authApi = new AuthApi(soundCloudRawClient);
-            var requestTokenUri = authApi.GetRequestTokenUri(responseUri);
+            var requestTokenUri = authApi.GetRequestTokenUri(redirectUri, responseType, scope, display, state);
             return requestTokenUri;
         }
 
-        public SCAccessToken RefreshToken(string clientId, string clientSecret, string refreshToken)
+        public SCAccessToken RefreshToken(string clientId, string clientSecret, string token)
         {
             var credentials = new SCCredentials
             {
@@ -65,7 +85,7 @@ namespace SoundCloud.API.Client
 
             var soundCloudRawClient = CreateSCRawClient(false, credentials);
             IAuthApi authApi = new AuthApi(soundCloudRawClient);
-            return authApi.RefreshToken(refreshToken);
+            return authApi.RefreshToken(token);
         }
 
         private static SoundCloudClient CreateSoundCloudClient(ISoundCloudRawClient soundCloudRawClient)
@@ -78,7 +98,7 @@ namespace SoundCloud.API.Client
 
         private static SoundCloudRawClient CreateSCRawClient(bool enableGZip, SCCredentials credentials)
         {
-            return new SoundCloudRawClient(credentials, enableGZip, UriBuilderFactory.Default, WebGatewayFactory.Default);
+            return new SoundCloudRawClient(credentials, enableGZip, UriBuilderFactory.Default, WebGatewayFactory.Default, JsonSerializer.Default);
         }
     }
 }

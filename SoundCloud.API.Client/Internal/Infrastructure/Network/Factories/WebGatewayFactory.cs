@@ -1,23 +1,18 @@
-﻿using System;
-using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
-using SoundCloud.API.Client.Objects;
+﻿#if DEBUG
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("SoundCloud.API.Client.Test")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+#endif
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Network.Factories
 {
     internal class WebGatewayFactory : IWebGatewayFactory
     {
-        private readonly ISerializer serializer;
-
-        internal static readonly IWebGatewayFactory Default = new WebGatewayFactory(JsonSerializer.Default);
-
-        public WebGatewayFactory(ISerializer serializer)
+        internal static readonly IWebGatewayFactory Default = new WebGatewayFactory();
+        
+        public IWebGateway Create(bool enableGZip)
         {
-            this.serializer = serializer;
-        }
-
-        public IWebGateway Create(bool enableGZip, Action apiActionExecuting = null, Action<SCResponse> apiActionExecuted = null, Action<SCResponse> apiActionError = null)
-        {
-            return new WebGateway(enableGZip, apiActionExecuting, apiActionExecuted, apiActionError, serializer);
+            return new WebGateway(enableGZip);
         }
     }
 }

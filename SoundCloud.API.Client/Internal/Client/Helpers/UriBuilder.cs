@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SoundCloud.API.Client.Internal.Client.Helpers
 {
@@ -15,6 +14,11 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers
 
         public IUriBuilder AddParameters(params object[] parameters)
         {
+            if (parameters.Length == 0)
+            {
+                return this;
+            }
+
             uri = new Uri(string.Format(uri.ToString(), parameters));
             return this;
         }
@@ -31,20 +35,38 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers
 
         public IUriBuilder AddQueryParameters(Dictionary<string, object> parameters)
         {
-            return parameters == null || parameters.Count == 0 
-                ? this 
-                : AddToQueryString(string.Join("&", parameters.Select(x => string.Format("{0}={1}", x.Key, x.Value))));
+            if (parameters == null || parameters.Count == 0)
+            {
+                return this;
+            }
+
+            foreach (var parameter in parameters)
+            {
+                AddToQueryString(parameter.Key, parameter.Value.ToString());
+            }
+
+            return this;
         }
 
         public IUriBuilder AddToQueryString(string name, string value)
         {
-            uri = new System.UriBuilder(uri) { Query = (uri.Query + "&" + name + "=" + value).TrimStart('&') }.Uri;
+            if (string.IsNullOrEmpty(name))
+            {
+                return this;   
+            }
+
+            AddToQueryString(name + "=" + value);
             return this;
         }
 
         public IUriBuilder AddToQueryString(string queryString)
         {
-            uri = new System.UriBuilder(uri) { Query = (uri.Query + "&" + queryString).TrimStart('&') }.Uri;
+            if (string.IsNullOrEmpty(queryString))
+            {
+                return this;
+            }
+
+            uri = new System.UriBuilder(uri) { Query = (uri.Query + "&" + queryString).TrimStart('&', '?') }.Uri;
             return this;
         }
 

@@ -1,104 +1,112 @@
 ﻿using System.Collections.Generic;
 using SoundCloud.API.Client.Internal.Client;
-using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
+using SoundCloud.API.Client.Subresources.Helpers;
 
 namespace SoundCloud.API.Client.Subresources
 {
     public class UsersApi : IUsersApi
     {
-        private readonly string userId;
         private readonly ISoundCloudRawClient soundCloudRawClient;
         private readonly IPaginationValidator paginationValidator;
+        private readonly string prefix;
 
         internal UsersApi(string userId, ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator)
         {
-            this.userId = userId;
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
+
+            prefix = string.Format("users/{0}", userId);
         }
 
         public SCUser GetUser()
         {
-            return soundCloudRawClient.Request<SCUser>(ApiCommand.User, HttpMethod.Get, null, true, userId);
+            return soundCloudRawClient.RequestApi<SCUser>(prefix, string.Empty, HttpMethod.Get);
         }
 
         public SCTrack[] GetTracks(int offset = 0, int limit = 50)
         {
-            string errorMessage;
-            if (!paginationValidator.IsValid(offset, limit, out errorMessage))
-            {
-                throw new SoundCloudApiException(errorMessage);
-            }
-
-            return soundCloudRawClient.Request<SCTrack[]>(ApiCommand.UserTracks, HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } }, true, userId);
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCTrack[]>(prefix, "tracks", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
         }
 
         public SCPlaylist[] GetPlaylists(int offset = 0, int limit = 50)
         {
-            throw new System.NotImplementedException();
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCPlaylist[]>(prefix, "playlists", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
         }
 
         public SCUser[] GetFollowings(int offset = 0, int limit = 50)
         {
-            throw new System.NotImplementedException();
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCUser[]>(prefix, "followings", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
         }
 
         public SCUser GetFollowing(string followingUserId)
         {
-            throw new System.NotImplementedException();
+            return soundCloudRawClient.RequestApi<SCUser>(prefix, "followings/" + followingUserId, HttpMethod.Get);
         }
 
         public void PutFollowing(string followingUserId)
         {
-            throw new System.NotImplementedException();
+            soundCloudRawClient.RequestApi(prefix, "followings/" + followingUserId, HttpMethod.Put);
         }
 
         public void DeleteFollowing(string followingUserId)
         {
-            throw new System.NotImplementedException();
+            soundCloudRawClient.RequestApi(prefix, "followings/" + followingUserId, HttpMethod.Delete);
         }
 
         public SCUser[] GetFollowers(int offset = 0, int limit = 50)
         {
-            throw new System.NotImplementedException();
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCUser[]>(prefix, "followers", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
         }
 
         public SCUser GetFollower(string followerUserId)
         {
-            throw new System.NotImplementedException();
+            return soundCloudRawClient.RequestApi<SCUser>(prefix, "followers/" + followerUserId, HttpMethod.Get);
         }
 
         public SCComment[] GetComments(int offset = 0, int limit = 50)
         {
-            throw new System.NotImplementedException();
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCComment[]>(prefix, "comments", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
         }
 
         public SCTrack[] GetFavorites(int offset = 0, int limit = 50)
         {
-            throw new System.NotImplementedException();
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCTrack[]>(prefix, "favorites", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
         }
 
         public SCTrack GetFavorite(string favoriteTrackId)
         {
-            throw new System.NotImplementedException();
+            return soundCloudRawClient.RequestApi<SCTrack>(prefix, "favorites/" + favoriteTrackId, HttpMethod.Get);
         }
 
         public void PutFavorite(string favoriteTrackId)
         {
-            throw new System.NotImplementedException();
+            soundCloudRawClient.RequestApi(prefix, "favorites/" + favoriteTrackId, HttpMethod.Put);
         }
 
         public void DeleteFavorite(string favoriteTrackId)
         {
-            throw new System.NotImplementedException();
+            soundCloudRawClient.RequestApi(prefix, "favorites/" + favoriteTrackId, HttpMethod.Delete);
         }
 
         public SCGroup[] GetGroups(int offset = 0, int limit = 50)
         {
-            throw new System.NotImplementedException();
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCGroup[]>(prefix, "groups", HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit } });
+        }
+
+        public SCUser[] SearchUsers(string query, int offset = 0, int limit = 50)
+        {
+            paginationValidator.Validate(offset, limit);
+            return soundCloudRawClient.RequestApi<SCUser[]>("users", string.Empty, HttpMethod.Get, new Dictionary<string, object> { { "offset", offset }, { "limit", limit }, { "q", query } });
         }
     }
 }

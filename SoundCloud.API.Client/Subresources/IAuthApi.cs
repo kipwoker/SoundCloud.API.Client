@@ -1,12 +1,14 @@
 ﻿using System;
-using SoundCloud.API.Client.Objects;
+using SoundCloud.API.Client.Objects.Auth;
 
 namespace SoundCloud.API.Client.Subresources
 {
     public interface IAuthApi
     {
-        SCAccessToken Authorize(string userName, string password);
-        Uri GetRequestTokenUri(string responseUri);
+        SCAccessToken CurrentToken { get; }
+        SCAccessToken AuthorizeByPassword(string userName, string password);
+        SCAccessToken AuthorizeByCode(string code, string redirectUri);
+        Uri GetRequestTokenUri(string redirectUri, SCResponseType responseType, SCScope scope, SCDisplay display, string state);
         SCAccessToken RefreshToken(string token);
     }
 }

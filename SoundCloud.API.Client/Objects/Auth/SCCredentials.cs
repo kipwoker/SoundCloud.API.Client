@@ -1,4 +1,4 @@
-﻿namespace SoundCloud.API.Client.Objects
+﻿namespace SoundCloud.API.Client.Objects.Auth
 {
     public class SCCredentials
     {

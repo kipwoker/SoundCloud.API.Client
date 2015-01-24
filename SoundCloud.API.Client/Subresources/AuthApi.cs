@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
-using SoundCloud.API.Client.Objects;
+using SoundCloud.API.Client.Objects.Auth;
 
 namespace SoundCloud.API.Client.Subresources
 {
@@ -10,27 +11,68 @@ namespace SoundCloud.API.Client.Subresources
     {
         private readonly ISoundCloudRawClient soundCloudRawClient;
 
+        private const string prefix = "oauth2";
+
         internal AuthApi(ISoundCloudRawClient soundCloudRawClient)
         {
             this.soundCloudRawClient = soundCloudRawClient;
         }
 
-        public SCAccessToken Authorize(string userName, string password)
+        public SCAccessToken CurrentToken { get { return soundCloudRawClient.AccessToken; } }
+
+        public SCAccessToken AuthorizeByPassword(string userName, string password)
         {
             var credentials = soundCloudRawClient.Credentials;
-            return soundCloudRawClient.Request<SCAccessToken>(ApiCommand.UserCredentialsFlow, HttpMethod.Post, null, false, credentials.ClientId, credentials.ClientSecret, userName, password);
+            return soundCloudRawClient.RequestApi<SCAccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
+            {
+                {"client_id", credentials.ClientId},
+                {"client_secret", credentials.ClientSecret},
+                {"grant_type", "password"},
+                {"username", userName},
+                {"password", password}
+            }, false);
         }
 
-        public Uri GetRequestTokenUri(string responseUri)
+        public SCAccessToken AuthorizeByCode(string code, string redirectUri)
         {
             var credentials = soundCloudRawClient.Credentials;
-            return soundCloudRawClient.BuildUri(ApiCommand.AuthorizationCodeFlow, null, false, credentials.ClientId, responseUri);
+            return soundCloudRawClient.RequestApi<SCAccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
+            {
+                {"client_id", credentials.ClientId},
+                {"client_secret", credentials.ClientSecret},
+                {"grant_type", "authorization_code"},
+                {"code", code},
+                {"redirect_uri", redirectUri}
+            }, false);
+        }
+
+        public Uri GetRequestTokenUri(string redirectUri, SCResponseType responseType, SCScope scope, SCDisplay display, string state)
+        {
+            return soundCloudRawClient.BuildUri(Settings.SoundCloudComPrefix,
+                                                "connect",
+                                                new Dictionary<string, object>
+                                                {
+                                                    {"client_id", soundCloudRawClient.Credentials.ClientId},
+                                                    {"redirect_uri", redirectUri},
+                                                    {"response_type", responseType.ToUrlParameterName()},
+                                                    {"scope", scope.ToUrlParameterName()},
+                                                    {"display", display.ToUrlParameterName()},
+                                                    {"state", state}
+                                                },
+                                                false,
+                                                string.Empty);
         }
 
         public SCAccessToken RefreshToken(string token)
         {
             var credentials = soundCloudRawClient.Credentials;
-            return soundCloudRawClient.Request<SCAccessToken>(ApiCommand.RefreshToken, HttpMethod.Post, null, true, credentials.ClientId, credentials.ClientSecret, token);
+            return soundCloudRawClient.RequestApi<SCAccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
+            {
+                {"client_id", credentials.ClientId},
+                {"client_secret", credentials.ClientSecret},
+                {"grant_type", "refresh_token"},
+                {"refresh_token", token}
+            }, false);
         }
     }
 }
