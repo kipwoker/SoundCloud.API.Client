@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthTestBase.cs" />
     <Compile Include="Internal\Client\Helpers\UriBuilderTest.cs" />
     <Compile Include="Internal\Client\SoundCloudRawClientTest.cs" />
     <Compile Include="Internal\Validation\PaginationValidatorTest.cs" />
@@ -67,7 +68,11 @@
       <Name>SoundCloud.API.Client</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,7 +7,7 @@ namespace SoundCloud.API.Client.Objects
     public class SCTrack
     {
         [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty(PropertyName = "created_at")]
         public string creationDate;

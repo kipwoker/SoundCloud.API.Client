@@ -5,7 +5,7 @@ namespace SoundCloud.API.Client.Objects
     public class SCUser
     {
         [JsonProperty(PropertyName = "id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty(PropertyName = "permalink")]
         public string Permalink { get; set; }
