@@ -1,4 +1,5 @@
-﻿using SoundCloud.API.Client.Objects;
+﻿using System;
+using SoundCloud.API.Client.Objects;
 
 namespace SoundCloud.API.Client.Subresources
 {
@@ -9,11 +10,16 @@ namespace SoundCloud.API.Client.Subresources
         SCPlaylist[] GetPlaylists(int offset = 0, int limit = 50);
 
         SCUser[] GetFollowings(int offset = 0, int limit = 50);
+
+        [Obsolete("API BUG. Use GetFollowings(). This method returns 401. It's API trouble. More here: https://github.com/soundcloud/soundcloud-ruby/issues/24")]
         SCUser GetFollowing(string followingUserId);
+
         void PutFollowing(string followingUserId);
         void DeleteFollowing(string followingUserId);
 
         SCUser[] GetFollowers(int offset = 0, int limit = 50);
+
+        [Obsolete("API BUG. Use GetFollowers(). This method returns 401. It's API trouble. More here: https://github.com/soundcloud/soundcloud-ruby/issues/24")]
         SCUser GetFollower(string followerUserId);
 
         SCComment[] GetComments(int offset = 0, int limit = 50);
