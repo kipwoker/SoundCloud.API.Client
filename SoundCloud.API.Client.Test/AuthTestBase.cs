@@ -6,7 +6,7 @@ using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 
 namespace SoundCloud.API.Client.Test
 {
-    public class AuthTestBase : TestBase
+    public abstract class AuthTestBase : TestBase
     {
         protected ISoundCloudClient soundCloudClient;
         protected Settings settings;
@@ -19,7 +19,7 @@ namespace SoundCloud.API.Client.Test
             settings = JsonSerializer.Default.Deserialize<Settings>(settingsJson);
 
             ISoundCloudConnector soundCloudConnector = new SoundCloudConnector();
-            soundCloudClient = soundCloudConnector.DirectConnect(settings.ClientId, settings.ClientSecret, settings.UserName, settings.Password, true);
+            soundCloudClient = soundCloudConnector.DirectConnect(settings.ClientId, settings.ClientSecret, settings.UserName, settings.Password);
         }
         
         protected class Settings

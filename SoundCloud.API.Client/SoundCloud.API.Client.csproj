@@ -50,8 +50,6 @@
     <Compile Include="Internal\Client\Helpers\UrlExtensions.cs" />
     <Compile Include="Internal\Client\ISoundCloudRawClient.cs" />
     <Compile Include="Internal\Client\SoundCloudRawClient.cs" />
-    <Compile Include="Internal\Infrastructure\Network\Factories\IWebGatewayFactory.cs" />
-    <Compile Include="Internal\Infrastructure\Network\Factories\WebGatewayFactory.cs" />
     <Compile Include="Internal\Infrastructure\Network\IWebGateway.cs" />
     <Compile Include="Internal\Infrastructure\Network\WebGateway.cs" />
     <Compile Include="Internal\Infrastructure\Objects\HttpMethod.cs" />

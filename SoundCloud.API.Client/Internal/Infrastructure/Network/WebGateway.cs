@@ -8,14 +8,10 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
 {
     internal class WebGateway : IWebGateway
     {
-        private readonly bool enableGZip;
+        internal static readonly IWebGateway Default = new WebGateway();
 
-        internal static readonly IWebGateway DefaultGzip = new WebGateway(true);
-        internal static readonly IWebGateway Default = new WebGateway(false);
-
-        private WebGateway(bool enableGZip)
+        private WebGateway()
         {
-            this.enableGZip = enableGZip;
         }
         
         public string Request(Uri uri, HttpMethod method)
@@ -27,10 +23,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             request.ContentType = "application/json";
             request.ContentLength = 0;
 
-            if (enableGZip)
-            {
-                request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
-            }
+            request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
 
             try
             {
@@ -40,7 +33,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                     var content = SmartReadContent(response, responseStream);
                     if (IsError(response.StatusCode))
                     {
-                        throw new Exception(string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uri.AbsoluteUri, method, response.StatusCode, content));
+                        throw new Exception(string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uri.AbsoluteUri, method, (int)response.StatusCode, content));
                     }
 
                     return content;
@@ -52,12 +45,12 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                 using (var responseStream = response.GetResponseStream())
                 {
                     var content = SmartReadContent(response, responseStream);
-                    throw new Exception(string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. {2}: {3}", uri.AbsoluteUri, method, response.StatusCode, content), ex);
+                    throw new Exception(string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}", uri.AbsoluteUri, method, (int)response.StatusCode, content), ex);
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception(string.Format("Common WebRequest exception. Parameters: method = {1}, uri = {0}", uri.AbsoluteUri, method), ex);
+                throw new Exception(string.Format("General WebGateway exception. Parameters: method = {1}, uri = {0}", uri.AbsoluteUri, method), ex);
             }
         }
 

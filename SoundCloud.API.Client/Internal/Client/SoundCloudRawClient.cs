@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
-using SoundCloud.API.Client.Internal.Infrastructure.Network.Factories;
+using SoundCloud.API.Client.Internal.Infrastructure.Network;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Objects.Auth;
@@ -13,18 +13,16 @@ namespace SoundCloud.API.Client.Internal.Client
     {
         public SCAccessToken AccessToken { get; set; }
         public SCCredentials Credentials { get; private set; }
-        private readonly bool enableGZip;
 
         private readonly IUriBuilderFactory uriBuilderFactory;
-        private readonly IWebGatewayFactory webGatewayFactory;
+        private readonly IWebGateway webGateway;
         private readonly ISerializer serializer;
 
-        internal SoundCloudRawClient(SCCredentials credentials, bool enableGZip, IUriBuilderFactory uriBuilderFactory, IWebGatewayFactory webGatewayFactory, ISerializer serializer)
+        internal SoundCloudRawClient(SCCredentials credentials, IUriBuilderFactory uriBuilderFactory, IWebGateway webGateway, ISerializer serializer)
         {
             Credentials  = credentials;
-            this.enableGZip = enableGZip;
             this.uriBuilderFactory = uriBuilderFactory;
-            this.webGatewayFactory = webGatewayFactory;
+            this.webGateway = webGateway;
             this.serializer = serializer;
         }
 
@@ -59,7 +57,6 @@ namespace SoundCloud.API.Client.Internal.Client
         private string GetResponse(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType)
         {
             var uri = BuildUri(Settings.ApiSoundCloudComPrefix + apiPrefix, command, parameters, isRequiredAuth, responseType);
-            var webGateway = webGatewayFactory.Create(enableGZip);
 
             var response = webGateway.Request(uri, method);
             return response;

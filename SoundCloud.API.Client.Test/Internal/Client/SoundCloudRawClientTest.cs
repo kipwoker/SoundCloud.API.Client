@@ -6,7 +6,6 @@ using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
-using SoundCloud.API.Client.Internal.Infrastructure.Network.Factories;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Objects.Auth;
@@ -16,7 +15,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
     public class SoundCloudRawClientTest : TestBase
     {
         private IUriBuilderFactory uriBuilderFactory;
-        private IWebGatewayFactory webGatewayFactory;
+        private IWebGateway webGateway;
         private ISerializer serializer;
         private SCCredentials scCredentials;
 
@@ -34,7 +33,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             };
 
             uriBuilderFactory = NewMock<IUriBuilderFactory>();
-            webGatewayFactory = NewMock<IWebGatewayFactory>();
+            webGateway = NewMock<IWebGateway>();
             serializer = NewMock<ISerializer>();
         }
 
@@ -60,14 +59,12 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 uriBuilder.Expect(f => f.Build()).Return(uri);
                 uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command.json")).Return(uriBuilder);
 
-                var webGateway = NewMock<IWebGateway>();
-                webGatewayFactory.Expect(f => f.Create(enableGZip)).Return(webGateway);
                 webGateway.Expect(f => f.Request(uri, method)).Return("response");
 
                 serializer.Expect(f => f.Deserialize<EmptyClass>("response")).Return(expected);
             }
 
-            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, enableGZip, uriBuilderFactory, webGatewayFactory, serializer)
+            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)
             {
                 AccessToken = new SCAccessToken
                 {
@@ -98,14 +95,12 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 uriBuilder.Expect(f => f.Build()).Return(uri);
                 uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command.json")).Return(uriBuilder);
 
-                var webGateway = NewMock<IWebGateway>();
-                webGatewayFactory.Expect(f => f.Create(enableGZip)).Return(webGateway);
                 webGateway.Expect(f => f.Request(uri, method)).Return("response");
 
                 serializer.Expect(f => f.Deserialize<EmptyClass>("response")).Return(expected);
             }
 
-            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, enableGZip, uriBuilderFactory, webGatewayFactory, serializer)
+            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)
             {
                 AccessToken = null
             };
@@ -129,12 +124,10 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 uriBuilder.Expect(f => f.Build()).Return(uri);
                 uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command")).Return(uriBuilder);
 
-                var webGateway = NewMock<IWebGateway>();
-                webGatewayFactory.Expect(f => f.Create(enableGZip)).Return(webGateway);
                 webGateway.Expect(f => f.Request(uri, method)).Return("response");
             }
 
-            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, enableGZip, uriBuilderFactory, webGatewayFactory, serializer)
+            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)
             {
                 AccessToken = null
             };
@@ -164,7 +157,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             }
 
             const bool enableGZip = true;
-            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, enableGZip, uriBuilderFactory, webGatewayFactory, serializer)
+            var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)
             {
                 AccessToken = null
             };
