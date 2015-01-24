@@ -11,7 +11,16 @@ namespace SoundCloud.API.Client.Objects.Auth
         public int ExpiresIn { get; set; }
 
         [JsonProperty("scope")]
-        public string Scope { get; set; }
+        private string scope;
+
+        public SCScope Scope
+        {
+            get { return string.Equals(scope, "*") ? SCScope.Asterisk : SCScope.NonExpiring; }
+            set
+            {
+                scope = value == SCScope.Asterisk ? "*" : "non-expiring";
+            }
+        }
 
         [JsonProperty("refresh_token")]
         public string RefreshToken { get; set; }

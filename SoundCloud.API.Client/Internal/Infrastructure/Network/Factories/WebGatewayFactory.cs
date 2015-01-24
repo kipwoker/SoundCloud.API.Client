@@ -6,7 +6,7 @@
         
         public IWebGateway Create(bool enableGZip)
         {
-            return new WebGateway(enableGZip);
+            return enableGZip ? WebGateway.DefaultGzip : WebGateway.Default;
         }
     }
 }

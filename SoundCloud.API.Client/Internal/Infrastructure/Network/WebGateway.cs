@@ -10,7 +10,10 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
     {
         private readonly bool enableGZip;
 
-        internal WebGateway(bool enableGZip)
+        internal static readonly IWebGateway DefaultGzip = new WebGateway(true);
+        internal static readonly IWebGateway Default = new WebGateway(false);
+
+        private WebGateway(bool enableGZip)
         {
             this.enableGZip = enableGZip;
         }
@@ -75,7 +78,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
         private static bool IsError(HttpStatusCode httpStatusCode)
         {
             var code = ((int)httpStatusCode).ToString();
-            return !(code.StartsWith("2") && code.StartsWith("3"));
+            return !(code.StartsWith("2") || code.StartsWith("3"));
         }
     }
 }
