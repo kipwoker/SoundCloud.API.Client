@@ -4,6 +4,7 @@ using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
+using SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Objects.Auth;
 
@@ -52,6 +53,14 @@ namespace SoundCloud.API.Client.Internal.Client
             }
 
             return uriBuilder.Build();
+        }
+
+        public T Upload<T>(string apiPrefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType, params File[] files)
+        {
+            var uri = BuildUri(Settings.ApiSoundCloudComPrefix + apiPrefix, command, new Dictionary<string, object>(), isRequiredAuth, responseType);
+
+            var response = webGateway.Upload(uri, parameters, files);
+            return serializer.Deserialize<T>(response);
         }
 
         private string GetResponse(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType)

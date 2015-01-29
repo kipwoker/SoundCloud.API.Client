@@ -10,11 +10,23 @@ namespace SoundCloud.API.Client
         internal SoundCloudClient(ISubresourceFactory subresourceFactory)
         {
             this.subresourceFactory = subresourceFactory;
+
+            Users = subresourceFactory.CreateUsers();
+            Tracks = subresourceFactory.CreateTracks();
         }
 
-        public IUsersApi Users(string userId)
+        public IUserApi User(string userId)
         {
-            return subresourceFactory.CreateUsers(userId);
+            return subresourceFactory.CreateUser(userId);
         }
+
+        public IUsersApi Users { get; private set; }
+
+        public ITrackApi Track(string trackId)
+        {
+            return subresourceFactory.CreateTrack(trackId);
+        }
+
+        public ITracksApi Tracks { get; private set; }
     }
 }

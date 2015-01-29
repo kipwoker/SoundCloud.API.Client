@@ -2,6 +2,9 @@
 {
     internal interface ISubresourceFactory
     {
-        IUsersApi CreateUsers(string userId);
+        IUserApi CreateUser(string userId);
+        IUsersApi CreateUsers();
+        ITrackApi CreateTrack(string trackId);
+        ITracksApi CreateTracks();
     }
 }

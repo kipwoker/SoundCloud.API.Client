@@ -14,9 +14,24 @@ namespace SoundCloud.API.Client.Subresources.Factories
             this.paginationValidator = paginationValidator;
         }
 
-        public IUsersApi CreateUsers(string userId)
+        public IUserApi CreateUser(string userId)
         {
-            return new UsersApi(userId, soundCloudRawClient, paginationValidator);
+            return new UserApi(userId, soundCloudRawClient, paginationValidator);
+        }
+
+        public IUsersApi CreateUsers()
+        {
+            return new UsersApi(soundCloudRawClient, paginationValidator);
+        }
+
+        public ITrackApi CreateTrack(string trackId)
+        {
+            return new TrackApi(trackId, soundCloudRawClient, paginationValidator);
+        }
+
+        public ITracksApi CreateTracks()
+        {
+            return new TracksApi(soundCloudRawClient, paginationValidator);
         }
     }
 }

@@ -29,6 +29,7 @@ namespace SoundCloud.API.Client.Test
             public string UserName { get; set; } 
             public string Password { get; set; }
             public string TestUserId { get; set; }
+            public string TestTrackId { get; set; }
         }
 
         protected static void TestCollection<TResponse>(Func<int, int, TResponse[]> getResponse, int offset, int limit)

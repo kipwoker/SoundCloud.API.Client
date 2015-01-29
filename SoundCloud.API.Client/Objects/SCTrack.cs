@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using Newtonsoft.Json;
+using SoundCloud.API.Client.Internal.Infrastructure.Objects;
+using SoundCloud.API.Client.Objects.TrackPieces;
 
 namespace SoundCloud.API.Client.Objects
 {
@@ -10,19 +12,25 @@ namespace SoundCloud.API.Client.Objects
         public string Id { get; set; }
 
         [JsonProperty(PropertyName = "created_at")]
-        public string creationDate;
+        private string createdAt;
 
-        public DateTime CreationDate
+        public DateTimeOffset CreatedAt
         {
-            get { return (DateTime.Parse(creationDate)); }
-            set { creationDate = value.ToString(CultureInfo.InvariantCulture); }
+            get { return DateTimeOffset.Parse(createdAt); }
+            set { createdAt = value.UtcDateTime.ToString(CultureInfo.InvariantCulture); }
         }
 
         [JsonProperty(PropertyName = "user_id")]
         public int UserId { get; set; }
 
-        [JsonProperty(PropertyName = "duration")]
-        public int Duration { get; set; }
+        [JsonProperty(PropertyName = "duration")] 
+        private int duration;
+
+        public TimeSpan Duration
+        {
+            get { return TimeSpan.FromMilliseconds(duration); }
+            set { duration = (int)value.TotalMilliseconds; }
+        }
 
         [JsonProperty(PropertyName = "commentable")]
         public bool Commentable { get; set; }
@@ -34,7 +42,13 @@ namespace SoundCloud.API.Client.Objects
         public string Sharing { get; set; }
 
         [JsonProperty(PropertyName = "tag_list")]
-        public string TagList { get; set; }
+        private string tagList;
+
+        public SCTagList TagList
+        {
+            get { return SCTagListSerializer.Deserialize(tagList); }
+            set { tagList = SCTagListSerializer.Serialize(value); }
+        }
 
         [JsonProperty(PropertyName = "permalink")]
         public string Permalink { get; set; }
@@ -43,10 +57,10 @@ namespace SoundCloud.API.Client.Objects
         public string Description { get; set; }
 
         [JsonProperty(PropertyName = "streamable")]
-        public bool Streamable { get; set; }
+        public bool? Streamable { get; set; }
 
         [JsonProperty(PropertyName = "downloadable")]
-        public bool Downloadable { get; set; }
+        public bool? Downloadable { get; set; }
 
         [JsonProperty(PropertyName = "genre")]
         public string Genre { get; set; }
@@ -76,7 +90,7 @@ namespace SoundCloud.API.Client.Objects
         public string KeySignature { get; set; }
 
         [JsonProperty(PropertyName = "bpm")]
-        public string Bpm { get; set; }
+        public float? Bpm { get; set; }
 
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
@@ -93,8 +107,14 @@ namespace SoundCloud.API.Client.Objects
         [JsonProperty(PropertyName = "original_format")]
         public string OriginalFormat { get; set; }
 
-        [JsonProperty(PropertyName = "license")]
-        public string License { get; set; }
+        [JsonProperty(PropertyName = "license")] 
+        private string license;
+
+        public SCLicense License
+        {
+            get { return license.GetValue<SCLicense>(); }
+            set { license = value.GetParameterName(); }
+        }
 
         [JsonProperty(PropertyName = "uri")]
         public string Uri { get; set; }

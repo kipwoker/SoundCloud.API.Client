@@ -2,9 +2,16 @@
 {
     internal enum HttpMethod
     {
+        [Parameter("GET")]
         Get,
+
+        [Parameter("POST")]
         Post,
+
+        [Parameter("PUT")]
         Put,
+
+        [Parameter("DELETE")]
         Delete
     }
 }

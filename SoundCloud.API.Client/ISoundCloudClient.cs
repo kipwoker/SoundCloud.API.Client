@@ -4,6 +4,10 @@ namespace SoundCloud.API.Client
 {
     public interface ISoundCloudClient
     {
-        IUsersApi Users(string userId);
+        IUserApi User(string userId);
+        IUsersApi Users { get; }
+        
+        ITrackApi Track(string trackId);
+        ITracksApi Tracks { get; }
     }
 }
