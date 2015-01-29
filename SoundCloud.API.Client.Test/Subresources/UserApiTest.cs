@@ -104,5 +104,41 @@ namespace SoundCloud.API.Client.Test.Subresources
         {
             TestCollection(userApi.GetWebProfiles, 0, 50);
         }
+
+        [Test]
+        public void TestUpdateUser()
+        {
+            var user = userApi.GetUser();
+            var city = user.City;
+            var newCity = city == "Berlin" ? "Moscow" : "Berlin";
+
+            user.City = newCity;
+            userApi.UpdateUser(user);
+            user = userApi.GetUser();
+            Assert.AreEqual(newCity, user.City);
+
+            user.City = city;
+            userApi.UpdateUser(user);
+            user = userApi.GetUser();
+            Assert.AreEqual(city, user.City);
+        }
+
+        [Test]
+        public void TestUpdateUserWithAvatar()
+        {
+            var user = userApi.GetUser();
+            var city = user.City;
+            var newCity = city == "Berlin" ? "Moscow" : "Berlin";
+
+            user.City = newCity;
+            userApi.UpdateUser(user);
+            user = userApi.GetUser();
+            Assert.AreEqual(newCity, user.City);
+
+            user.City = city;
+            userApi.UpdateUser(user);
+            user = userApi.GetUser();
+            Assert.AreEqual(city, user.City);
+        }
     }
 }

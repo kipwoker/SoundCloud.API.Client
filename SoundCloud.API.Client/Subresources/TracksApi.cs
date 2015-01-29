@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using SoundCloud.API.Client.Internal.Client;
+using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
+using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Objects.TrackPieces;
@@ -13,17 +16,27 @@ namespace SoundCloud.API.Client.Subresources
     {
         private readonly ISoundCloudRawClient soundCloudRawClient;
         private readonly IPaginationValidator paginationValidator;
+        private readonly ITrackConverter trackConverter;
         private const string prefix = "tracks";
 
-        internal TracksApi(ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator)
+        internal TracksApi(ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, ITrackConverter trackConverter)
         {
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
+            this.trackConverter = trackConverter;
         }
 
-        public SCTrack UploadTrack(string path, string title, string description, SCSharing sharing)
+        public SCTrack UploadTrack(string trackPath, string title, string description, SCSharing sharing, string artworkPath)
         {
-            var file = File.Build(path, "track[asset_data]");
+            var files = new List<File>();
+            if (!string.IsNullOrEmpty(artworkPath))
+            {
+                var artworkFile = File.Build(artworkPath, "track[artwork_data]");
+                files.Add(artworkFile);
+            }
+
+            var trackFile = File.Build(trackPath, "track[asset_data]");
+            files.Add(trackFile);
 
             var parameters = new Dictionary<string, object>
             {
@@ -32,12 +45,19 @@ namespace SoundCloud.API.Client.Subresources
                 {"track[sharing]", sharing.GetParameterName()}
             };
 
-            return soundCloudRawClient.Upload<SCTrack>(prefix, string.Empty, parameters, files: file);
+            var uploadedTrack = soundCloudRawClient.Upload<Track>(prefix, string.Empty, parameters, files: files.ToArray());
+            return trackConverter.Convert(uploadedTrack);
         }
 
         public ITracksSearcher BeginSearch(SCFilter filter)
         {
-            return new TracksSearcher(filter, paginationValidator, parameters => soundCloudRawClient.RequestApi<SCTrack[]>(prefix, string.Empty, HttpMethod.Get, parameters));
+            return new TracksSearcher(filter, 
+                                      paginationValidator,
+                                      parameters =>
+                                      {
+                                          var tracks = soundCloudRawClient.RequestApi<Track[]>(prefix, string.Empty, HttpMethod.Get, parameters);
+                                          return tracks.Select(trackConverter.Convert).ToArray();
+                                      });
         }
     }
 }

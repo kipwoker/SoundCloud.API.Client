@@ -30,7 +30,7 @@ namespace SoundCloud.API.Client.Subresources
                 {"grant_type", "password"},
                 {"username", userName},
                 {"password", password}
-            }, false, string.Empty);
+            }, null, false, string.Empty);
         }
 
         public SCAccessToken AuthorizeByCode(string code, string redirectUri)
@@ -43,7 +43,7 @@ namespace SoundCloud.API.Client.Subresources
                 {"grant_type", "authorization_code"},
                 {"code", code},
                 {"redirect_uri", redirectUri}
-            }, false, string.Empty);
+            }, null, false, string.Empty);
         }
 
         public Uri GetRequestTokenUri(string redirectUri, SCResponseType responseType, SCScope scope, SCDisplay display, string state)
@@ -72,7 +72,7 @@ namespace SoundCloud.API.Client.Subresources
                 {"client_secret", credentials.ClientSecret},
                 {"grant_type", "refresh_token"},
                 {"refresh_token", token}
-            }, false, string.Empty);
+            }, null, false, string.Empty);
         }
     }
 }

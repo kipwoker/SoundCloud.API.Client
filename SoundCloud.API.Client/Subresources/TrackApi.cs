@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using SoundCloud.API.Client.Internal.Client;
+using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
+using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Subresources.Helpers;
@@ -14,19 +16,24 @@ namespace SoundCloud.API.Client.Subresources
         private readonly string trackId;
         private readonly ISoundCloudRawClient soundCloudRawClient;
         private readonly IPaginationValidator paginationValidator;
+        private readonly ITrackConverter trackConverter;
+        private readonly IUserConverter userConverter;
         private readonly string prefix;
 
-        internal TrackApi(string trackId, ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator)
+        internal TrackApi(string trackId, ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, ITrackConverter trackConverter, IUserConverter userConverter)
         {
             this.trackId = trackId;
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
+            this.trackConverter = trackConverter;
+            this.userConverter = userConverter;
             prefix = string.Format("tracks/{0}", trackId);
         }
 
         public SCTrack GetTrack()
         {
-            return soundCloudRawClient.RequestApi<SCTrack>(prefix, string.Empty, HttpMethod.Get);
+            var track = GetInternalTrack();
+            return trackConverter.Convert(track);
         }
         
         public void UpdateTrack(SCTrack track)
@@ -36,11 +43,11 @@ namespace SoundCloud.API.Client.Subresources
                 throw new SoundCloudApiException(string.Format("Context set for trackId = {0}. Create new context for update another track.", trackId));
             }
 
-            var currentTrack = GetTrack();
+            var currentTrack = GetInternalTrack();
 
-            var diff = currentTrack.GetDiff(track);
+            var diff = currentTrack.GetDiff(trackConverter.Convert(track));
 
-            soundCloudRawClient.RequestApi(prefix, string.Empty, HttpMethod.Put, diff.ToDictionary(x => string.Format((string) "track[{0}]", (object) x.Key), x => x.Value));
+            soundCloudRawClient.RequestApi(prefix, string.Empty, HttpMethod.Put, diff.ToDictionary(x => string.Format("track[{0}]", x.Key), x => x.Value));
         }
 
         public void DeleteTrack()
@@ -81,7 +88,13 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCUser GetFavoriter(string favoriterId)
         {
-            return soundCloudRawClient.RequestApi<SCUser>(prefix, string.Format("favoriters/{0}", favoriterId), HttpMethod.Get);
+            var user = soundCloudRawClient.RequestApi<User>(prefix, string.Format("favoriters/{0}", favoriterId), HttpMethod.Get);
+            return userConverter.Convert(user);
+        }
+
+        private Track GetInternalTrack()
+        {
+            return soundCloudRawClient.RequestApi<Track>(prefix, string.Empty, HttpMethod.Get);
         }
     }
 }

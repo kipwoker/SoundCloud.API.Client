@@ -6,7 +6,7 @@ namespace SoundCloud.API.Client.Subresources
 {
     public interface ITracksApi
     {
-        SCTrack UploadTrack(string path, string title, string description, SCSharing sharing);
+        SCTrack UploadTrack(string trackPath, string title, string description, SCSharing sharing, string artworkPath = null);
         ITracksSearcher BeginSearch(SCFilter filter);
     }
 }

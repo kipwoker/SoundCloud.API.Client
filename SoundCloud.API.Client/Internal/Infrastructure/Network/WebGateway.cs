@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading;
 using File = SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading.File;
@@ -18,15 +19,30 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
         private WebGateway()
         {
         }
-        
-        public string Request(Uri uri, HttpMethod method)
+
+        public string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
         {
+            var uri = uriBuilder.AddQueryParameters(parameters).Build();
             var request = WebRequest.Create(uri);
 
             request.Method = method.GetParameterName();
 
             request.ContentType = "application/json";
-            request.ContentLength = 0;
+
+            body = body ?? new byte[0];
+            if (method == HttpMethod.Post && body.Length > 0)
+            {
+                request.ContentLength = body.Length;
+                using (var requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(body, 0, body.Length);
+                    requestStream.Flush();
+                }
+            }
+            else
+            {
+                request.ContentLength = 0;
+            }
 
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
 
@@ -36,42 +52,11 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             return GetResponse(request, buildExceptionMessage);
         }
 
-        private static string GetResponse(WebRequest request, Func<int, string, string> buildExceptionMessage)
+        public string Upload(IUriBuilder uriBuilder, Dictionary<string, object> parameters, params File[] files)
         {
-            try
-            {
-                using (var response = (HttpWebResponse) request.GetResponse())
-                using (var responseStream = response.GetResponseStream())
-                {
-                    var content = SmartReadContent(response, responseStream);
-                    if (IsError(response.StatusCode))
-                    {
-                        throw new WebGatewayException(buildExceptionMessage((int)response.StatusCode, content), response.StatusCode);
-                    }
-
-                    return content;
-                }
-            }
-            catch (WebException ex)
-            {
-                using (var response = (HttpWebResponse) ex.Response)
-                using (var responseStream = response.GetResponseStream())
-                {
-                    var content = SmartReadContent(response, responseStream);
-                    throw new WebGatewayException(buildExceptionMessage((int)response.StatusCode, content), response.StatusCode, ex);
-                }
-            }
-            catch (Exception ex)
-            {
-                const HttpStatusCode statusCode = HttpStatusCode.ServiceUnavailable;
-                throw new WebGatewayException(buildExceptionMessage((int)statusCode, string.Empty), statusCode, ex);
-            }
-        }
-
-        public string Upload(Uri uri, Dictionary<string, object> parameters, params File[] files)
-        {
+            var uri = uriBuilder.Build();
             var mimeParts = new List<MimePart>();
-            
+
             try
             {
                 var request = WebRequest.Create(uri);
@@ -96,7 +81,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                         file.FieldName = "file" + nameIndex++;
 
                     part.Headers["Content-Disposition"] = "form-data; name=\"" + file.FieldName + "\"; filename=\"" + file.Path + "\"";
-                    part.Headers["Content-Type"] = file.ContentType;
+                    part.Headers["Content-Type"] = File.ContentType;
 
                     part.SetStream(file.Data);
 
@@ -137,19 +122,51 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                     s.Write(footer, 0, footer.Length);
                 }
 
-                return GetResponse(request, (statusCode, content) => 
-                                            string.Format("Upload failed. Parameters: uri = {0}. Files: {1}. Response: {2} - {3}", 
-                                                uri.AbsoluteUri, 
-                                                string.Join(";",files.Select(x => x.Path)),
+                return GetResponse(request, (statusCode, content) =>
+                                            string.Format("Upload failed. Parameters: uri = {0}. Files: {1}. Response: {2} - {3}",
+                                                uri.AbsoluteUri,
+                                                string.Join(";", files.Select(x => x.Path)),
                                                 statusCode,
                                                 content));
             }
-            finally 
+            finally
             {
                 foreach (var mimePart in mimeParts.Where(part => part.Data != null))
                 {
                     mimePart.Data.Dispose();
                 }
+            }
+        }
+
+        private static string GetResponse(WebRequest request, Func<int, string, string> buildExceptionMessage)
+        {
+            try
+            {
+                using (var response = (HttpWebResponse)request.GetResponse())
+                using (var responseStream = response.GetResponseStream())
+                {
+                    var content = SmartReadContent(response, responseStream);
+                    if (IsError(response.StatusCode))
+                    {
+                        throw new WebGatewayException(buildExceptionMessage((int)response.StatusCode, content), response.StatusCode);
+                    }
+
+                    return content;
+                }
+            }
+            catch (WebException ex)
+            {
+                using (var response = (HttpWebResponse)ex.Response)
+                using (var responseStream = response.GetResponseStream())
+                {
+                    var content = SmartReadContent(response, responseStream);
+                    throw new WebGatewayException(buildExceptionMessage((int)response.StatusCode, content), response.StatusCode, ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                const HttpStatusCode statusCode = HttpStatusCode.ServiceUnavailable;
+                throw new WebGatewayException(buildExceptionMessage((int)statusCode, string.Empty), statusCode, ex);
             }
         }
 

@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SoundCloud.API.Client.Objects.TrackPieces;
 
-namespace SoundCloud.API.Client.Objects.TrackPieces
+namespace SoundCloud.API.Client.Internal.Converters
 {
-    internal static class SCTagListSerializer
+    internal class TagListConverter : ITagListConverter
     {
+        internal static readonly ITagListConverter Default = new TagListConverter();
+
         private const char whitespace = ' ';
         private const char quote = '"';
 
-        internal static SCTagList Deserialize(string tagList)
+        public SCTagList Convert(string tagList)
         {
             if (string.IsNullOrEmpty(tagList))
             {
@@ -59,7 +62,7 @@ namespace SoundCloud.API.Client.Objects.TrackPieces
             };
         }
 
-        public static string Serialize(SCTagList tagList)
+        public string Convert(SCTagList tagList)
         {
             return string.Join(whitespace.ToString(), tagList.Tags.Select(QuotesScreen).Concat(tagList.MachineTags.Select(x => QuotesScreen(string.Format("{0}:{1}={2}", x.Namespace, x.Key, x.Value)))));
         }

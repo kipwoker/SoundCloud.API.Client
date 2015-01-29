@@ -27,47 +27,33 @@ namespace SoundCloud.API.Client.Internal.Client
             this.serializer = serializer;
         }
 
-        public T RequestApi<T>(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType)
+        public T RequestApi<T>(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType)
         {
-            var response = GetResponse(apiPrefix, command, method, parameters, isRequiredAuth, responseType);
+            var response = GetResponse(apiPrefix, command, method, parameters, body, isRequiredAuth, responseType);
             return serializer.Deserialize<T>(response);
         }
         
-        public void RequestApi(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, bool isRequiredAuth = true)
+        public void RequestApi(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth)
         {
-            GetResponse(apiPrefix, command, method, parameters, isRequiredAuth, string.Empty);
+            GetResponse(apiPrefix, command, method, parameters, body, isRequiredAuth, string.Empty);
         }
 
         public Uri BuildUri(string prefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType)
         {
-            var fullCommand = string.Format("{0}/{1}", prefix.TrimEnd('/'), command).Trim('/');
-            var fullCommandWithResponse = SetResponseType(fullCommand, responseType);
-
-            var uriBuilder = uriBuilderFactory.Create(fullCommandWithResponse).AddQueryParameters(parameters);
-
-            if (isRequiredAuth)
-            {
-                uriBuilder = AccessToken == null
-                           ? uriBuilder.AddClientId(Credentials.ClientId)
-                           : uriBuilder.AddToken(AccessToken.AccessToken);
-            }
-
-            return uriBuilder.Build();
+            return CreateUriBuilder(prefix, command, isRequiredAuth, responseType).AddQueryParameters(parameters).Build();
         }
 
         public T Upload<T>(string apiPrefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType, params File[] files)
         {
-            var uri = BuildUri(Settings.ApiSoundCloudComPrefix + apiPrefix, command, new Dictionary<string, object>(), isRequiredAuth, responseType);
-
-            var response = webGateway.Upload(uri, parameters, files);
+            var uriBuilder = CreateUriBuilder(Settings.ApiSoundCloudComPrefix + apiPrefix, command, isRequiredAuth, responseType);
+            var response = webGateway.Upload(uriBuilder, parameters, files);
             return serializer.Deserialize<T>(response);
         }
 
-        private string GetResponse(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType)
+        private string GetResponse(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType)
         {
-            var uri = BuildUri(Settings.ApiSoundCloudComPrefix + apiPrefix, command, parameters, isRequiredAuth, responseType);
-
-            var response = webGateway.Request(uri, method);
+            var uriBuilder = CreateUriBuilder(Settings.ApiSoundCloudComPrefix + apiPrefix, command, isRequiredAuth, responseType);
+            var response = webGateway.Request(uriBuilder, method, parameters, body);
             return response;
         }
 
@@ -76,6 +62,23 @@ namespace SoundCloud.API.Client.Internal.Client
             return string.IsNullOrEmpty(responseType)
                  ? command
                  : string.Format("{0}.{1}", command, responseType);
+        }
+
+        private IUriBuilder CreateUriBuilder(string prefix, string command, bool isRequiredAuth, string responseType)
+        {
+            var fullCommand = string.Format("{0}/{1}", prefix.TrimEnd('/'), command).Trim('/');
+            var fullCommandWithResponse = SetResponseType(fullCommand, responseType);
+
+            var uriBuilder = uriBuilderFactory.Create(fullCommandWithResponse);
+
+            if (isRequiredAuth)
+            {
+                uriBuilder = AccessToken == null
+                           ? uriBuilder.AddClientId(Credentials.ClientId)
+                           : uriBuilder.AddToken(AccessToken.AccessToken);
+            }
+
+            return uriBuilder;
         }
     }
 }

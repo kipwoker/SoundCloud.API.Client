@@ -5,6 +5,7 @@ namespace SoundCloud.API.Client.Subresources
 {
     public interface IUserApi
     {
+        void UpdateUser(SCUser user, string avatarPath = null);
         SCUser GetUser();
         SCTrack[] GetTracks(int offset = 0, int limit = 50);
         SCPlaylist[] GetPlaylists(int offset = 0, int limit = 50);

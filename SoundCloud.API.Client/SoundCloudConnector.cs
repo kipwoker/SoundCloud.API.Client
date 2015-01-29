@@ -1,6 +1,7 @@
 ﻿using System;
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
+using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Internal.Validation;
@@ -93,7 +94,14 @@ namespace SoundCloud.API.Client
             return new SoundCloudClient(
                 new SubresourceFactory(
                     soundCloudRawClient,
-                    PaginationValidator.Default));
+                    PaginationValidator.Default,
+                    TrackConverter.Default,
+                    UserConverter.Default,
+                    PlaylistConverter.Default,
+                    CommentConverter.Default,
+                    GroupConverter.Default,
+                    WebProfileConverter.Default
+                    ));
         }
 
         private static SoundCloudRawClient CreateSCRawClient(SCCredentials credentials)

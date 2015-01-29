@@ -46,14 +46,22 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
+        [TestCase((string)null)]
+        [TestCase("artwork.jpg")]
 #if LIGHTMODE
         [Ignore("Slow test")]
 #endif
-        public void TestUploadAndDeleteTrack()
+        public void TestUploadAndDeleteTrack(string artwork)
         {
             const string title = "test 123";
             const string description = "description test 321";
-            var uploadedTrack = soundCloudClient.Tracks.UploadTrack(Environment.CurrentDirectory + @"\test.mp3", title, description, SCSharing.Private);
+            var uploadedTrack = soundCloudClient.Tracks.UploadTrack(Environment.CurrentDirectory + @"\test.mp3", 
+                                                                    title, 
+                                                                    description, 
+                                                                    SCSharing.Private, 
+                                                                    string.IsNullOrEmpty(artwork) 
+                                                                    ? null 
+                                                                    : Environment.CurrentDirectory + "\\" + artwork);
             Assert.AreEqual(title, uploadedTrack.Title);
             Assert.AreEqual(description, uploadedTrack.Description);
 

@@ -67,7 +67,7 @@ namespace SoundCloud.API.Client.Subresources.Helpers
                 return this;
             }
 
-            searchParameters.AddOrUpdate(key, license.GetParameterName());
+            searchParameters.AddOrUpdate(key, license.Value.GetParameterName());
             return this;
         }
 

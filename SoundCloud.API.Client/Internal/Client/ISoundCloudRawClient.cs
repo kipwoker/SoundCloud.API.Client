@@ -10,8 +10,8 @@ namespace SoundCloud.API.Client.Internal.Client
     {
         SCCredentials Credentials { get; }
         SCAccessToken AccessToken { get; }
-        T RequestApi<T>(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, bool isRequiredAuth = true, string responseType = "json");
-        void RequestApi(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, bool isRequiredAuth = true);
+        T RequestApi<T>(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, bool isRequiredAuth = true, string responseType = "json");
+        void RequestApi(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, bool isRequiredAuth = true);
         Uri BuildUri(string prefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType);
         T Upload<T>(string apiPrefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth = true, string responseType = "json", params File[] files);
     }

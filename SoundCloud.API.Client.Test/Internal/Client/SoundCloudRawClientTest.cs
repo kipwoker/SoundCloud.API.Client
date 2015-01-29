@@ -38,28 +38,26 @@ namespace SoundCloud.API.Client.Test.Internal.Client
         }
 
         [Test]
-        [TestCase(true, (int)HttpMethod.Get)]
-        [TestCase(false, (int)HttpMethod.Post)]
-        [TestCase(true, (int)HttpMethod.Delete)]
-        [TestCase(true, (int)HttpMethod.Put)]
-        public void TestRequestApiWithResponseUsingToken(bool enableGZip, int httpMethod)
+        [TestCase((int)HttpMethod.Get)]
+        [TestCase((int)HttpMethod.Post)]
+        [TestCase((int)HttpMethod.Delete)]
+        [TestCase((int)HttpMethod.Put)]
+        public void TestRequestApiWithResponseUsingToken(int httpMethod)
         {
             const bool isRequiredAuth = true;
             var parameters = new Dictionary<string, object> { { "p1", "2" } };
             var method = (HttpMethod)httpMethod;
+            var bytes = new byte[] { 1, 2, 3, 4 };
 
             var expected = new EmptyClass();
 
             using (mocks.Record())
             {
                 var uriBuilder = NewMock<IUriBuilder>();
-                uriBuilder.Expect(f => f.AddQueryParameters(parameters)).Return(uriBuilder);
                 uriBuilder.Expect(f => f.AddToken("aToken")).Return(uriBuilder);
-                var uri = new Uri("http://fake.org");
-                uriBuilder.Expect(f => f.Build()).Return(uri);
                 uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command.json")).Return(uriBuilder);
 
-                webGateway.Expect(f => f.Request(uri, method)).Return("response");
+                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, bytes)).Return("response");
 
                 serializer.Expect(f => f.Deserialize<EmptyClass>("response")).Return(expected);
             }
@@ -71,7 +69,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                     AccessToken = "aToken"
                 }
             };
-            var actual = soundCloudRawClient.RequestApi<EmptyClass>("prefix", "command", method, parameters, isRequiredAuth, "json");
+            var actual = soundCloudRawClient.RequestApi<EmptyClass>("prefix", "command", method, parameters, bytes, isRequiredAuth, "json");
 
             Assert.AreEqual(expected, actual);
         }
@@ -80,7 +78,6 @@ namespace SoundCloud.API.Client.Test.Internal.Client
         public void TestRequestApiWithResponseUsingClientId()
         {
             const bool isRequiredAuth = true;
-            const bool enableGZip = true;
             var parameters = new Dictionary<string, object> { { "p1", "2" } };
             const HttpMethod method = HttpMethod.Get;
 
@@ -89,13 +86,10 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             using (mocks.Record())
             {
                 var uriBuilder = NewMock<IUriBuilder>();
-                uriBuilder.Expect(f => f.AddQueryParameters(parameters)).Return(uriBuilder);
                 uriBuilder.Expect(f => f.AddClientId(clientId)).Return(uriBuilder);
-                var uri = new Uri("http://fake.org");
-                uriBuilder.Expect(f => f.Build()).Return(uri);
                 uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command.json")).Return(uriBuilder);
 
-                webGateway.Expect(f => f.Request(uri, method)).Return("response");
+                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, null)).Return("response");
 
                 serializer.Expect(f => f.Deserialize<EmptyClass>("response")).Return(expected);
             }
@@ -104,7 +98,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             {
                 AccessToken = null
             };
-            var actual = soundCloudRawClient.RequestApi<EmptyClass>("prefix", "command", method, parameters, isRequiredAuth, "json");
+            var actual = soundCloudRawClient.RequestApi<EmptyClass>("prefix", "command", method, parameters, null, isRequiredAuth, "json");
 
             Assert.AreEqual(expected, actual);
         }
@@ -112,26 +106,22 @@ namespace SoundCloud.API.Client.Test.Internal.Client
         [Test]
         public void TestRequestApiWithoutResponseAndAuth()
         {
-            const bool enableGZip = true;
             var parameters = new Dictionary<string, object> { { "p1", "2" } };
             const HttpMethod method = HttpMethod.Post;
 
             using (mocks.Record())
             {
                 var uriBuilder = NewMock<IUriBuilder>();
-                uriBuilder.Expect(f => f.AddQueryParameters(parameters)).Return(uriBuilder);
-                var uri = new Uri("http://fake.org");
-                uriBuilder.Expect(f => f.Build()).Return(uri);
                 uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command")).Return(uriBuilder);
 
-                webGateway.Expect(f => f.Request(uri, method)).Return("response");
+                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, null)).Return("response");
             }
 
             var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)
             {
                 AccessToken = null
             };
-            soundCloudRawClient.RequestApi("prefix", "command", method, parameters, false);
+            soundCloudRawClient.RequestApi("prefix", "command", method, parameters, null, false);
         }
 
         [Test]
@@ -156,7 +146,6 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 uriBuilderFactory.Expect(f => f.Create(expectedFullCommandWithResponse)).Return(uriBuilder);
             }
 
-            const bool enableGZip = true;
             var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)
             {
                 AccessToken = null

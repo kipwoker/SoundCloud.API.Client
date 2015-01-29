@@ -59,7 +59,7 @@
     <Compile Include="Internal\Client\Helpers\UriBuilderTest.cs" />
     <Compile Include="Internal\Client\SoundCloudRawClientTest.cs" />
     <Compile Include="Internal\Validation\PaginationValidatorTest.cs" />
-    <Compile Include="Objects\TrackPieces\SCTagListSerializerTest.cs" />
+    <Compile Include="Internal\Converters\TagListConverterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Subresources\TrackApiTest.cs" />
     <Compile Include="Subresources\TracksApiTest.cs" />

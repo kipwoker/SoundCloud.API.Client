@@ -1,0 +1,147 @@
+using System;
+using System.Globalization;
+using SoundCloud.API.Client.Internal.Infrastructure.Objects;
+using SoundCloud.API.Client.Internal.Objects;
+using SoundCloud.API.Client.Objects;
+using SoundCloud.API.Client.Objects.TrackPieces;
+
+namespace SoundCloud.API.Client.Internal.Converters
+{
+    internal class TrackConverter : ITrackConverter
+    {
+        internal static readonly ITrackConverter Default = new TrackConverter(UserConverter.Default, TagListConverter.Default, ApplicationConverter.Default);
+
+        private readonly IUserConverter userConverter;
+        private readonly ITagListConverter tagListConverter;
+        private readonly IApplicationConverter applicationConverter;
+
+        internal TrackConverter(IUserConverter userConverter, ITagListConverter tagListConverter, IApplicationConverter applicationConverter)
+        {
+            this.userConverter = userConverter;
+            this.tagListConverter = tagListConverter;
+            this.applicationConverter = applicationConverter;
+        }
+
+        public SCTrack Convert(Track track)
+        {
+            if (track == null)
+            {
+                return null;
+            }
+
+            return new SCTrack
+            {
+                Id = track.Id,
+                CreatedAt = DateTimeOffset.Parse(track.CreatedAt),
+                UserId = track.UserId,
+                User = userConverter.Convert(track.User),
+                Title = track.Title,
+                Permalink = track.Permalink,
+                PermalinkUrl = track.PermalinkUrl,
+                Uri = track.Uri,
+                Sharing = track.Sharing.GetValue<SCSharing>(),
+                EmbeddableBy = track.EmbeddableBy.GetValue<SCEmbeddableBy>(),
+                Artwork = SCScalableEntity<SCArtworkFormat>.Create(track.Artwork),
+                Description = track.Description,
+                Label = userConverter.Convert(track.Label),
+                Duration = TimeSpan.FromMilliseconds(track.Duration),
+                Genre = track.Genre,
+                TagList = tagListConverter.Convert(track.TagList),
+                LabelId = track.LabelId,
+                LabelName = track.LabelName,
+                ReleaseNumber = track.Release,
+                ReleaseDate = track.ReleaseYear.HasValue && track.ReleaseMonth.HasValue && track.ReleaseDay.HasValue
+                            ? new DateTimeOffset(new DateTime(track.ReleaseYear.Value, track.ReleaseMonth.Value, track.ReleaseDay.Value))
+                            : (DateTimeOffset?)null,
+                Streamable = track.Streamable,
+                Downloadable = track.Downloadable,
+                State = track.State.GetValue<SCState>(),
+                License = track.License.GetValue<SCLicense>(),
+                TrackType = track.TrackType.GetValue<SCTrackType>(),
+                WaveformUrl = track.WaveformUrl,
+                DownloadUrl = track.DownloadUrl,
+                StreamUrl = track.StreamUrl,
+                VideoUrl = track.VideoUrl,
+                Bpm = track.Bpm,
+                Commentable = track.Commentable,
+                Isrc = track.Isrc,
+                KeySignature = track.KeySignature,
+                CommentsCount = track.CommentsCount,
+                DownloadCount = track.DownloadCount,
+                PlaybackCount = track.PlaybackCount,
+                FavoritingsCount = track.FavoritingsCount,
+                OriginalFormat = track.OriginalFormat,
+                OriginalContentSize = track.OriginalContentSize,
+                CreatedWith = applicationConverter.Convert(track.CreatedWith),
+                UserFavorite = track.UserFavorite,
+                AttachmentUri = track.AttachmentUri,
+                DownloadsRemaining = track.DownloadsRemaining,
+                PurchaseUrl = track.PurchaseUrl,
+                SecretToken = track.SecretToken,
+                SecretUri = track.SecretUri,
+                UserPlaybackCount = track.UserPlaybackCount
+            };
+        }
+
+        public Track Convert(SCTrack track)
+        {
+            if (track == null)
+            {
+                return null;
+            }
+
+            return new Track
+            {
+                Id = track.Id,
+                CreatedAt = track.CreatedAt.UtcDateTime.ToString(CultureInfo.InvariantCulture),
+                UserId = track.UserId,
+                User = userConverter.Convert(track.User),
+                Title = track.Title,
+                Permalink = track.Permalink,
+                PermalinkUrl = track.PermalinkUrl,
+                Uri = track.Uri,
+                Sharing = track.Sharing.GetParameterName(),
+                EmbeddableBy = track.EmbeddableBy.GetParameterName(),
+                Artwork = track.Artwork == null ? null : track.Artwork.Url(),
+                Description = track.Description,
+                Label = userConverter.Convert(track.Label),
+                Duration = (int)track.Duration.TotalMilliseconds,
+                Genre = track.Genre,
+                TagList = tagListConverter.Convert(track.TagList),
+                LabelId = track.LabelId,
+                LabelName = track.LabelName,
+                Release = track.ReleaseNumber,
+                ReleaseYear = track.ReleaseDate.SafeGet<DateTimeOffset, int>(x => x.Year),
+                ReleaseMonth = track.ReleaseDate.SafeGet<DateTimeOffset, int>(x => x.Month),
+                ReleaseDay = track.ReleaseDate.SafeGet<DateTimeOffset, int>(x => x.Day),
+                Streamable = track.Streamable,
+                Downloadable = track.Downloadable,
+                State = track.State.GetParameterName(),
+                License = track.License.GetParameterName(),
+                TrackType = track.TrackType.GetParameterName(),
+                WaveformUrl = track.WaveformUrl,
+                DownloadUrl = track.DownloadUrl,
+                StreamUrl = track.StreamUrl,
+                VideoUrl = track.VideoUrl,
+                Bpm = track.Bpm,
+                Commentable = track.Commentable,
+                Isrc = track.Isrc,
+                KeySignature = track.KeySignature,
+                CommentsCount = track.CommentsCount,
+                DownloadCount = track.DownloadCount,
+                PlaybackCount = track.PlaybackCount,
+                FavoritingsCount = track.FavoritingsCount,
+                OriginalFormat = track.OriginalFormat,
+                OriginalContentSize = track.OriginalContentSize,
+                CreatedWith = applicationConverter.Convert(track.CreatedWith),
+                UserFavorite = track.UserFavorite,
+                AttachmentUri = track.AttachmentUri,
+                DownloadsRemaining = track.DownloadsRemaining,
+                PurchaseUrl = track.PurchaseUrl,
+                SecretToken = track.SecretToken,
+                SecretUri = track.SecretUri,
+                UserPlaybackCount = track.UserPlaybackCount
+            };
+        }
+    }
+}
