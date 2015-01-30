@@ -146,7 +146,7 @@ namespace SoundCloud.API.Client.Internal.Objects
         public string AttachmentUri { get; set; }
 
         [JsonProperty(PropertyName = "original_content_size")]
-        public long OriginalContentSize { get; set; }
+        public long? OriginalContentSize { get; set; }
 
         [JsonProperty(PropertyName = "created_with")]
         public Application CreatedWith { get; set; }

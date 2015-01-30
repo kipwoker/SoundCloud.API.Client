@@ -50,7 +50,7 @@ namespace SoundCloud.API.Client.Objects
         public int CommentsCount { get; set; }
         public string AttachmentUri { get; set; }
         public SCEmbeddableBy EmbeddableBy { get; set; }
-        public long OriginalContentSize { get; set; }
+        public long? OriginalContentSize { get; set; }
         public SCApplication CreatedWith { get; set; }
     }
 }

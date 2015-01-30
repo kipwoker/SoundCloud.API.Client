@@ -12,19 +12,13 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading
             get { return "application/octet-stream"; }
         }
 
-        internal static File Build(string path, string fieldName)
+        internal static File Build(Stream data, string fieldName)
         {
-            var fullPath = System.IO.Path.GetFullPath(path);
-            if (!System.IO.File.Exists(fullPath))
-            {
-                throw new FileNotFoundException();
-            }
-
             return new File
             {
-                Path = fullPath,
+                Path = "fake.jpg",
                 FieldName = fieldName,
-                Data = System.IO.File.OpenRead(fullPath)
+                Data = data
             };
         }
     }

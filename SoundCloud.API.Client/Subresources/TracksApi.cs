@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Converters;
@@ -26,16 +27,16 @@ namespace SoundCloud.API.Client.Subresources
             this.trackConverter = trackConverter;
         }
 
-        public SCTrack UploadTrack(string trackPath, string title, string description, SCSharing sharing, string artworkPath)
+        public SCTrack UploadTrack(Stream trackFileStream, string title, string description, SCSharing sharing, Stream artworkFileStream)
         {
             var files = new List<File>();
-            if (!string.IsNullOrEmpty(artworkPath))
+            if (artworkFileStream != null)
             {
-                var artworkFile = File.Build(artworkPath, "track[artwork_data]");
+                var artworkFile = File.Build(artworkFileStream, "track[artwork_data]");
                 files.Add(artworkFile);
             }
 
-            var trackFile = File.Build(trackPath, "track[asset_data]");
+            var trackFile = File.Build(trackFileStream, "track[asset_data]");
             files.Add(trackFile);
 
             var parameters = new Dictionary<string, object>

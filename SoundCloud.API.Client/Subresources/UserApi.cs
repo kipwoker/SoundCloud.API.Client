@@ -2,7 +2,6 @@
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
-using SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading;
 using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
@@ -47,7 +46,7 @@ namespace SoundCloud.API.Client.Subresources
             prefix = string.Format("users/{0}", userId);
         }
 
-        public void UpdateUser(SCUser user, string avatarPath = null)
+        public SCUser UpdateUser(SCUser user)
         {
             if (user.Id != userId)
             {
@@ -58,15 +57,8 @@ namespace SoundCloud.API.Client.Subresources
             var diff = currentUser.GetDiff(userConverter.Convert(user));
 
             var parameters = diff.ToDictionary(x => string.Format("user[{0}]", x.Key), x => x.Value);
-            if (!string.IsNullOrEmpty(avatarPath))
-            {
-                var avatarFile = File.Build(avatarPath, "user[avatar_data]");
-                soundCloudRawClient.Upload<User>(prefix, string.Empty, parameters, files: avatarFile);
-            }
-            else
-            {
-                soundCloudRawClient.RequestApi<User>(prefix, string.Empty, HttpMethod.Put, parameters);
-            }
+            var updatedUser = soundCloudRawClient.RequestApi<User>(prefix, string.Empty, HttpMethod.Put, parameters);
+            return userConverter.Convert(updatedUser);
         }
 
         public SCUser GetUser()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using NUnit.Framework;
@@ -46,30 +47,42 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
-        [TestCase((string)null)]
-        [TestCase("artwork.jpg")]
+        [TestCase(false)]
+        [TestCase(true)]
 #if LIGHTMODE
         [Ignore("Slow test")]
 #endif
-        public void TestUploadAndDeleteTrack(string artwork)
+        public void TestUploadAndDeleteTrack(bool withArtwork)
         {
             const string title = "test 123";
             const string description = "description test 321";
-            var uploadedTrack = soundCloudClient.Tracks.UploadTrack(Environment.CurrentDirectory + @"\test.mp3", 
+            var trackFileStream = File.OpenRead(Environment.CurrentDirectory + @"\test.mp3");
+            Stream artworkStream = null;
+            if (withArtwork)
+            {
+                var avatarUrl = soundCloudClient.User(settings.TestUserId).GetUser().Avatar.Url();
+                using (var webClient = new WebClient())
+                {
+                    var bytes = webClient.DownloadData(avatarUrl);
+                    artworkStream = new MemoryStream(bytes);
+                }
+            }
+            
+            var uploadedTrack = soundCloudClient.Tracks.UploadTrack(trackFileStream, 
                                                                     title, 
                                                                     description, 
                                                                     SCSharing.Private, 
-                                                                    string.IsNullOrEmpty(artwork) 
-                                                                    ? null 
-                                                                    : Environment.CurrentDirectory + "\\" + artwork);
+                                                                    artworkStream);
             Assert.AreEqual(title, uploadedTrack.Title);
             Assert.AreEqual(description, uploadedTrack.Description);
+            AssertArtwork(withArtwork, uploadedTrack);
 
             var track = soundCloudClient.Track(uploadedTrack.Id);
             var foundedTrack = track.GetTrack();
             Assert.AreEqual(uploadedTrack.Id, foundedTrack.Id);
             Assert.AreEqual(title, foundedTrack.Title);
             Assert.AreEqual(description, foundedTrack.Description);
+            AssertArtwork(withArtwork, foundedTrack);
 
             track.DeleteTrack();
             var webGatewayException = Assert.Throws<WebGatewayException>(() => track.GetTrack());
@@ -113,6 +126,18 @@ namespace SoundCloud.API.Client.Test.Subresources
         public void TestGetFavoriter()
         {
             TestGetEntity(trackApi.GetFavoriters, trackApi.GetFavoriter, u => u.Id);
+        }
+
+        private static void AssertArtwork(bool withArtwork, SCTrack uploadedTrack)
+        {
+            if (withArtwork)
+            {
+                Assert.IsNotNull(uploadedTrack.Artwork);
+            }
+            else
+            {
+                Assert.IsNull(uploadedTrack.Artwork);
+            }
         }
     }
 }
