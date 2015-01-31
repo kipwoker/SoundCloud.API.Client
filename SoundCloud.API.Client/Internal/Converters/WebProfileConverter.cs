@@ -1,11 +1,18 @@
-﻿using SoundCloud.API.Client.Internal.Objects;
+﻿using SoundCloud.API.Client.Internal.Converters.Infrastructure;
+using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Objects;
 
 namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class WebProfileConverter : IWebProfileConverter
     {
-        internal static readonly IWebProfileConverter Default = new WebProfileConverter();
+        private readonly IDateTimeConverter dateTimeConverter;
+        internal static readonly IWebProfileConverter Default = new WebProfileConverter(DateTimeConverter.Default);
+
+        private WebProfileConverter(IDateTimeConverter dateTimeConverter)
+        {
+            this.dateTimeConverter = dateTimeConverter;
+        }
 
         public SCWebProfile Convert(WebProfile webProfile)
         {
@@ -14,7 +21,16 @@ namespace SoundCloud.API.Client.Internal.Converters
                 return null;
             }
 
-            return new SCWebProfile();
+            return new SCWebProfile
+            {
+                Id = webProfile.Id,
+                Kind = webProfile.Kind,
+                Service = webProfile.Service,
+                Title = webProfile.Title,
+                Url = webProfile.Url,
+                UserName = webProfile.UserName,
+                CreatedAt = dateTimeConverter.SafeConvert(webProfile.CreatedAt)
+            };
         }
 
         public WebProfile Convert(SCWebProfile webProfile)
@@ -24,7 +40,16 @@ namespace SoundCloud.API.Client.Internal.Converters
                 return null;
             }
 
-            return new WebProfile();
+            return new WebProfile
+            {
+                Id = webProfile.Id,
+                Kind = webProfile.Kind,
+                Service = webProfile.Service,
+                Title = webProfile.Title,
+                Url = webProfile.Url,
+                UserName = webProfile.UserName,
+                CreatedAt = dateTimeConverter.Convert(webProfile.CreatedAt)
+            };
         }
     }
 }

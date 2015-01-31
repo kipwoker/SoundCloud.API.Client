@@ -27,7 +27,14 @@ namespace SoundCloud.API.Client.Subresources
         public SCUser[] SearchUsers(string query, int offset = 0, int limit = 50)
         {
             paginationValidator.Validate(offset, limit);
-            var users = soundCloudRawClient.RequestApi<User[]>(prefix, string.Empty, HttpMethod.Get, new Dictionary<string, object> { { "q", query } }.SetPagination(offset, limit));
+
+            var parameters = new Dictionary<string, object> ();
+            if (!string.IsNullOrEmpty(query))
+            {
+                parameters.Add("q", query);
+            }
+            
+            var users = soundCloudRawClient.RequestApi<User[]>(prefix, string.Empty, HttpMethod.Get, parameters.SetPagination(offset, limit));
             return users.Select(userConverter.Convert).ToArray();
         }
     }

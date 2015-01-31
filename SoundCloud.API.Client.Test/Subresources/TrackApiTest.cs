@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using NUnit.Framework;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
@@ -99,18 +98,15 @@ namespace SoundCloud.API.Client.Test.Subresources
         public void TestPostGetAndDeleteComment()
         {
             var timestamp = TimeSpan.FromSeconds(8);
-            trackApi.PostComment("test", timestamp);
-            Func<SCComment> getComment = () => trackApi.GetComments().FirstOrDefault(x => x.Body == "test");
-            var comment = getComment();
-            Assert.IsNotNull(comment);
+            var comment = trackApi.PostComment("test", timestamp);
             Assert.AreEqual(timestamp.TotalMilliseconds, comment.Timestamp.TotalMilliseconds);
 
             var actualComment = trackApi.GetComment(comment.Id);
             Assert.AreEqual(comment.Id, actualComment.Id);
 
             trackApi.DeleteComment(comment.Id);
-            comment = getComment();
-            Assert.IsNull(comment);
+            var webException = Assert.Throws<WebGatewayException>(() => trackApi.GetComment(comment.Id));
+            Assert.AreEqual(HttpStatusCode.NotFound, webException.StatusCode);
         }
 
         [Test]

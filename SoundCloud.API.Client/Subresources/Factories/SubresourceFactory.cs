@@ -14,6 +14,8 @@ namespace SoundCloud.API.Client.Subresources.Factories
         private readonly ICommentConverter commentConverter;
         private readonly IGroupConverter groupConverter;
         private readonly IWebProfileConverter webProfileConverter;
+        private readonly IConnectionConverter connectionConverter;
+        private readonly IActivityResultConverter activityResultConverter;
 
         public SubresourceFactory(
             ISoundCloudRawClient soundCloudRawClient,
@@ -23,7 +25,9 @@ namespace SoundCloud.API.Client.Subresources.Factories
             IPlaylistConverter playlistConverter,
             ICommentConverter commentConverter,
             IGroupConverter groupConverter,
-            IWebProfileConverter webProfileConverter)
+            IWebProfileConverter webProfileConverter,
+            IConnectionConverter connectionConverter,
+            IActivityResultConverter activityResultConverter)
         {
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
@@ -33,6 +37,8 @@ namespace SoundCloud.API.Client.Subresources.Factories
             this.commentConverter = commentConverter;
             this.groupConverter = groupConverter;
             this.webProfileConverter = webProfileConverter;
+            this.connectionConverter = connectionConverter;
+            this.activityResultConverter = activityResultConverter;
         }
 
         public IUserApi CreateUser(string userId)
@@ -47,12 +53,28 @@ namespace SoundCloud.API.Client.Subresources.Factories
 
         public ITrackApi CreateTrack(string trackId)
         {
-            return new TrackApi(trackId, soundCloudRawClient, paginationValidator, trackConverter, userConverter);
+            return new TrackApi(trackId, soundCloudRawClient, paginationValidator, trackConverter, userConverter, commentConverter);
         }
 
         public ITracksApi CreateTracks()
         {
             return new TracksApi(soundCloudRawClient, paginationValidator, trackConverter);
+        }
+
+        public IPlaylistApi CreatePlaylist(string playlistId)
+        {
+            return new PlaylistApi(playlistId, soundCloudRawClient, playlistConverter);
+        }
+
+        public IMeApi CreateMe()
+        {
+            return new MeApi(soundCloudRawClient, paginationValidator, userConverter, trackConverter, playlistConverter, commentConverter, groupConverter, webProfileConverter, connectionConverter,
+                             activityResultConverter);
+        }
+
+        public ICommentApi CreateComment(string commentId)
+        {
+            return new CommentApi(commentId, soundCloudRawClient, commentConverter);
         }
     }
 }

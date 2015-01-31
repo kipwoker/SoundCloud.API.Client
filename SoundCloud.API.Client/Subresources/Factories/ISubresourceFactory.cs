@@ -6,5 +6,8 @@
         IUsersApi CreateUsers();
         ITrackApi CreateTrack(string trackId);
         ITracksApi CreateTracks();
+        IPlaylistApi CreatePlaylist(string playlistId);
+        IMeApi CreateMe();
+        ICommentApi CreateComment(string commentId);
     }
 }

@@ -9,5 +9,11 @@ namespace SoundCloud.API.Client
         
         ITrackApi Track(string trackId);
         ITracksApi Tracks { get; }
+
+        IPlaylistApi Playlist(string playlistId);
+
+        IMeApi Me { get; }
+
+        ICommentApi Comment(string commentId);
     }
 }

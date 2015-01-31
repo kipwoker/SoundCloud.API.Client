@@ -1,5 +1,5 @@
 using System;
-using System.Globalization;
+using SoundCloud.API.Client.Internal.Converters.Infrastructure;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Objects;
@@ -9,17 +9,19 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class TrackConverter : ITrackConverter
     {
-        internal static readonly ITrackConverter Default = new TrackConverter(UserConverter.Default, TagListConverter.Default, ApplicationConverter.Default);
+        internal static readonly ITrackConverter Default = new TrackConverter(UserConverter.Default, TagListConverter.Default, ApplicationConverter.Default, DateTimeConverter.Default);
 
         private readonly IUserConverter userConverter;
         private readonly ITagListConverter tagListConverter;
         private readonly IApplicationConverter applicationConverter;
+        private readonly IDateTimeConverter dateTimeConverter;
 
-        internal TrackConverter(IUserConverter userConverter, ITagListConverter tagListConverter, IApplicationConverter applicationConverter)
+        internal TrackConverter(IUserConverter userConverter, ITagListConverter tagListConverter, IApplicationConverter applicationConverter, IDateTimeConverter dateTimeConverter)
         {
             this.userConverter = userConverter;
             this.tagListConverter = tagListConverter;
             this.applicationConverter = applicationConverter;
+            this.dateTimeConverter = dateTimeConverter;
         }
 
         public SCTrack Convert(Track track)
@@ -32,7 +34,7 @@ namespace SoundCloud.API.Client.Internal.Converters
             return new SCTrack
             {
                 Id = track.Id,
-                CreatedAt = DateTimeOffset.Parse(track.CreatedAt),
+                CreatedAt = dateTimeConverter.Convert(track.CreatedAt),
                 UserId = track.UserId,
                 User = userConverter.Convert(track.User),
                 Title = track.Title,
@@ -50,9 +52,7 @@ namespace SoundCloud.API.Client.Internal.Converters
                 LabelId = track.LabelId,
                 LabelName = track.LabelName,
                 ReleaseNumber = track.Release,
-                ReleaseDate = track.ReleaseYear.HasValue && track.ReleaseMonth.HasValue && track.ReleaseDay.HasValue
-                            ? new DateTimeOffset(new DateTime(track.ReleaseYear.Value, track.ReleaseMonth.Value, track.ReleaseDay.Value))
-                            : (DateTimeOffset?)null,
+                ReleaseDate = dateTimeConverter.ConvertReleaseDate(track.ReleaseYear, track.ReleaseMonth, track.ReleaseDay),
                 Streamable = track.Streamable,
                 Downloadable = track.Downloadable,
                 State = track.State.GetValue<SCState>(),
@@ -82,7 +82,7 @@ namespace SoundCloud.API.Client.Internal.Converters
                 UserPlaybackCount = track.UserPlaybackCount
             };
         }
-
+        
         public Track Convert(SCTrack track)
         {
             if (track == null)
@@ -93,7 +93,7 @@ namespace SoundCloud.API.Client.Internal.Converters
             return new Track
             {
                 Id = track.Id,
-                CreatedAt = track.CreatedAt.UtcDateTime.ToString(CultureInfo.InvariantCulture),
+                CreatedAt = dateTimeConverter.Convert(track.CreatedAt),
                 UserId = track.UserId,
                 User = userConverter.Convert(track.User),
                 Title = track.Title,

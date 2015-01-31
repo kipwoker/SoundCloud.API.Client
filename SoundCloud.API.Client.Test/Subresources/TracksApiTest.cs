@@ -26,7 +26,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         [TestCase(SCFilter.Public)]
         public void TestSearchByFilter(SCFilter filter)
         {
-            TestCollection(tracksApi.BeginSearch(filter).Exec, 0 ,50);
+            TestCollection((o,c) =>tracksApi.BeginSearch(filter).Exec(SCOrder.CreatedAt, o, c), 0 ,50);
         }
 
         [Test]
@@ -95,7 +95,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         [TestCase(SCLicenseSearch.ToUseCommercially)]
         public void TestSearchByLicense(SCLicenseSearch license)
         {
-            TestCollection(tracksSearcher().License(license).Exec, 0, 50);
+            TestCollection((o, c) => tracksSearcher().License(license).Exec(SCOrder.CreatedAt, o, c), 0, 50);
         }
 
         [Test]
@@ -169,7 +169,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         [Test]
         public void TestSearchByTypes()
         {
-            TestCollection(tracksSearcher().Types(SCTrackType.Podcast, SCTrackType.Recording).Exec, 0, 50);
+            TestCollection((o, c) => tracksSearcher().Types(SCTrackType.Podcast, SCTrackType.Recording).Exec(SCOrder.CreatedAt, o, c), 0, 50);
         }
     }
 }

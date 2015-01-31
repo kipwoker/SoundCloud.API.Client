@@ -18,15 +18,24 @@ namespace SoundCloud.API.Client.Subresources
         private readonly IPaginationValidator paginationValidator;
         private readonly ITrackConverter trackConverter;
         private readonly IUserConverter userConverter;
+        private readonly ICommentConverter commentConverter;
         private readonly string prefix;
 
-        internal TrackApi(string trackId, ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, ITrackConverter trackConverter, IUserConverter userConverter)
+        internal TrackApi(
+            string trackId, 
+            ISoundCloudRawClient soundCloudRawClient, 
+            IPaginationValidator paginationValidator, 
+            ITrackConverter trackConverter, 
+            IUserConverter userConverter,
+            ICommentConverter commentConverter)
         {
             this.trackId = trackId;
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
             this.trackConverter = trackConverter;
             this.userConverter = userConverter;
+            this.commentConverter = commentConverter;
+
             prefix = string.Format("tracks/{0}", trackId);
         }
 
@@ -57,15 +66,17 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCComment[] GetComments(int offset = 0, int limit = 50)
         {
-            return soundCloudRawClient.GetCollection<SCComment>(paginationValidator, prefix, "comments", offset, limit);
+            var comments = soundCloudRawClient.GetCollection<Comment>(paginationValidator, prefix, "comments", offset, limit);
+            return comments.Select(commentConverter.Convert).ToArray();
         }
 
         public SCComment GetComment(string commentId)
         {
-            return soundCloudRawClient.RequestApi<SCComment>(prefix, string.Format("comments/{0}", commentId), HttpMethod.Get);
+            var comment = soundCloudRawClient.RequestApi<Comment>(prefix, string.Format("comments/{0}", commentId), HttpMethod.Get);
+            return commentConverter.Convert(comment);
         }
 
-        public void PostComment(string text, TimeSpan? timestamp)
+        public SCComment PostComment(string text, TimeSpan? timestamp)
         {
             var parameters = new Dictionary<string, object> { { "comment[body]", text } };
             if (timestamp.HasValue)
@@ -73,12 +84,13 @@ namespace SoundCloud.API.Client.Subresources
                 parameters.Add("comment[timestamp]", timestamp.Value.TotalMilliseconds);
             }
 
-            soundCloudRawClient.RequestApi(prefix, "comments", HttpMethod.Post, parameters);
+            var comment = soundCloudRawClient.RequestApi<Comment>(prefix, "comments", HttpMethod.Post, parameters);
+            return commentConverter.Convert(comment);
         }
 
         public void DeleteComment(string commentId)
         {
-            soundCloudRawClient.RequestApi<SCComment>(prefix, string.Format("comments/{0}", commentId), HttpMethod.Delete);
+            soundCloudRawClient.RequestApi(prefix, string.Format("comments/{0}", commentId), HttpMethod.Delete);
         }
 
         public SCUser[] GetFavoriters(int offset = 0, int limit = 50)

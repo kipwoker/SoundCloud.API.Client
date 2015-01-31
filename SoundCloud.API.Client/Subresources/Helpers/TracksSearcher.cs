@@ -101,10 +101,11 @@ namespace SoundCloud.API.Client.Subresources.Helpers
             return Enumerate("types", trackTypes.Select(x => x.GetParameterName()).ToArray());
         }
 
-        public SCTrack[] Exec(int offset, int limit)
+        public SCTrack[] Exec(SCOrder order, int offset, int limit)
         {
             paginationValidator.Validate(offset, limit);
             searchParameters.SetPagination(offset, limit);
+            searchParameters.AddOrUpdate("order", order.GetParameterName());
             return search(searchParameters);
         }
 

@@ -5,13 +5,15 @@ namespace SoundCloud.API.Client.Test.Subresources
 {
     public class UserApiTest : AuthTestBase
     {
+        public virtual IUserApi UserApi { get { return soundCloudClient.User(settings.TestUserId); } }
+
         private IUserApi userApi;
 
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
 
-            userApi = soundCloudClient.User(settings.TestUserId);
+            userApi = UserApi;
         }
 
         [Test]

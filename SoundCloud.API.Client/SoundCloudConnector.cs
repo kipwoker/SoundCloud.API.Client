@@ -2,6 +2,7 @@
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
 using SoundCloud.API.Client.Internal.Converters;
+using SoundCloud.API.Client.Internal.Converters.Auth;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Internal.Validation;
@@ -22,8 +23,8 @@ namespace SoundCloud.API.Client
             };
 
             var soundCloudRawClient = CreateSCRawClient(credentials);
-            
-            IAuthApi authApi = new AuthApi(soundCloudRawClient);
+
+            IAuthApi authApi = CreateAuthApi(soundCloudRawClient);
             var accessToken = authApi.AuthorizeByPassword(userName, password);
             
             soundCloudRawClient.AccessToken = accessToken;
@@ -42,7 +43,7 @@ namespace SoundCloud.API.Client
 
             var soundCloudRawClient = CreateSCRawClient(credentials);
 
-            IAuthApi authApi = new AuthApi(soundCloudRawClient);
+            IAuthApi authApi = CreateAuthApi(soundCloudRawClient);
             var accessToken = authApi.AuthorizeByCode(code, redirectUri);
 
             soundCloudRawClient.AccessToken = accessToken;
@@ -71,7 +72,7 @@ namespace SoundCloud.API.Client
             };
 
             var soundCloudRawClient = CreateSCRawClient(credentials);
-            IAuthApi authApi = new AuthApi(soundCloudRawClient);
+            IAuthApi authApi = CreateAuthApi(soundCloudRawClient);
             var requestTokenUri = authApi.GetRequestTokenUri(redirectUri, responseType, scope, display, state);
             return requestTokenUri;
         }
@@ -85,7 +86,7 @@ namespace SoundCloud.API.Client
             };
 
             var soundCloudRawClient = CreateSCRawClient(credentials);
-            IAuthApi authApi = new AuthApi(soundCloudRawClient);
+            IAuthApi authApi = CreateAuthApi(soundCloudRawClient);
             return authApi.RefreshToken(token);
         }
 
@@ -100,13 +101,20 @@ namespace SoundCloud.API.Client
                     PlaylistConverter.Default,
                     CommentConverter.Default,
                     GroupConverter.Default,
-                    WebProfileConverter.Default
+                    WebProfileConverter.Default,
+                    ConnectionConverter.Default,
+                    ActivityResultConverter.Default
                     ));
         }
 
         private static SoundCloudRawClient CreateSCRawClient(SCCredentials credentials)
         {
             return new SoundCloudRawClient(credentials, UriBuilderFactory.Default, WebGateway.Default, JsonSerializer.Default);
+        }
+
+        private static AuthApi CreateAuthApi(ISoundCloudRawClient soundCloudRawClient)
+        {
+            return new AuthApi(soundCloudRawClient, AccessTokenConverter.Default);
         }
     }
 }

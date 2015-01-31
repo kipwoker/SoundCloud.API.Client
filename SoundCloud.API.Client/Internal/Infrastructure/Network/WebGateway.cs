@@ -146,11 +146,6 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                 using (var responseStream = response.GetResponseStream())
                 {
                     var content = SmartReadContent(response, responseStream);
-                    if (IsError(response.StatusCode))
-                    {
-                        throw new WebGatewayException(buildExceptionMessage((int)response.StatusCode, content), response.StatusCode);
-                    }
-
                     return content;
                 }
             }
@@ -170,7 +165,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             }
         }
 
-        private static string SmartReadContent(HttpWebResponse response, Stream stream)
+        private static string SmartReadContent(WebResponse response, Stream stream)
         {
             var contentEncoding = response.Headers[HttpResponseHeader.ContentEncoding];
             if (!string.IsNullOrEmpty(contentEncoding) && (contentEncoding.Contains("gzip") || contentEncoding.Contains("deflate")))
@@ -191,12 +186,6 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             {
                 return reader.ReadToEnd();
             }
-        }
-
-        private static bool IsError(HttpStatusCode httpStatusCode)
-        {
-            var code = ((int)httpStatusCode).ToString();
-            return !(code.StartsWith("2") || code.StartsWith("3"));
         }
     }
 }

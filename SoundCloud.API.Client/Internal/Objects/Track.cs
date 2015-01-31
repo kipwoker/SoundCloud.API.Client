@@ -125,10 +125,10 @@ namespace SoundCloud.API.Client.Internal.Objects
         public string SecretUri { get; set; }
 
         [JsonProperty(PropertyName = "user_playback_count")]
-        public int UserPlaybackCount { get; set; }
+        public int? UserPlaybackCount { get; set; }
 
         [JsonProperty(PropertyName = "user_favorite")]
-        public bool UserFavorite { get; set; }
+        public bool? UserFavorite { get; set; }
 
         [JsonProperty(PropertyName = "playback_count")]
         public int? PlaybackCount { get; set; }

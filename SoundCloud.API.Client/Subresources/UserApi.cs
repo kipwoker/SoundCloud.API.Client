@@ -12,12 +12,12 @@ namespace SoundCloud.API.Client.Subresources
     public class UserApi : IUserApi
     {
         private readonly string userId;
-        private readonly ISoundCloudRawClient soundCloudRawClient;
-        private readonly IPaginationValidator paginationValidator;
-        private readonly IUserConverter userConverter;
+        internal readonly ISoundCloudRawClient soundCloudRawClient;
+        internal readonly IPaginationValidator paginationValidator;
+        internal readonly IUserConverter userConverter;
         private readonly ITrackConverter trackConverter;
         private readonly IPlaylistConverter playlistConverter;
-        private readonly ICommentConverter commentConverter;
+        internal readonly ICommentConverter commentConverter;
         private readonly IGroupConverter groupConverter;
         private readonly IWebProfileConverter webProfileConverter;
         private readonly string prefix;
@@ -31,7 +31,8 @@ namespace SoundCloud.API.Client.Subresources
             IPlaylistConverter playlistConverter,
             ICommentConverter commentConverter,
             IGroupConverter groupConverter,
-            IWebProfileConverter webProfileConverter)
+            IWebProfileConverter webProfileConverter,
+            string customPrefix = null)
         {
             this.userId = userId;
             this.soundCloudRawClient = soundCloudRawClient;
@@ -43,12 +44,12 @@ namespace SoundCloud.API.Client.Subresources
             this.groupConverter = groupConverter;
             this.webProfileConverter = webProfileConverter;
 
-            prefix = string.Format("users/{0}", userId);
+            prefix = string.IsNullOrEmpty(customPrefix) ? string.Format("users/{0}", userId) : customPrefix;
         }
 
         public SCUser UpdateUser(SCUser user)
         {
-            if (user.Id != userId)
+            if (!string.IsNullOrEmpty(userId) && user.Id != userId)
             {
                 throw new SoundCloudApiException(string.Format("Context set for userId = {0}. Create new context for update another user.", userId));
             }
@@ -113,7 +114,7 @@ namespace SoundCloud.API.Client.Subresources
             return userConverter.Convert(user);
         }
 
-        public SCComment[] GetComments(int offset = 0, int limit = 50)
+        public virtual SCComment[] GetComments(int offset = 0, int limit = 50)
         {
             var comments = soundCloudRawClient.GetCollection<Comment>(paginationValidator, prefix, "comments", offset, limit);
             return comments.Select(commentConverter.Convert).ToArray();

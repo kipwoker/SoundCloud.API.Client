@@ -42,8 +42,8 @@ namespace SoundCloud.API.Client.Objects
         public int? DownloadsRemaining { get; set; }
         public string SecretToken { get; set; }
         public string SecretUri { get; set; }
-        public int UserPlaybackCount { get; set; }
-        public bool UserFavorite { get; set; }
+        public int? UserPlaybackCount { get; set; }
+        public bool? UserFavorite { get; set; }
         public int? PlaybackCount { get; set; }
         public int DownloadCount { get; set; }
         public int FavoritingsCount { get; set; }

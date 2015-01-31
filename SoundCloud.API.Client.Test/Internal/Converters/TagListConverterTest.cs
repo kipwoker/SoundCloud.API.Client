@@ -1,5 +1,5 @@
 ﻿using NUnit.Framework;
-using SoundCloud.API.Client.Internal.Converters;
+using SoundCloud.API.Client.Internal.Converters.Infrastructure;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Objects.TrackPieces;
 

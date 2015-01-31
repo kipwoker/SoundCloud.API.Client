@@ -100,7 +100,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Objects
                 var fromValue = getMethod.Invoke(@from, new object[0]);
                 var toValue = getMethod.Invoke(to, new object[0]);
 
-                if ((fromValue == null && toValue == null) || fromValue.Equals(toValue))
+                if ((fromValue == null && toValue == null) || (fromValue != null && fromValue.Equals(toValue)))
                 {
                     continue;
                 }

@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
+using SoundCloud.API.Client.Internal.Infrastructure.Serialization.Custom;
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Serialization
 {
     internal class JsonSerializer : ISerializer
     {
         internal static readonly ISerializer Default = new JsonSerializer();
+
+        private static readonly JsonConverter[] customConverters = { new JsonActivityConverter() };
 
         public string Serialize<T>(T obj)
         {
@@ -13,7 +16,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Serialization
 
         public T Deserialize<T>(string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonConvert.DeserializeObject<T>(json, customConverters);
         }
     }
 }

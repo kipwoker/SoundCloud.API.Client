@@ -13,6 +13,7 @@ namespace SoundCloud.API.Client
 
             Users = subresourceFactory.CreateUsers();
             Tracks = subresourceFactory.CreateTracks();
+            Me = subresourceFactory.CreateMe();
         }
 
         public IUserApi User(string userId)
@@ -28,5 +29,17 @@ namespace SoundCloud.API.Client
         }
 
         public ITracksApi Tracks { get; private set; }
+        
+        public IPlaylistApi Playlist(string playlistId)
+        {
+            return subresourceFactory.CreatePlaylist(playlistId);
+        }
+
+        public IMeApi Me { get; private set; }
+
+        public ICommentApi Comment(string commentId)
+        {
+            return subresourceFactory.CreateComment(commentId);
+        }
     }
 }

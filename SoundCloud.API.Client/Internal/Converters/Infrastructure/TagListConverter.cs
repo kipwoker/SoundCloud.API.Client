@@ -2,7 +2,7 @@
 using System.Linq;
 using SoundCloud.API.Client.Objects.TrackPieces;
 
-namespace SoundCloud.API.Client.Internal.Converters
+namespace SoundCloud.API.Client.Internal.Converters.Infrastructure
 {
     internal class TagListConverter : ITagListConverter
     {
