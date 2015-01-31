@@ -8,7 +8,11 @@ namespace SoundCloud.API.Client.Subresources
         SCConnection[] GetConnections(int offset = 0, int limit = 50);
         string PostConnection(SCServiceType serviceType, string redirectUri);
 
-        SCActivityResult GetActivities(string cursorToNext = null);
         SCActivityResult GetActivityQueryResult(string queryId);
+        SCActivityResult GetRecentActivities(string cursorToNext = null);
+        SCActivityResult GetRecentAllActivities(string cursorToNext = null);
+        SCActivityResult GetRecentFollowingTracks(string cursorToNext = null);
+        SCActivityResult GetRecentExclusivelySharedTracks(string cursorToNext = null);
+        SCActivityResult GetRecentUserTracksActivities(string cursorToNext = null);
     }
 }

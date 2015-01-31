@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Objects.ActivityPieces;
 using SoundCloud.API.Client.Objects.ConnectionPieces;
 using SoundCloud.API.Client.Subresources;
@@ -31,9 +32,38 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
-        public void TestGetActivities()
+        public void TestGetRecentActivities()
         {
-            var activityResult = soundCloudClient.Me.GetActivities();
+            TestGetActivitiesBase(soundCloudClient.Me.GetRecentActivities);
+        }
+
+        [Test]
+        public void TestGetRecentAllActivities()
+        {
+            TestGetActivitiesBase(soundCloudClient.Me.GetRecentAllActivities);
+        }
+
+        [Test]
+        public void TestGetRecentExclusivelySharedTracks()
+        {
+            TestGetActivitiesBase(soundCloudClient.Me.GetRecentExclusivelySharedTracks);
+        }
+
+        [Test]
+        public void TestGetRecentFollowingTracks()
+        {
+            TestGetActivitiesBase(soundCloudClient.Me.GetRecentFollowingTracks);
+        }
+
+        [Test]
+        public void TestGetRecentUserTracksActivities()
+        {
+            TestGetActivitiesBase(soundCloudClient.Me.GetRecentUserTracksActivities);
+        }
+
+        private void TestGetActivitiesBase(Func<string, SCActivityResult> getActivities)
+        {
+            var activityResult = getActivities(null);
             var savedResult = soundCloudClient.Me.GetActivityQueryResult(activityResult.QueryId);
 
             AssertActivities(activityResult.Comments, savedResult.Comments, c => c.Id);
@@ -41,13 +71,13 @@ namespace SoundCloud.API.Client.Test.Subresources
             AssertActivities(activityResult.Favorites, savedResult.Favorites, c => c.Id);
             AssertActivities(activityResult.Playlists, savedResult.Playlists, c => c.Id);
 
-            var nextResult = soundCloudClient.Me.GetActivities(activityResult.CursorToNext);
+            var nextResult = getActivities(activityResult.CursorToNext);
 
             Assert.AreNotEqual(activityResult.QueryId, nextResult.QueryId);
             Assert.AreNotEqual(activityResult.CursorToNext, nextResult.CursorToNext);
         }
 
-        private static void AssertActivities<TActivity>(SCActivity<TActivity>[] expected, SCActivity<TActivity>[] actual, Func<TActivity, string> idGetter)
+        private static void AssertActivities<TActivity>(IEnumerable<SCActivity<TActivity>> expected, IEnumerable<SCActivity<TActivity>> actual, Func<TActivity, string> idGetter)
         {
             var activityCommentIds = string.Join(",", GetActivityIds(expected, idGetter));
             var savedCommentIds = string.Join(",", GetActivityIds(actual, idGetter));

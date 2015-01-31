@@ -61,22 +61,35 @@ namespace SoundCloud.API.Client.Subresources
             return unsavedConnection == null ? null : unsavedConnection.AuthorizeUrl;
         }
 
-        public SCActivityResult GetActivities(string cursorToNext = null)
+        public SCActivityResult GetRecentActivities(string cursorToNext = null)
         {
-            var parameters = new Dictionary<string, object>();
-            if (!string.IsNullOrEmpty(cursorToNext))
-            {
-                parameters.Add("cursor", cursorToNext);
-            }
-
-            var activityResult = soundCloudRawClient.RequestApi<ActivityResult>(prefix, "activities", HttpMethod.Get, parameters);
-            return activityResultConverter.Convert(activityResult);
+            return GetRecentActivities("activities", cursorToNext);
         }
 
         public SCActivityResult GetActivityQueryResult(string queryId)
         {
             var activityResult = soundCloudRawClient.RequestApi<ActivityResult>(prefix, "activities", HttpMethod.Get, new Dictionary<string, object> { { "uuid[to]", queryId } });
             return activityResultConverter.Convert(activityResult);
+        }
+
+        public SCActivityResult GetRecentAllActivities(string cursorToNext = null)
+        {
+            return GetRecentActivities("activities/all", cursorToNext);
+        }
+
+        public SCActivityResult GetRecentFollowingTracks(string cursorToNext = null)
+        {
+            return GetRecentActivities("activities/tracks/affiliated", cursorToNext);
+        }
+
+        public SCActivityResult GetRecentExclusivelySharedTracks(string cursorToNext = null)
+        {
+            return GetRecentActivities("activities/tracks/exclusive", cursorToNext);
+        }
+
+        public SCActivityResult GetRecentUserTracksActivities(string cursorToNext = null)
+        {
+            return GetRecentActivities("activities/all/own", cursorToNext);
         }
 
         //note: Temp hack. API always returns 200 comments. Must make two network calls. :(
@@ -86,6 +99,18 @@ namespace SoundCloud.API.Client.Subresources
             var userId = me.Id;
             var comments = soundCloudRawClient.GetCollection<Comment>(paginationValidator, string.Format("users/{0}", userId), "comments", offset, limit);
             return comments.Select(commentConverter.Convert).ToArray();
+        }
+
+        private SCActivityResult GetRecentActivities(string command, string cursorToNext)
+        {
+            var parameters = new Dictionary<string, object>();
+            if (!string.IsNullOrEmpty(cursorToNext))
+            {
+                parameters.Add("cursor", cursorToNext);
+            }
+
+            var activityResult = soundCloudRawClient.RequestApi<ActivityResult>(prefix, command, HttpMethod.Get, parameters);
+            return activityResultConverter.Convert(activityResult);
         }
     }
 }
