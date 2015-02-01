@@ -97,7 +97,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCTrack GetContribution(string trackId)
         {
-            var track = soundCloudRawClient.RequestApi<Track>(prefix, string.Format("contributions/{0}", trackId), HttpMethod.Get);
+            var track = soundCloudRawClient.RequestApi<Track>(prefix, string.Format("contributions/{0}", trackId), HttpMethod.Get, responseType: null);
             return trackConverter.Convert(track);
         }
 
