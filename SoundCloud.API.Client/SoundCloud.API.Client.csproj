@@ -149,12 +149,16 @@
     <Compile Include="Subresources\CommentApi.cs" />
     <Compile Include="Subresources\Factories\ISubresourceFactory.cs" />
     <Compile Include="Subresources\Factories\SubresourceFactory.cs" />
+    <Compile Include="Subresources\GroupApi.cs" />
+    <Compile Include="Subresources\GroupsApi.cs" />
     <Compile Include="Subresources\Helpers\CollectionExtensions.cs" />
     <Compile Include="Subresources\Helpers\ITracksSearcher.cs" />
     <Compile Include="Subresources\Helpers\TracksSearcher.cs" />
     <Compile Include="Subresources\Helpers\ValidationHelper.cs" />
     <Compile Include="Subresources\IAuthApi.cs" />
     <Compile Include="Subresources\ICommentApi.cs" />
+    <Compile Include="Subresources\IGroupApi.cs" />
+    <Compile Include="Subresources\IGroupsApi.cs" />
     <Compile Include="Subresources\IMeApi.cs" />
     <Compile Include="Subresources\IPlaylistApi.cs" />
     <Compile Include="Subresources\ITrackApi.cs" />

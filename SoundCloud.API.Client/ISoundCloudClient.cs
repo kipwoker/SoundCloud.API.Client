@@ -12,6 +12,9 @@ namespace SoundCloud.API.Client
 
         IPlaylistApi Playlist(string playlistId);
 
+        IGroupApi Group(string groupId);
+        IGroupsApi Groups { get; }
+
         IMeApi Me { get; }
 
         ICommentApi Comment(string commentId);

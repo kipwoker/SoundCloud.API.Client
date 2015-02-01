@@ -9,5 +9,7 @@
         IPlaylistApi CreatePlaylist(string playlistId);
         IMeApi CreateMe();
         ICommentApi CreateComment(string commentId);
+        IGroupApi CreateGroup(string groupId);
+        IGroupsApi CreateGroups();
     }
 }

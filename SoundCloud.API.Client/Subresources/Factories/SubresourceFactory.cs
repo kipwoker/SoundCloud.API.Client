@@ -76,5 +76,15 @@ namespace SoundCloud.API.Client.Subresources.Factories
         {
             return new CommentApi(commentId, soundCloudRawClient, commentConverter);
         }
+
+        public IGroupApi CreateGroup(string groupId)
+        {
+            return new GroupApi(groupId, soundCloudRawClient, paginationValidator, groupConverter, userConverter, trackConverter);
+        }
+
+        public IGroupsApi CreateGroups()
+        {
+            return new GroupsApi(soundCloudRawClient, paginationValidator, groupConverter);
+        }
     }
 }
