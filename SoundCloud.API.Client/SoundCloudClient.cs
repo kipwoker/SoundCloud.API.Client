@@ -15,6 +15,7 @@ namespace SoundCloud.API.Client
             Tracks = subresourceFactory.CreateTracks();
             Me = subresourceFactory.CreateMe();
             Groups = subresourceFactory.CreateGroups();
+            Resolve = subresourceFactory.CreateResolve();
         }
 
         public IUserApi User(string userId)
@@ -54,5 +55,7 @@ namespace SoundCloud.API.Client
         {
             return subresourceFactory.CreateApp(appId);
         }
+
+        public IResolveApi Resolve { get; private set; }
     }
 }

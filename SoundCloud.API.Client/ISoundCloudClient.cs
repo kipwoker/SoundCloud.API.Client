@@ -20,5 +20,7 @@ namespace SoundCloud.API.Client
         ICommentApi Comment(string commentId);
 
         IAppApi App(string appId);
+
+        IResolveApi Resolve { get; }
     }
 }

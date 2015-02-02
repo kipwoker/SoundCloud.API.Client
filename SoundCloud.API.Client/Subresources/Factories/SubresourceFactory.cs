@@ -94,5 +94,10 @@ namespace SoundCloud.API.Client.Subresources.Factories
         {
             return new AppApi(applicationId, paginationValidator, soundCloudRawClient, applicationConverter, trackConverter);
         }
+
+        public IResolveApi CreateResolve()
+        {
+            return new ResolveApi(soundCloudRawClient, groupConverter, userConverter, trackConverter, playlistConverter);
+        }
     }
 }

@@ -162,11 +162,13 @@
     <Compile Include="Subresources\IGroupsApi.cs" />
     <Compile Include="Subresources\IMeApi.cs" />
     <Compile Include="Subresources\IPlaylistApi.cs" />
+    <Compile Include="Subresources\IResolveApi.cs" />
     <Compile Include="Subresources\ITrackApi.cs" />
     <Compile Include="Subresources\ITracksApi.cs" />
     <Compile Include="Subresources\IUserApi.cs" />
     <Compile Include="Subresources\MeApi.cs" />
     <Compile Include="Subresources\PlaylistApi.cs" />
+    <Compile Include="Subresources\ResolveApi.cs" />
     <Compile Include="Subresources\TrackApi.cs" />
     <Compile Include="Subresources\TracksApi.cs" />
     <Compile Include="Subresources\UserApi.cs" />

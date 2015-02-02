@@ -12,5 +12,6 @@
         IGroupApi CreateGroup(string groupId);
         IGroupsApi CreateGroups();
         IAppApi CreateApp(string applicationId);
+        IResolveApi CreateResolve();
     }
 }
