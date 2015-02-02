@@ -19,7 +19,7 @@ namespace SoundCloud.API.Client.Internal.Converters
         internal static readonly IActivityResultConverter Default = 
             new ActivityResultConverter(TrackConverter.Default, CommentConverter.Default, UserConverter.Default, PlaylistConverter.Default, DateTimeConverter.Default);
 
-        private ActivityResultConverter(
+        internal ActivityResultConverter(
             ITrackConverter trackConverter, 
             ICommentConverter commentConverter, 
             IUserConverter userConverter, 
@@ -31,6 +31,11 @@ namespace SoundCloud.API.Client.Internal.Converters
             this.userConverter = userConverter;
             this.playlistConverter = playlistConverter;
             this.dateTimeConverter = dateTimeConverter;
+        }
+
+        public ActivityResult Convert(SCActivityResult entity)
+        {
+            throw new NotImplementedException();
         }
 
         public SCActivityResult Convert(ActivityResult activityResult)

@@ -12,7 +12,7 @@ namespace SoundCloud.API.Client.Internal.Converters
         private readonly IUserConverter userConverter;
         private readonly IDateTimeConverter dateTimeConverter;
 
-        private CommentConverter(IUserConverter userConverter, IDateTimeConverter dateTimeConverter)
+        internal CommentConverter(IUserConverter userConverter, IDateTimeConverter dateTimeConverter)
         {
             this.userConverter = userConverter;
             this.dateTimeConverter = dateTimeConverter;

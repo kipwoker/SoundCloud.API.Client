@@ -16,6 +16,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
         private readonly IWebProfileConverter webProfileConverter;
         private readonly IConnectionConverter connectionConverter;
         private readonly IActivityResultConverter activityResultConverter;
+        private readonly IApplicationConverter applicationConverter;
 
         public SubresourceFactory(
             ISoundCloudRawClient soundCloudRawClient,
@@ -27,7 +28,8 @@ namespace SoundCloud.API.Client.Subresources.Factories
             IGroupConverter groupConverter,
             IWebProfileConverter webProfileConverter,
             IConnectionConverter connectionConverter,
-            IActivityResultConverter activityResultConverter)
+            IActivityResultConverter activityResultConverter,
+            IApplicationConverter applicationConverter)
         {
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
@@ -39,6 +41,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
             this.webProfileConverter = webProfileConverter;
             this.connectionConverter = connectionConverter;
             this.activityResultConverter = activityResultConverter;
+            this.applicationConverter = applicationConverter;
         }
 
         public IUserApi CreateUser(string userId)
@@ -85,6 +88,11 @@ namespace SoundCloud.API.Client.Subresources.Factories
         public IGroupsApi CreateGroups()
         {
             return new GroupsApi(soundCloudRawClient, paginationValidator, groupConverter);
+        }
+
+        public IAppApi CreateApp(string applicationId)
+        {
+            return new AppApi(applicationId, paginationValidator, soundCloudRawClient, applicationConverter, trackConverter);
         }
     }
 }

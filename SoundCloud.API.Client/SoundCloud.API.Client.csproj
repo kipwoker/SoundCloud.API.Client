@@ -155,6 +155,7 @@
     <Compile Include="Subresources\Helpers\ITracksSearcher.cs" />
     <Compile Include="Subresources\Helpers\TracksSearcher.cs" />
     <Compile Include="Subresources\Helpers\ValidationHelper.cs" />
+    <Compile Include="Subresources\IAppApi.cs" />
     <Compile Include="Subresources\IAuthApi.cs" />
     <Compile Include="Subresources\ICommentApi.cs" />
     <Compile Include="Subresources\IGroupApi.cs" />

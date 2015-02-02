@@ -11,5 +11,6 @@
         ICommentApi CreateComment(string commentId);
         IGroupApi CreateGroup(string groupId);
         IGroupsApi CreateGroups();
+        IAppApi CreateApp(string applicationId);
     }
 }

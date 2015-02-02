@@ -103,7 +103,8 @@ namespace SoundCloud.API.Client
                     GroupConverter.Default,
                     WebProfileConverter.Default,
                     ConnectionConverter.Default,
-                    ActivityResultConverter.Default
+                    ActivityResultConverter.Default,
+                    ApplicationConverter.Default
                     ));
         }
 

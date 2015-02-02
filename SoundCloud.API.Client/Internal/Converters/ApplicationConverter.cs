@@ -14,7 +14,13 @@ namespace SoundCloud.API.Client.Internal.Converters
                 return null;
             }
 
-            return new SCApplication();
+            return new SCApplication
+            {
+                Id = application.Id,
+                Name = application.Name,
+                PermalinkUrl = application.PermalinkUrl,
+                Uri = application.Uri
+            };
         }
 
         public Application Convert(SCApplication application)
@@ -24,7 +30,13 @@ namespace SoundCloud.API.Client.Internal.Converters
                 return null;
             }
 
-            return new Application();
+            return new Application
+            {
+                Id = application.Id,
+                Name = application.Name,
+                PermalinkUrl = application.PermalinkUrl,
+                Uri = application.Uri
+            };
         }
     }
 }

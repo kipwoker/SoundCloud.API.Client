@@ -49,5 +49,10 @@ namespace SoundCloud.API.Client
         {
             return subresourceFactory.CreateComment(commentId);
         }
+
+        public IAppApi App(string appId)
+        {
+            return subresourceFactory.CreateApp(appId);
+        }
     }
 }
