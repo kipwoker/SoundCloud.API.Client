@@ -69,6 +69,25 @@ namespace SoundCloud.API.Client.Internal.Converters.Infrastructure
 
         private static IEnumerable<string> ParseTags(string tagList)
         {
+            if (tagList.Contains("\n"))
+            {
+                //invalid tags goes here
+                //sample:
+                //
+                //Studio
+                //Tag: Music
+                //Tag: Mix
+                //Tag: Word
+                //Tag: Folk
+                //Tag: Sanharib Assure
+                //Tag: assyrian
+                //Add tags
+                //
+                //it's whole string with \n
+
+                return new[] {tagList};
+            }
+
             var chars = tagList.ToCharArray();
             var separatorMode = true;
             var offset = 0;
@@ -106,7 +125,7 @@ namespace SoundCloud.API.Client.Internal.Converters.Infrastructure
 
         private static string QuotesScreen(string value)
         {
-            return value.Contains(whitespace) ? string.Format("\"{0}\"", value) : value;
+            return value.Contains(whitespace) && !value.Contains("\n") ? string.Format("\"{0}\"", value) : value;
         }
     }
 }
