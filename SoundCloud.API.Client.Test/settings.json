@@ -3,8 +3,5 @@
 	"ClientSecret" : "",
 	"UserName" : "",
 	"Password" : "",
-	"TestUserId" : "",
-	"TestTrackId" : "",
-	"TestGroupId" : "",
 	"TestAppId" : ""
 }
