@@ -65,6 +65,7 @@
     <Compile Include="Subresources\CommentApiTest.cs" />
     <Compile Include="Subresources\GroupApiTest.cs" />
     <Compile Include="Subresources\MeApiTest.cs" />
+    <Compile Include="Subresources\OEmbedApiTest.cs" />
     <Compile Include="Subresources\PlaylistApiTest.cs" />
     <Compile Include="Subresources\ResolveApiTest.cs" />
     <Compile Include="Subresources\TrackApiTest.cs" />

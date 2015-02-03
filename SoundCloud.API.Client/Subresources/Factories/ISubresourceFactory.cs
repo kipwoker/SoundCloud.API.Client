@@ -13,5 +13,6 @@
         IGroupsApi CreateGroups();
         IAppApi CreateApp(string applicationId);
         IResolveApi CreateResolve();
+        IOEmbed CreateOEmbed();
     }
 }

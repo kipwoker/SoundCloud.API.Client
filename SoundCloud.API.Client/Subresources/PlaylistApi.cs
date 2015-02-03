@@ -21,7 +21,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCPlaylist GetPlaylist()
         {
-            var playlist = soundCloudRawClient.RequestApi<Playlist>(prefix, string.Empty, HttpMethod.Get);
+            var playlist = soundCloudRawClient.Request<Playlist>(prefix, string.Empty, HttpMethod.Get);
             return playlistConverter.Convert(playlist);
         }
     }

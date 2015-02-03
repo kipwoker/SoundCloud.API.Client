@@ -56,8 +56,9 @@ namespace SoundCloud.API.Client.Subresources
         }
 
         private T ResolveUrl<T>(string url)
+            where T : class 
         {
-            return soundCloudRawClient.RequestApi<T>(prefix, string.Empty, HttpMethod.Get, new Dictionary<string, object> { { "url", url } }, isRequiredAuth: false);
+            return soundCloudRawClient.Request<T>(prefix, string.Empty, HttpMethod.Get, new Dictionary<string, object> { { "url", url } }, isRequiredAuth: false);
         }
     }
 }

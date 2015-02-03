@@ -42,7 +42,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
         [TestCase((int)HttpMethod.Post)]
         [TestCase((int)HttpMethod.Delete)]
         [TestCase((int)HttpMethod.Put)]
-        public void TestRequestApiWithResponseUsingToken(int httpMethod)
+        public void TestRequestWithResponseUsingToken(int httpMethod)
         {
             const bool isRequiredAuth = true;
             var parameters = new Dictionary<string, object> { { "p1", "2" } };
@@ -55,7 +55,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             {
                 var uriBuilder = NewMock<IUriBuilder>();
                 uriBuilder.Expect(f => f.AddToken("aToken")).Return(uriBuilder);
-                uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command.json")).Return(uriBuilder);
+                uriBuilderFactory.Expect(f => f.Create(Domain.Api.GetParameterName() + "prefix/command.json")).Return(uriBuilder);
 
                 webGateway.Expect(f => f.Request(uriBuilder, method, parameters, bytes)).Return("response");
 
@@ -69,13 +69,13 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                     AccessToken = "aToken"
                 }
             };
-            var actual = soundCloudRawClient.RequestApi<EmptyClass>("prefix", "command", method, parameters, bytes, isRequiredAuth, "json");
+            var actual = soundCloudRawClient.Request<EmptyClass>("prefix", "command", method, parameters, bytes, isRequiredAuth, "json", Domain.Api);
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void TestRequestApiWithResponseUsingClientId()
+        public void TestRequestWithResponseUsingClientId()
         {
             const bool isRequiredAuth = true;
             var parameters = new Dictionary<string, object> { { "p1", "2" } };
@@ -87,7 +87,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             {
                 var uriBuilder = NewMock<IUriBuilder>();
                 uriBuilder.Expect(f => f.AddClientId(clientId)).Return(uriBuilder);
-                uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command.json")).Return(uriBuilder);
+                uriBuilderFactory.Expect(f => f.Create(Domain.Api.GetParameterName() + "prefix/command.json")).Return(uriBuilder);
 
                 webGateway.Expect(f => f.Request(uriBuilder, method, parameters, null)).Return("response");
 
@@ -98,13 +98,13 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             {
                 AccessToken = null
             };
-            var actual = soundCloudRawClient.RequestApi<EmptyClass>("prefix", "command", method, parameters, null, isRequiredAuth, "json");
+            var actual = soundCloudRawClient.Request<EmptyClass>("prefix", "command", method, parameters, null, isRequiredAuth, "json", Domain.Api);
 
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void TestRequestApiWithoutResponseAndAuth()
+        public void TestRequestWithoutResponseAndAuth()
         {
             var parameters = new Dictionary<string, object> { { "p1", "2" } };
             const HttpMethod method = HttpMethod.Post;
@@ -112,8 +112,9 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             using (mocks.Record())
             {
                 var uriBuilder = NewMock<IUriBuilder>();
-                uriBuilderFactory.Expect(f => f.Create(Settings.ApiSoundCloudComPrefix + "prefix/command")).Return(uriBuilder);
-
+                uriBuilder.Expect(f => f.AddClientId(clientId)).Return(uriBuilder);
+                uriBuilderFactory.Expect(f => f.Create(Domain.Api.GetParameterName() + "prefix/command")).Return(uriBuilder);
+                
                 webGateway.Expect(f => f.Request(uriBuilder, method, parameters, null)).Return("response");
             }
 
@@ -121,19 +122,15 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             {
                 AccessToken = null
             };
-            soundCloudRawClient.RequestApi("prefix", "command", method, parameters, null, false);
+            soundCloudRawClient.Request("prefix", "command", method, parameters, null, false, Domain.Api);
         }
 
         [Test]
-        [TestCase("prefix", "command", "json", "prefix/command.json")]
-        [TestCase("", "command", "json", "command.json")]
-        [TestCase("prefix", "", "json", "prefix.json")]
-        [TestCase("", "", "json", ".json")]
-        [TestCase("prefix", "command", "", "prefix/command")]
-        [TestCase("prefix", "", "", "prefix")]
-        [TestCase("", "command", "", "command")]
-        [TestCase("", "", "", "")]
-        public void TestBuildUri(string prefix, string command, string responseType, string expectedFullCommandWithResponse)
+        [TestCase("command", "json", "https://soundcloud.com/command.json")]
+        [TestCase("", "json", "https://soundcloud.com")]
+        [TestCase("command", "", "https://soundcloud.com/command")]
+        [TestCase("", "", "https://soundcloud.com")]
+        public void TestBuildUri(string command, string responseType, string expectedFullCommandWithResponse)
         {
             var parameters = new Dictionary<string, object>();
 
@@ -142,6 +139,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
             {
                 var uriBuilder = NewMock<IUriBuilder>();
                 uriBuilder.Expect(f => f.AddQueryParameters(parameters)).Return(uriBuilder);
+                uriBuilder.Expect(f => f.AddClientId(clientId)).Return(uriBuilder);
                 uriBuilder.Expect(f => f.Build()).Return(expectedUri);
                 uriBuilderFactory.Expect(f => f.Create(expectedFullCommandWithResponse)).Return(uriBuilder);
             }
@@ -151,7 +149,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 AccessToken = null
             };
 
-            var uri = soundCloudRawClient.BuildUri(prefix, command, parameters, false, responseType);
+            var uri = soundCloudRawClient.BuildUri(command, parameters, false, responseType, Domain.Direct);
 
             Assert.AreEqual(expectedUri, uri.AbsoluteUri);
         }

@@ -56,12 +56,12 @@ namespace SoundCloud.API.Client.Subresources
 
             var diff = currentTrack.GetDiff(trackConverter.Convert(track));
 
-            soundCloudRawClient.RequestApi(prefix, string.Empty, HttpMethod.Put, diff.ToDictionary(x => string.Format("track[{0}]", x.Key), x => x.Value));
+            soundCloudRawClient.Request(prefix, string.Empty, HttpMethod.Put, diff.ToDictionary(x => string.Format("track[{0}]", x.Key), x => x.Value));
         }
 
         public void DeleteTrack()
         {
-            soundCloudRawClient.RequestApi(prefix, string.Empty, HttpMethod.Delete);
+            soundCloudRawClient.Request(prefix, string.Empty, HttpMethod.Delete);
         }
 
         public SCComment[] GetComments(int offset = 0, int limit = 50)
@@ -72,7 +72,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCComment GetComment(string commentId)
         {
-            var comment = soundCloudRawClient.RequestApi<Comment>(prefix, string.Format("comments/{0}", commentId), HttpMethod.Get);
+            var comment = soundCloudRawClient.Request<Comment>(prefix, string.Format("comments/{0}", commentId), HttpMethod.Get);
             return commentConverter.Convert(comment);
         }
 
@@ -84,13 +84,13 @@ namespace SoundCloud.API.Client.Subresources
                 parameters.Add("comment[timestamp]", timestamp.Value.TotalMilliseconds);
             }
 
-            var comment = soundCloudRawClient.RequestApi<Comment>(prefix, "comments", HttpMethod.Post, parameters);
+            var comment = soundCloudRawClient.Request<Comment>(prefix, "comments", HttpMethod.Post, parameters);
             return commentConverter.Convert(comment);
         }
 
         public void DeleteComment(string commentId)
         {
-            soundCloudRawClient.RequestApi(prefix, string.Format("comments/{0}", commentId), HttpMethod.Delete);
+            soundCloudRawClient.Request(prefix, string.Format("comments/{0}", commentId), HttpMethod.Delete);
         }
 
         public SCUser[] GetFavoriters(int offset = 0, int limit = 50)
@@ -100,13 +100,13 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCUser GetFavoriter(string favoriterId)
         {
-            var user = soundCloudRawClient.RequestApi<User>(prefix, string.Format("favoriters/{0}", favoriterId), HttpMethod.Get);
+            var user = soundCloudRawClient.Request<User>(prefix, string.Format("favoriters/{0}", favoriterId), HttpMethod.Get);
             return userConverter.Convert(user);
         }
 
         private Track GetInternalTrack()
         {
-            return soundCloudRawClient.RequestApi<Track>(prefix, string.Empty, HttpMethod.Get);
+            return soundCloudRawClient.Request<Track>(prefix, string.Empty, HttpMethod.Get);
         }
     }
 }

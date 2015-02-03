@@ -6,7 +6,7 @@ namespace SoundCloud.API.Client.Subresources.Helpers
 {
     public interface ITracksSearcher
     {
-        ITracksSearcher Clear();
+        ITracksSearcher Reset();
 
         ITracksSearcher Query(string query);
         ITracksSearcher Tags(params string[] tags);

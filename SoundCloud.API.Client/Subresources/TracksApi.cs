@@ -56,7 +56,7 @@ namespace SoundCloud.API.Client.Subresources
                                       paginationValidator,
                                       parameters =>
                                       {
-                                          var tracks = soundCloudRawClient.RequestApi<Track[]>(prefix, string.Empty, HttpMethod.Get, parameters);
+                                          var tracks = soundCloudRawClient.Request<Track[]>(prefix, string.Empty, HttpMethod.Get, parameters);
                                           return tracks.Select(trackConverter.Convert).ToArray();
                                       });
         }

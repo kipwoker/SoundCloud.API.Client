@@ -35,7 +35,7 @@ namespace SoundCloud.API.Client.Subresources
                 parameters.Add("q", query);
             }
 
-            var groups = soundCloudRawClient.RequestApi<Group[]>(prefix, string.Empty, HttpMethod.Get, parameters.SetPagination(offset, limit));
+            var groups = soundCloudRawClient.Request<Group[]>(prefix, string.Empty, HttpMethod.Get, parameters.SetPagination(offset, limit));
             return groups.Select(groupConverter.Convert).ToArray();
         }
     }

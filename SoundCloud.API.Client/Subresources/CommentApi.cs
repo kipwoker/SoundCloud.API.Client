@@ -22,7 +22,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCComment GetComment()
         {
-            var comment = soundCloudRawClient.RequestApi<Comment>(prefix, string.Empty, HttpMethod.Get);
+            var comment = soundCloudRawClient.Request<Comment>(prefix, string.Empty, HttpMethod.Get);
             return commentConverter.Convert(comment);
         }
     }

@@ -16,6 +16,7 @@ namespace SoundCloud.API.Client
             Me = subresourceFactory.CreateMe();
             Groups = subresourceFactory.CreateGroups();
             Resolve = subresourceFactory.CreateResolve();
+            OEmbed = subresourceFactory.CreateOEmbed();
         }
 
         public IUserApi User(string userId)
@@ -57,5 +58,6 @@ namespace SoundCloud.API.Client
         }
 
         public IResolveApi Resolve { get; private set; }
+        public IOEmbed OEmbed { get; private set; }
     }
 }

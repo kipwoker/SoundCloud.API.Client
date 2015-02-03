@@ -43,10 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Internal\Client\Helpers\Domain.cs" />
     <Compile Include="Internal\Client\Helpers\Factories\IUriBuilderFactory.cs" />
     <Compile Include="Internal\Client\Helpers\Factories\UriBuilderFactory.cs" />
     <Compile Include="Internal\Client\Helpers\IUriBuilder.cs" />
-    <Compile Include="Internal\Client\Helpers\Settings.cs" />
     <Compile Include="Internal\Client\Helpers\UriBuilder.cs" />
     <Compile Include="Internal\Client\ISoundCloudRawClient.cs" />
     <Compile Include="Internal\Client\SoundCloudRawClient.cs" />
@@ -123,6 +123,7 @@
     <Compile Include="Objects\SCComment.cs" />
     <Compile Include="Objects\SCConnection.cs" />
     <Compile Include="Objects\SCGroup.cs" />
+    <Compile Include="Objects\SCOEmbed.cs" />
     <Compile Include="Objects\SCPlaylist.cs" />
     <Compile Include="Objects\Auth\SCResponseType.cs" />
     <Compile Include="Objects\SCScalableEntity.cs" />
@@ -152,7 +153,9 @@
     <Compile Include="Subresources\GroupApi.cs" />
     <Compile Include="Subresources\GroupsApi.cs" />
     <Compile Include="Subresources\Helpers\CollectionExtensions.cs" />
+    <Compile Include="Subresources\Helpers\IOEmbedQuery.cs" />
     <Compile Include="Subresources\Helpers\ITracksSearcher.cs" />
+    <Compile Include="Subresources\Helpers\OEmbedQuery.cs" />
     <Compile Include="Subresources\Helpers\TracksSearcher.cs" />
     <Compile Include="Subresources\Helpers\ValidationHelper.cs" />
     <Compile Include="Subresources\IAppApi.cs" />
@@ -161,12 +164,14 @@
     <Compile Include="Subresources\IGroupApi.cs" />
     <Compile Include="Subresources\IGroupsApi.cs" />
     <Compile Include="Subresources\IMeApi.cs" />
+    <Compile Include="Subresources\IOEmbed.cs" />
     <Compile Include="Subresources\IPlaylistApi.cs" />
     <Compile Include="Subresources\IResolveApi.cs" />
     <Compile Include="Subresources\ITrackApi.cs" />
     <Compile Include="Subresources\ITracksApi.cs" />
     <Compile Include="Subresources\IUserApi.cs" />
     <Compile Include="Subresources\MeApi.cs" />
+    <Compile Include="Subresources\OEmbed.cs" />
     <Compile Include="Subresources\PlaylistApi.cs" />
     <Compile Include="Subresources\ResolveApi.cs" />
     <Compile Include="Subresources\TrackApi.cs" />

@@ -10,7 +10,7 @@ namespace SoundCloud.API.Client.Subresources.Helpers
         internal static TResponse[] GetCollection<TResponse>(this ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, string prefix, string command, int offset, int limit)
         {
             paginationValidator.Validate(offset, limit);
-            return soundCloudRawClient.RequestApi<TResponse[]>(prefix, command, HttpMethod.Get, new Dictionary<string, object>().SetPagination(offset, limit));
+            return soundCloudRawClient.Request<TResponse[]>(prefix, command, HttpMethod.Get, new Dictionary<string, object>().SetPagination(offset, limit));
         }
     }
 }

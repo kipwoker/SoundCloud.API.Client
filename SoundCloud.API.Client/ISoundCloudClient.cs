@@ -22,5 +22,7 @@ namespace SoundCloud.API.Client
         IAppApi App(string appId);
 
         IResolveApi Resolve { get; }
+
+        IOEmbed OEmbed { get; }
     }
 }

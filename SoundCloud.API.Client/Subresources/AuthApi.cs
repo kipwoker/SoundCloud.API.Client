@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using SoundCloud.API.Client.Internal.Client;
-using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Converters.Auth;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Internal.Objects.Auth;
@@ -27,7 +26,7 @@ namespace SoundCloud.API.Client.Subresources
         public SCAccessToken AuthorizeByPassword(string userName, string password)
         {
             var credentials = soundCloudRawClient.Credentials;
-            var accessToken = soundCloudRawClient.RequestApi<AccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
+            var accessToken = soundCloudRawClient.Request<AccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
             {
                 {"client_id", credentials.ClientId},
                 {"client_secret", credentials.ClientSecret},
@@ -42,7 +41,7 @@ namespace SoundCloud.API.Client.Subresources
         public SCAccessToken AuthorizeByCode(string code, string redirectUri)
         {
             var credentials = soundCloudRawClient.Credentials;
-            var accessToken = soundCloudRawClient.RequestApi<AccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
+            var accessToken = soundCloudRawClient.Request<AccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
             {
                 {"client_id", credentials.ClientId},
                 {"client_secret", credentials.ClientSecret},
@@ -56,8 +55,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public Uri GetRequestTokenUri(string redirectUri, SCResponseType responseType, SCScope scope, SCDisplay display, string state)
         {
-            return soundCloudRawClient.BuildUri(Settings.SoundCloudComPrefix,
-                                                "connect",
+            return soundCloudRawClient.BuildUri("connect",
                                                 new Dictionary<string, object>
                                                 {
                                                     {"client_id", soundCloudRawClient.Credentials.ClientId},
@@ -74,7 +72,7 @@ namespace SoundCloud.API.Client.Subresources
         public SCAccessToken RefreshToken(string token)
         {
             var credentials = soundCloudRawClient.Credentials;
-            var accessToken = soundCloudRawClient.RequestApi<AccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
+            var accessToken = soundCloudRawClient.Request<AccessToken>(prefix, "token", HttpMethod.Post, new Dictionary<string, object>
             {
                 {"client_id", credentials.ClientId},
                 {"client_secret", credentials.ClientSecret},

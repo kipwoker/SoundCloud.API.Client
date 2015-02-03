@@ -22,6 +22,9 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
+#if LIGHTMODE
+        [Ignore("Server always returns 503.")]
+#endif
         public void TestGetTracks()
         {
             TestCollection(appApi.GetTracks, 0, 50);

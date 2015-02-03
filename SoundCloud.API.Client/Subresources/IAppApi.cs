@@ -42,7 +42,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCApplication GetApplication()
         {
-            var application = soundCloudRawClient.RequestApi<Application>(prefix, string.Empty, HttpMethod.Get);
+            var application = soundCloudRawClient.Request<Application>(prefix, string.Empty, HttpMethod.Get);
             return applicationConverter.Convert(application);
         }
 

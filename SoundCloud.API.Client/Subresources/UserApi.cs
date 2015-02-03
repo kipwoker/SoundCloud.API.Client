@@ -58,7 +58,7 @@ namespace SoundCloud.API.Client.Subresources
             var diff = currentUser.GetDiff(userConverter.Convert(user));
 
             var parameters = diff.ToDictionary(x => string.Format("user[{0}]", x.Key), x => x.Value);
-            var updatedUser = soundCloudRawClient.RequestApi<User>(prefix, string.Empty, HttpMethod.Put, parameters);
+            var updatedUser = soundCloudRawClient.Request<User>(prefix, string.Empty, HttpMethod.Put, parameters);
             return userConverter.Convert(updatedUser);
         }
 
@@ -88,18 +88,18 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCUser GetFollowing(string followingUserId)
         {
-            var user = soundCloudRawClient.RequestApi<User>(prefix, "followings/" + followingUserId, HttpMethod.Get);
+            var user = soundCloudRawClient.Request<User>(prefix, "followings/" + followingUserId, HttpMethod.Get);
             return userConverter.Convert(user);
         }
 
         public void PutFollowing(string followingUserId)
         {
-            soundCloudRawClient.RequestApi(prefix, "followings/" + followingUserId, HttpMethod.Put);
+            soundCloudRawClient.Request(prefix, "followings/" + followingUserId, HttpMethod.Put);
         }
 
         public void DeleteFollowing(string followingUserId)
         {
-            soundCloudRawClient.RequestApi(prefix, "followings/" + followingUserId, HttpMethod.Delete);
+            soundCloudRawClient.Request(prefix, "followings/" + followingUserId, HttpMethod.Delete);
         }
 
         public SCUser[] GetFollowers(int offset = 0, int limit = 50)
@@ -110,7 +110,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCUser GetFollower(string followerUserId)
         {
-            var user = soundCloudRawClient.RequestApi<User>(prefix, "followers/" + followerUserId, HttpMethod.Get);
+            var user = soundCloudRawClient.Request<User>(prefix, "followers/" + followerUserId, HttpMethod.Get);
             return userConverter.Convert(user);
         }
 
@@ -128,18 +128,18 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCTrack GetFavorite(string favoriteTrackId)
         {
-            var track = soundCloudRawClient.RequestApi<Track>(prefix, "favorites/" + favoriteTrackId, HttpMethod.Get);
+            var track = soundCloudRawClient.Request<Track>(prefix, "favorites/" + favoriteTrackId, HttpMethod.Get);
             return trackConverter.Convert(track);
         }
 
         public void PutFavorite(string favoriteTrackId)
         {
-            soundCloudRawClient.RequestApi(prefix, "favorites/" + favoriteTrackId, HttpMethod.Put);
+            soundCloudRawClient.Request(prefix, "favorites/" + favoriteTrackId, HttpMethod.Put);
         }
 
         public void DeleteFavorite(string favoriteTrackId)
         {
-            soundCloudRawClient.RequestApi(prefix, "favorites/" + favoriteTrackId, HttpMethod.Delete);
+            soundCloudRawClient.Request(prefix, "favorites/" + favoriteTrackId, HttpMethod.Delete);
         }
 
         public SCGroup[] GetGroups(int offset = 0, int limit = 50)
@@ -156,7 +156,7 @@ namespace SoundCloud.API.Client.Subresources
 
         private User GetInternalUser()
         {
-            return soundCloudRawClient.RequestApi<User>(prefix, string.Empty, HttpMethod.Get);
+            return soundCloudRawClient.Request<User>(prefix, string.Empty, HttpMethod.Get);
         }
     }
 }

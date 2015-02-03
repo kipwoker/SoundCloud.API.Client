@@ -38,7 +38,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCGroup GetGroup()
         {
-            var @group = soundCloudRawClient.RequestApi<Group>(prefix, string.Empty, HttpMethod.Get);
+            var @group = soundCloudRawClient.Request<Group>(prefix, string.Empty, HttpMethod.Get);
             return groupConverter.Convert(@group);
         }
 
@@ -74,41 +74,41 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCTrack GetPendingTrack(string trackId)
         {
-            var track = soundCloudRawClient.RequestApi<Track>(prefix, string.Format("pending_tracks/{0}", trackId), HttpMethod.Get);
+            var track = soundCloudRawClient.Request<Track>(prefix, string.Format("pending_tracks/{0}", trackId), HttpMethod.Get);
             return trackConverter.Convert(track);
         }
 
         public void AcceptPendingTrack(string trackId)
         {
-            soundCloudRawClient.RequestApi(prefix, string.Format("pending_tracks/{0}", trackId), HttpMethod.Put);
+            soundCloudRawClient.Request(prefix, string.Format("pending_tracks/{0}", trackId), HttpMethod.Put);
         }
 
         public void RejectPendingTrack(string trackId)
         {
-            soundCloudRawClient.RequestApi(prefix, string.Format("pending_tracks/{0}", trackId), HttpMethod.Delete);
+            soundCloudRawClient.Request(prefix, string.Format("pending_tracks/{0}", trackId), HttpMethod.Delete);
         }
 
         public SCTrack[] GetContributions(int offset, int limit)
         {
             paginationValidator.Validate(offset, limit);
-            var tracks = soundCloudRawClient.RequestApi<Track[]>(prefix, "contributions", HttpMethod.Get, new Dictionary<string, object>().SetPagination(offset, limit), responseType: null);
+            var tracks = soundCloudRawClient.Request<Track[]>(prefix, "contributions", HttpMethod.Get, new Dictionary<string, object>().SetPagination(offset, limit), responseType: null);
             return tracks.Select(trackConverter.Convert).ToArray();
         }
 
         public SCTrack GetContribution(string trackId)
         {
-            var track = soundCloudRawClient.RequestApi<Track>(prefix, string.Format("contributions/{0}", trackId), HttpMethod.Get, responseType: null);
+            var track = soundCloudRawClient.Request<Track>(prefix, string.Format("contributions/{0}", trackId), HttpMethod.Get, responseType: null);
             return trackConverter.Convert(track);
         }
 
         public void CreateContribution(string trackId)
         {
-            soundCloudRawClient.RequestApi(prefix, "contributions", HttpMethod.Post, new Dictionary<string, object> { { "track[id]", trackId } });
+            soundCloudRawClient.Request(prefix, "contributions", HttpMethod.Post, new Dictionary<string, object> { { "track[id]", trackId } });
         }
 
         public void DeleteContribution(string trackId)
         {
-            soundCloudRawClient.RequestApi(prefix, string.Format("contributions/{0}", trackId), HttpMethod.Delete);
+            soundCloudRawClient.Request(prefix, string.Format("contributions/{0}", trackId), HttpMethod.Delete);
         }
 
         private SCUser[] GetUsers(string command, int offset, int limit)

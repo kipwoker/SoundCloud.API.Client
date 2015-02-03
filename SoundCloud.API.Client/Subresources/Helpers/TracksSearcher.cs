@@ -30,10 +30,11 @@ namespace SoundCloud.API.Client.Subresources.Helpers
             this.paginationValidator = paginationValidator;
             this.search = search;
 
-            searchParameters = new Dictionary<string, object> {{"filter", filter.GetParameterName()}};
+            searchParameters = new Dictionary<string, object> ();
+            Reset();
         }
 
-        public ITracksSearcher Clear()
+        public ITracksSearcher Reset()
         {
             searchParameters.Clear();
             searchParameters.Add("filter", filter.GetParameterName());

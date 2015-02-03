@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
@@ -21,38 +22,39 @@ namespace SoundCloud.API.Client.Internal.Client
 
         internal SoundCloudRawClient(SCCredentials credentials, IUriBuilderFactory uriBuilderFactory, IWebGateway webGateway, ISerializer serializer)
         {
-            Credentials  = credentials;
+            Credentials = credentials;
             this.uriBuilderFactory = uriBuilderFactory;
             this.webGateway = webGateway;
             this.serializer = serializer;
         }
 
-        public T RequestApi<T>(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType)
+        public T Request<T>(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType, Domain domain)
+            where T : class 
         {
-            var response = GetResponse(apiPrefix, command, method, parameters, body, isRequiredAuth, responseType);
-            return serializer.Deserialize<T>(response);
-        }
-        
-        public void RequestApi(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth)
-        {
-            GetResponse(apiPrefix, command, method, parameters, body, isRequiredAuth, string.Empty);
+            var response = GetResponse(domain, apiPrefix, command, method, parameters, body, isRequiredAuth, responseType);
+            return typeof(T) == typeof(string) ? (response as T) : serializer.Deserialize<T>(response);
         }
 
-        public Uri BuildUri(string prefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType)
+        public void Request(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, Domain domain)
         {
-            return CreateUriBuilder(prefix, command, isRequiredAuth, responseType).AddQueryParameters(parameters).Build();
+            GetResponse(domain, apiPrefix, command, method, parameters, body, isRequiredAuth, string.Empty);
         }
 
-        public T Upload<T>(string apiPrefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType, params File[] files)
+        public Uri BuildUri(string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType, Domain domain)
         {
-            var uriBuilder = CreateUriBuilder(Settings.ApiSoundCloudComPrefix + apiPrefix, command, isRequiredAuth, responseType);
+            return CreateUriBuilder(domain, string.Empty, command, isRequiredAuth, responseType).AddQueryParameters(parameters).Build();
+        }
+
+        public T Upload<T>(string prefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType, Domain domain, params File[] files)
+        {
+            var uriBuilder = CreateUriBuilder(domain, prefix, command, isRequiredAuth, responseType);
             var response = webGateway.Upload(uriBuilder, parameters, files);
             return serializer.Deserialize<T>(response);
         }
 
-        private string GetResponse(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType)
+        private string GetResponse(Domain domain, string prefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType)
         {
-            var uriBuilder = CreateUriBuilder(Settings.ApiSoundCloudComPrefix + apiPrefix, command, isRequiredAuth, responseType);
+            var uriBuilder = CreateUriBuilder(domain, prefix, command, isRequiredAuth, responseType);
             var response = webGateway.Request(uriBuilder, method, parameters, body);
             return response;
         }
@@ -64,10 +66,10 @@ namespace SoundCloud.API.Client.Internal.Client
                  : string.Format("{0}.{1}", command, responseType);
         }
 
-        private IUriBuilder CreateUriBuilder(string prefix, string command, bool isRequiredAuth, string responseType)
+        private IUriBuilder CreateUriBuilder(Domain domain, string prefix, string command, bool isRequiredAuth, string responseType)
         {
-            var fullCommand = string.Format("{0}/{1}", prefix.TrimEnd('/'), command).Trim('/');
-            var fullCommandWithResponse = SetResponseType(fullCommand, responseType);
+            var fullCommand = string.Join("/", new[] { domain.GetParameterName(), prefix, command }.Where(x => !string.IsNullOrEmpty(x)).Select(x => x.TrimEnd('/')));
+            var fullCommandWithResponse = string.IsNullOrEmpty(prefix) && string.IsNullOrEmpty(command) ? fullCommand : SetResponseType(fullCommand, responseType);
 
             var uriBuilder = uriBuilderFactory.Create(fullCommandWithResponse);
 
