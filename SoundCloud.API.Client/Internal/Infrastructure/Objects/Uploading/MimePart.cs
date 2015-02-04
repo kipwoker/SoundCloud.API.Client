@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading
 {
-    public abstract class MimePart
+    internal abstract class MimePart
     {
         readonly NameValueCollection headers = new NameValueCollection();
 

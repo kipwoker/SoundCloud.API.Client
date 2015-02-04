@@ -2,7 +2,7 @@
 
 namespace SoundCloud.API.Client.Internal.Client.Helpers
 {
-    public enum Domain
+    internal enum Domain
     {
         [Parameter("https://api.soundcloud.com/")]
         Api,

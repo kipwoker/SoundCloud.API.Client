@@ -2,7 +2,7 @@
 
 namespace SoundCloud.API.Client.Internal.Objects
 {
-    public class WebProfile
+    internal class WebProfile
     {
         [JsonProperty(PropertyName = "kind")]
         public string Kind { get; set; }

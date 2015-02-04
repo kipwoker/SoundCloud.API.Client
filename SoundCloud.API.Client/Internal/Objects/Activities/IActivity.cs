@@ -1,7 +1,7 @@
 ﻿namespace SoundCloud.API.Client.Internal.Objects.Activities
 {
-    public interface IActivity<T>
+    internal interface IActivity<out T>
     {
-         T Origin { get; set; }
+         T Origin { get; }
     }
 }

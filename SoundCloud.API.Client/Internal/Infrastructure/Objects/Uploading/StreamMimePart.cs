@@ -2,7 +2,7 @@ using System.IO;
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading
 {
-    public class StreamMimePart : MimePart
+    internal class StreamMimePart : MimePart
     {
         Stream data;
 

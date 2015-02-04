@@ -2,7 +2,7 @@
 
 namespace SoundCloud.API.Client.Internal.Objects.Auth
 {
-    public class AccessToken
+    internal class AccessToken
     {
         [JsonProperty("access_token")]
         public string Token { get; set; }

@@ -4,7 +4,7 @@ using Newtonsoft.Json.Linq;
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Serialization.Custom
 {
-    public abstract class JsonCreationConverter<T> : JsonConverter
+    internal abstract class JsonCreationConverter<T> : JsonConverter
     {
         protected abstract T Create(Type objectType, JObject jsonObject);
 

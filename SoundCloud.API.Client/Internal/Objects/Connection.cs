@@ -2,7 +2,7 @@
 
 namespace SoundCloud.API.Client.Internal.Objects
 {
-    public class Connection
+    internal class Connection
     {
         [JsonProperty(PropertyName = "id")]
         public string Id { get; set; }

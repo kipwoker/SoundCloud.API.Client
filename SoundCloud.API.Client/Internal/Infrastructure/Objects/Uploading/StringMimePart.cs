@@ -3,7 +3,7 @@ using System.Text;
 
 namespace SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading
 {
-    public class StringMimePart : MimePart
+    internal class StringMimePart : MimePart
     {
         Stream data;
         public string StringData { set { data = new MemoryStream(Encoding.UTF8.GetBytes(value)); } }
