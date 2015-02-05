@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.API.Client", "So
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.API.Client.Test", "SoundCloud.API.Client.Test\SoundCloud.API.Client.Test.csproj", "{261DBBF1-7735-47D8-8BE0-E64592D64325}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundCloud.API.Client.Web", "SoundCloud.API.Client.Web\SoundCloud.API.Client.Web.csproj", "{2C097A4A-9171-4730-B88F-73BF7D081A2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{261DBBF1-7735-47D8-8BE0-E64592D64325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{261DBBF1-7735-47D8-8BE0-E64592D64325}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{261DBBF1-7735-47D8-8BE0-E64592D64325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C097A4A-9171-4730-B88F-73BF7D081A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C097A4A-9171-4730-B88F-73BF7D081A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C097A4A-9171-4730-B88F-73BF7D081A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C097A4A-9171-4730-B88F-73BF7D081A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

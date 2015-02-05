@@ -93,6 +93,7 @@ namespace SoundCloud.API.Client
         private static SoundCloudClient CreateSoundCloudClient(ISoundCloudRawClient soundCloudRawClient)
         {
             return new SoundCloudClient(
+                soundCloudRawClient.AccessToken,
                 new SubresourceFactory(
                     soundCloudRawClient,
                     PaginationValidator.Default,

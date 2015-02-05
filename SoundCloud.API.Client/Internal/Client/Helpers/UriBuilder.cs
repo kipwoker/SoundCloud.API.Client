@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SoundCloud.API.Client.Internal.Client.Helpers
 {
@@ -40,7 +41,7 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers
                 return this;
             }
 
-            foreach (var parameter in parameters)
+            foreach (var parameter in parameters.Where(x => x.Value != null))
             {
                 AddToQueryString(parameter.Key, parameter.Value.ToString());
             }

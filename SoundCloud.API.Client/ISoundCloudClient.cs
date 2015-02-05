@@ -1,9 +1,12 @@
-﻿using SoundCloud.API.Client.Subresources;
+﻿using SoundCloud.API.Client.Objects.Auth;
+using SoundCloud.API.Client.Subresources;
 
 namespace SoundCloud.API.Client
 {
     public interface ISoundCloudClient
     {
+        SCAccessToken CurrentToken { get; }
+
         IUserApi User(string userId);
         IUsersApi Users { get; }
         

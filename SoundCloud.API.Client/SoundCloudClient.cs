@@ -1,4 +1,5 @@
-﻿using SoundCloud.API.Client.Subresources;
+﻿using SoundCloud.API.Client.Objects.Auth;
+using SoundCloud.API.Client.Subresources;
 using SoundCloud.API.Client.Subresources.Factories;
 
 namespace SoundCloud.API.Client
@@ -7,9 +8,11 @@ namespace SoundCloud.API.Client
     {
         private readonly ISubresourceFactory subresourceFactory;
 
-        internal SoundCloudClient(ISubresourceFactory subresourceFactory)
+        internal SoundCloudClient(SCAccessToken accessToken, ISubresourceFactory subresourceFactory)
         {
             this.subresourceFactory = subresourceFactory;
+
+            CurrentToken = accessToken;
 
             Users = subresourceFactory.CreateUsers();
             Tracks = subresourceFactory.CreateTracks();
@@ -18,6 +21,8 @@ namespace SoundCloud.API.Client
             Resolve = subresourceFactory.CreateResolve();
             OEmbed = subresourceFactory.CreateOEmbed();
         }
+
+        public SCAccessToken CurrentToken { get; private set; }
 
         public IUserApi User(string userId)
         {
