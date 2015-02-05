@@ -7,6 +7,10 @@
 # Warning
 If you will run tests frequent from one account, soundcloud may ban it.
 
+#Install
+Build and use SoundCloud.API.Client.dll or inject via nuget: https://www.nuget.org/packages/SoundCloud.API.Client
+
+
 # HowTo 
 Direct connection via username and password. Good for debugging and tests.
 ```c#
@@ -159,6 +163,6 @@ You can also specify here optional fields: TestGroupId, TestTrackId, TestUserId
 #What's next
 It's almost stable right now. You can check out tests with your credentials.
 
-I want to add this library to nuget and implement in web-project api console like this: https://developers.soundcloud.com/console
+I want implement in web-project api console like this: https://developers.soundcloud.com/console
 
 But better. :)
