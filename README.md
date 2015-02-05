@@ -17,8 +17,11 @@ Console.WriteLine(user.Id); //42
 ```
 
 OAuth connection.
+
 First of all go to your app page and fill field 'Redirect URI for Authentication' with your redirect_uri.
+
 In my example I used this value: http://localhost:50086/Home/GetCode
+
 You can find this sample here: .\SoundCloud.API.Client\SoundCloud.API.Client.Web\Controllers\HomeController.cs
 ```c#
 public class HomeController : Controller
@@ -124,7 +127,7 @@ Simple usage:
 var soundCloudClient = soundCloudConnector.Connect(accessToken);
 var moderators = soundCloudClient.Group("42").GetModerators();
 ```
-Also you can find some useful things like a fluent-search:
+Also you can find some useful things like a fluent query executor:
 ```c#
 var embed = soundCloudClient.OEmbed
 							.BeginQuery(url)
@@ -139,8 +142,9 @@ var embed = soundCloudClient.OEmbed
 ```
 
 #Tests
-If you want run tests, you should fill settigs.json first
-Path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
+If you want run tests, you should fill settigs.json first.
+
+Full path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
 ```
 {
 	"ClientId" : "",
@@ -152,7 +156,9 @@ Path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
 ```
 You can also specify here optional fields: TestGroupId, TestTrackId, TestUserId
 
-#What next
+#What's next
 It's almost stable right now. You can check out tests with your credentials.
+
 I want to add this library to nuget and implement in web-project api console like this: https://developers.soundcloud.com/console
+
 But better. :)
