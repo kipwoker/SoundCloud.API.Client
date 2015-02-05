@@ -127,7 +127,7 @@ Simple usage:
 var soundCloudClient = soundCloudConnector.Connect(accessToken);
 var moderators = soundCloudClient.Group("42").GetModerators();
 ```
-Also you can find some useful things like a fluent-search:
+Also you can find some useful things like a fluent query executor:
 ```c#
 var embed = soundCloudClient.OEmbed
 							.BeginQuery(url)
