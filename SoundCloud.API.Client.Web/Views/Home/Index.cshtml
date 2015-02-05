@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("RequestCode", "Home"))
+{
+    <input value="Authorize" type="submit" />
+}
