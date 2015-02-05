@@ -156,7 +156,7 @@ Full path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
 ```
 You can also specify here optional fields: TestGroupId, TestTrackId, TestUserId
 
-#What next
+#What's next
 It's almost stable right now. You can check out tests with your credentials.
 
 I want to add this library to nuget and implement in web-project api console like this: https://developers.soundcloud.com/console
