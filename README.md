@@ -138,6 +138,20 @@ var embed = soundCloudClient.OEmbed
 							.ExecuteJson();
 ```
 
+#Tests
+If you want run tests, you should fill settigs.json first
+Path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
+```
+{
+	"ClientId" : "",
+	"ClientSecret" : "",
+	"UserName" : "",
+	"Password" : "",
+	"TestAppId" : ""
+}
+```
+You can also specify here optional fields: TestGroupId, TestTrackId, TestUserId
+
 #What next
 It's almost stable right now. You can check out tests with your credentials.
 I want to add this library to nuget and implement in web-project api console like this: https://developers.soundcloud.com/console
