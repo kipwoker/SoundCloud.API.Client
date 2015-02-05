@@ -3,3 +3,6 @@ SoundCloud.API.Client.Test/obj/*
 SoundCloud.API.Client.Test/bin/*
 SoundCloud.API.Client/bin/*
 SoundCloud.API.Client/obj/*
+/packages
+/SoundCloud.API.Client.Web/obj
+/SoundCloud.API.Client.Web/bin
