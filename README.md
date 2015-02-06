@@ -5,7 +5,7 @@
 .NET API implementation  https://developers.soundcloud.com/docs/api/reference
 
 # Warning
-If you will run tests frequent from one account, soundcloud may ban it.
+If you run tests frequently from one account, soundcloud may ban it.
 
 #Install
 Build and use SoundCloud.API.Client.dll or inject via nuget: https://www.nuget.org/packages/SoundCloud.API.Client
@@ -22,7 +22,7 @@ Console.WriteLine(user.Id); //42
 
 OAuth connection.
 
-First of all go to your app page and fill field 'Redirect URI for Authentication' with your redirect_uri.
+First of all go to your app page and fill 'Redirect URI for Authentication' field with your redirect_uri.
 
 In my example I used this value: http://localhost:50086/Home/GetCode
 
@@ -74,7 +74,7 @@ public class HomeController : Controller
 If your token expires you can use soundCloudConnector.RefreshToken.
 
 #Interface
-All methods contains in SoundCloudClient:
+All methods reside in SoundCloudClient:
 ```c#
 public interface ISoundCloudClient
 {
@@ -103,7 +103,7 @@ public interface ISoundCloudClient
 }
 ```
 
-Let's have a look to IGroupApi for example. You must specify context by Id
+Let's have a look at IGroupApi, for example. You must specify context by Id.
 ```c#
 public interface IGroupApi
 {
@@ -146,7 +146,7 @@ var embed = soundCloudClient.OEmbed
 ```
 
 #Tests
-If you want run tests, you should fill settigs.json first.
+If you want to run tests, you should fill settings.json first.
 
 Full path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
 ```
@@ -158,11 +158,11 @@ Full path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
 	"TestAppId" : ""
 }
 ```
-You can also specify here optional fields: TestGroupId, TestTrackId, TestUserId
+You can also specify optional fields here: TestGroupId, TestTrackId, TestUserId
 
 #What's next
 It's almost stable right now. You can check out tests with your credentials.
 
-I want implement in web-project api console like this: https://developers.soundcloud.com/console
+I want to implement in web-project api console like this: https://developers.soundcloud.com/console
 
 But better. :)
