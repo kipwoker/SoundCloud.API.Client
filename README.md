@@ -163,6 +163,6 @@ You can also specify optional fields here: TestGroupId, TestTrackId, TestUserId
 #What's next
 It's almost stable right now. You can check out tests with your credentials.
 
-I want to implement in web-project api console like this: https://developers.soundcloud.com/console
+Furthermore I want to implement api console into web-project like it's done here: https://developers.soundcloud.com/console
 
 But better. :)
