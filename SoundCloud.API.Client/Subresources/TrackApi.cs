@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Converters;
@@ -102,6 +103,11 @@ namespace SoundCloud.API.Client.Subresources
         {
             var user = soundCloudRawClient.Request<User>(prefix, string.Format("favoriters/{0}", favoriterId), HttpMethod.Get);
             return userConverter.Convert(user);
+        }
+
+        public Stream GetStream()
+        {
+            return soundCloudRawClient.RequestStream(prefix, "stream", HttpMethod.Get);
         }
 
         private Track GetInternalTrack()

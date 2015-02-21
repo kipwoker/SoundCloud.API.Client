@@ -124,6 +124,16 @@ namespace SoundCloud.API.Client.Test.Subresources
             TestGetEntity(trackApi.GetFavoriters, trackApi.GetFavoriter, u => u.Id);
         }
 
+        [Test]
+        public void TestGetStream()
+        {
+            using (var stream = trackApi.GetStream())
+            {
+                var bytes = ReadAll(stream);
+                Assert.IsTrue(bytes.Length > 0);
+            }
+        }
+
         private static void AssertArtwork(bool withArtwork, SCTrack uploadedTrack)
         {
             if (withArtwork)
@@ -133,6 +143,20 @@ namespace SoundCloud.API.Client.Test.Subresources
             else
             {
                 Assert.IsNull(uploadedTrack.Artwork);
+            }
+        }
+
+        public static byte[] ReadAll(Stream stream)
+        {
+            var buffer = new byte[16 * 1024];
+            using (var memoryStream = new MemoryStream())
+            {
+                int read;
+                while ((read = stream.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    memoryStream.Write(buffer, 0, read);
+                }
+                return memoryStream.ToArray();
             }
         }
     }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using SoundCloud.API.Client.Internal.Client.Helpers;
 using SoundCloud.API.Client.Internal.Client.Helpers.Factories;
 using SoundCloud.API.Client.Internal.Infrastructure.Network;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
-using SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading;
 using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 using SoundCloud.API.Client.Objects.Auth;
+using File = SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading.File;
 
 namespace SoundCloud.API.Client.Internal.Client
 {
@@ -50,6 +51,12 @@ namespace SoundCloud.API.Client.Internal.Client
             var uriBuilder = CreateUriBuilder(domain, prefix, command, isRequiredAuth, responseType);
             var response = webGateway.Upload(uriBuilder, parameters, files);
             return serializer.Deserialize<T>(response);
+        }
+
+        public Stream RequestStream(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, Domain domain)
+        {
+            var uriBuilder = CreateUriBuilder(domain, apiPrefix, command, isRequiredAuth, string.Empty);
+            return webGateway.RequestStream(uriBuilder, method, parameters, body);
         }
 
         private string GetResponse(Domain domain, string prefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, bool isRequiredAuth, string responseType)

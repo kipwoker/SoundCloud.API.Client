@@ -22,34 +22,18 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
 
         public string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
         {
-            var uri = uriBuilder.AddQueryParameters(parameters).Build();
-            var request = WebRequest.Create(uri);
-
-            request.Method = method.GetParameterName();
-
-            request.ContentType = "application/json";
-
-            body = body ?? new byte[0];
-            if (method == HttpMethod.Post && body.Length > 0)
-            {
-                request.ContentLength = body.Length;
-                using (var requestStream = request.GetRequestStream())
-                {
-                    requestStream.Write(body, 0, body.Length);
-                    requestStream.Flush();
-                }
-            }
-            else
-            {
-                request.ContentLength = 0;
-            }
-
-            request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
-
-            Func<int, string, string> buildExceptionMessage = (statusCode, content) =>
-                                                              string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uri.AbsoluteUri, method, statusCode, content);
+            Func<int, string, string> buildExceptionMessage;
+            var request = BuildRequest(uriBuilder, method, parameters, body, out buildExceptionMessage);
 
             return GetResponse(request, buildExceptionMessage);
+        }
+
+        public Stream RequestStream(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
+        {
+            Func<int, string, string> buildExceptionMessage;
+            var request = BuildRequest(uriBuilder, method, parameters, body, out buildExceptionMessage);
+
+            return request.GetResponse().GetResponseStream();
         }
 
         public string Upload(IUriBuilder uriBuilder, Dictionary<string, object> parameters, params File[] files)
@@ -136,6 +120,37 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                     mimePart.Data.Dispose();
                 }
             }
+        }
+
+        private static WebRequest BuildRequest(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, out Func<int, string, string> buildExceptionMessage)
+        {
+            var uri = uriBuilder.AddQueryParameters(parameters).Build();
+            var request = WebRequest.Create(uri);
+
+            request.Method = method.GetParameterName();
+
+            request.ContentType = "application/json";
+
+            body = body ?? new byte[0];
+            if (method == HttpMethod.Post && body.Length > 0)
+            {
+                request.ContentLength = body.Length;
+                using (var requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(body, 0, body.Length);
+                    requestStream.Flush();
+                }
+            }
+            else
+            {
+                request.ContentLength = 0;
+            }
+
+            request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+
+            buildExceptionMessage = (statusCode, content) =>
+                string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uri.AbsoluteUri, method, statusCode, content);
+            return request;
         }
 
         private static string GetResponse(WebRequest request, Func<int, string, string> buildExceptionMessage)
