@@ -109,6 +109,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
+        [Ignore("Create group with contributions")]
         public void TestGetContribution()
         {
             TestGetEntity(groupApi.GetContributions, groupApi.GetContribution, t => t.Id);

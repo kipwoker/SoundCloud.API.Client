@@ -5,4 +5,4 @@ install:
   - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
   - xbuild /p:Configuration=Debug SoundCloud.API.Client.CI.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./SoundCloud.API.Client.Test/bin/Debug/SoundCloud.API.Client.dll
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./SoundCloud.API.Client.Test/bin/Debug/SoundCloud.API.Client.Test.dll
