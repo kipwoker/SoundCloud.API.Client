@@ -1,7 +1,8 @@
-language: c
-
+language: csharp
+solution: SoundCloud.API.Client.CI.sln
 install:
-  - sudo apt-get install mono-devel mono-gmcs nunit-console
+  - nuget restore SoundCloud.API.Client.CI.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 script:
-  - xbuild SoundCloud.API.Client.CI.sln
-  - nunit-console SoundCloud.API.Client.Test/bin/Debug/SoundCloud.API.Client.Test.dll
+  - xbuild /p:Configuration=Debug SoundCloud.API.Client.CI.sln
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./SoundCloud.API.Client.Test/bin/Debug/SoundCloud.API.Client.dll
