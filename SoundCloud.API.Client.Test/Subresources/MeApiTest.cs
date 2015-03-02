@@ -71,6 +71,11 @@ namespace SoundCloud.API.Client.Test.Subresources
             AssertActivities(activityResult.Favorites, savedResult.Favorites, c => c.Id);
             AssertActivities(activityResult.Playlists, savedResult.Playlists, c => c.Id);
 
+            if (string.IsNullOrEmpty(activityResult.CursorToNext))
+            {
+                return;
+            }
+
             var nextResult = getActivities(activityResult.CursorToNext);
 
             Assert.AreNotEqual(activityResult.QueryId, nextResult.QueryId);

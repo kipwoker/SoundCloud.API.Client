@@ -68,6 +68,11 @@ namespace SoundCloud.API.Client.Internal.Converters
 
         private static string GetValueFromUrl(string uri, string parameterKey)
         {
+            if (string.IsNullOrEmpty(uri))
+            {
+                return uri;
+            }
+
             var futureUri = new Uri(uri);
             var uuidToPair = futureUri.Query.TrimStart('?').Split('&').FirstOrDefault(x => x.Contains(parameterKey));
             var value = string.IsNullOrEmpty(uuidToPair) ? null : uuidToPair.Split('=')[1];
