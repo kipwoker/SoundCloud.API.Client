@@ -126,6 +126,9 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
+#if LIGHTMODE
+        [Ignore("Sometimes throws 403. Invalid signature key. More: https://github.com/kipwoker/SoundCloud.API.Client/issues/1")]
+#endif
         public void TestGetStream()
         {
             using (var stream = trackApi.GetStream())

@@ -15,6 +15,10 @@ namespace SoundCloud.API.Client.Subresources.Public
         [Obsolete("API BUG. Use GetFavoriters(). This method returns 401. It's API trouble. More here: https://github.com/soundcloud/soundcloud-ruby/issues/24")]
         SCUser GetFavoriter(string favoriterId);
 
+        /// <summary>
+        /// Be careful. Sometimes throws 403. Invalid signature key. More: https://github.com/kipwoker/SoundCloud.API.Client/issues/1
+        /// </summary>
+        /// <returns></returns>
         Stream GetStream(); 
     }
 }
