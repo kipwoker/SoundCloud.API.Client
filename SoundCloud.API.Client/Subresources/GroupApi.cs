@@ -8,10 +8,11 @@ using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Subresources.Helpers;
+using SoundCloud.API.Client.Subresources.Public;
 
 namespace SoundCloud.API.Client.Subresources
 {
-    public class GroupApi : IGroupApi
+    public class GroupApi : IGroupApi, IPublicGroupApi
     {
         private readonly ISoundCloudRawClient soundCloudRawClient;
         private readonly IPaginationValidator paginationValidator;
@@ -33,6 +34,7 @@ namespace SoundCloud.API.Client.Subresources
             this.groupConverter = groupConverter;
             this.userConverter = userConverter;
             this.trackConverter = trackConverter;
+
             prefix = string.Format("groups/{0}", groupId);
         }
 

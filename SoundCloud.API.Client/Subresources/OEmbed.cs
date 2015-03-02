@@ -20,8 +20,8 @@ namespace SoundCloud.API.Client.Subresources
         public IOEmbedQuery BeginQuery(string url)
         {
             return new OEmbedQuery(url, 
-                                   p => soundCloudRawClient.Request<SCOEmbed>(prefix, string.Empty, HttpMethod.Get, p, isRequiredAuth: false, responseType: null, domain: Domain.Direct),
-                                   p => soundCloudRawClient.Request<string>(prefix, string.Empty, HttpMethod.Get, p, isRequiredAuth: false, responseType: null, domain: Domain.Direct));
+                                   p => soundCloudRawClient.Request<SCOEmbed>(prefix, string.Empty, HttpMethod.Get, parameters: p, responseType: null, domain: Domain.Direct),
+                                   p => soundCloudRawClient.Request<string>(prefix, string.Empty, HttpMethod.Get, parameters: p, responseType: null, domain: Domain.Direct));
         }
     }
 }

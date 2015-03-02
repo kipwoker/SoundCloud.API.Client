@@ -9,10 +9,11 @@ using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Subresources.Helpers;
+using SoundCloud.API.Client.Subresources.Public;
 
 namespace SoundCloud.API.Client.Subresources
 {
-    public class TrackApi : ITrackApi
+    public class TrackApi : ITrackApi, IPublicTrackApi
     {
         private readonly string trackId;
         private readonly ISoundCloudRawClient soundCloudRawClient;

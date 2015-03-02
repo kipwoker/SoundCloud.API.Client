@@ -22,10 +22,13 @@ namespace SoundCloud.API.Client.Test
             ISoundCloudConnector soundCloudConnector = new SoundCloudConnector();
             soundCloudClient = soundCloudConnector.DirectConnect(settings.ClientId, settings.ClientSecret, settings.UserName, settings.Password);
 
-            var user = soundCloudClient.Me.GetUser();
-            settings.TestUserId = settings.TestUserId ?? user.Id;
+            settings.TestUserId = settings.TestUserId ?? soundCloudClient.Me.GetUser().Id;
             settings.TestTrackId = settings.TestTrackId ?? soundCloudClient.Me.GetTracks()[0].Id;
-            settings.TestGroupId = settings.TestGroupId ?? soundCloudClient.Me.GetGroups().First(x => x.Creator.Id == user.Id).Id;
+            if (string.IsNullOrEmpty(settings.TestGroupId))
+            {
+                var me = soundCloudClient.Me.GetUser();
+                settings.TestGroupId = soundCloudClient.Me.GetGroups().First(x => x.Creator.Id == me.Id).Id;
+            }
         }
         
         protected class Settings

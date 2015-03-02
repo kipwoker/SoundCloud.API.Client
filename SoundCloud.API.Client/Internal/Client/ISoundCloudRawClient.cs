@@ -12,10 +12,10 @@ namespace SoundCloud.API.Client.Internal.Client
     {
         SCCredentials Credentials { get; }
         SCAccessToken AccessToken { get; }
-        T Request<T>(string prefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, bool isRequiredAuth = true, string responseType = "json", Domain domain = Domain.Api) where T : class;
-        void Request(string prefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, bool isRequiredAuth = true, Domain domain = Domain.Api);
-        Stream RequestStream(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, bool isRequiredAuth = true, Domain domain = Domain.Api);
-        Uri BuildUri(string command, Dictionary<string, object> parameters, bool isRequiredAuth, string responseType, Domain domain = Domain.Direct);
-        T Upload<T>(string prefix, string command, Dictionary<string, object> parameters, bool isRequiredAuth = true, string responseType = "json", Domain domain = Domain.Api, params File[] files);
+        T Request<T>(string prefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, string responseType = "json", Domain domain = Domain.Api) where T : class;
+        void Request(string prefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, Domain domain = Domain.Api);
+        Stream RequestStream(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, Domain domain = Domain.Api);
+        Uri BuildUri(string command, Dictionary<string, object> parameters, string responseType, Domain domain = Domain.Direct);
+        T Upload<T>(string prefix, string command, Dictionary<string, object> parameters, string responseType = "json", Domain domain = Domain.Api, params File[] files);
     }
 }

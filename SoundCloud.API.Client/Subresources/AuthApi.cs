@@ -33,7 +33,7 @@ namespace SoundCloud.API.Client.Subresources
                 {"grant_type", "password"},
                 {"username", userName},
                 {"password", password}
-            }, null, false, string.Empty);
+            }, null, string.Empty);
 
             return accessTokenConverter.Convert(accessToken);
         }
@@ -48,7 +48,7 @@ namespace SoundCloud.API.Client.Subresources
                 {"grant_type", "authorization_code"},
                 {"code", code},
                 {"redirect_uri", redirectUri}
-            }, null, false, string.Empty);
+            }, null, string.Empty);
 
             return accessTokenConverter.Convert(accessToken);
         }
@@ -64,9 +64,7 @@ namespace SoundCloud.API.Client.Subresources
                                                     {"scope", scope.GetParameterName()},
                                                     {"display", display.GetParameterName()},
                                                     {"state", state}
-                                                },
-                                                false,
-                                                string.Empty);
+                                                }, string.Empty);
         }
 
         public SCAccessToken RefreshToken(string token)
@@ -78,7 +76,7 @@ namespace SoundCloud.API.Client.Subresources
                 {"client_secret", credentials.ClientSecret},
                 {"grant_type", "refresh_token"},
                 {"refresh_token", token}
-            }, null, false, string.Empty);
+            }, null, string.Empty);
 
             return accessTokenConverter.Convert(accessToken);
         }

@@ -66,11 +66,11 @@ namespace SoundCloud.API.Client.Test.Subresources
                     artworkStream = new MemoryStream(bytes);
                 }
             }
-            
-            var uploadedTrack = soundCloudClient.Tracks.UploadTrack(trackFileStream, 
-                                                                    title, 
-                                                                    description, 
-                                                                    SCSharing.Private, 
+
+            var uploadedTrack = soundCloudClient.Tracks.UploadTrack(trackFileStream,
+                                                                    title,
+                                                                    description,
+                                                                    SCSharing.Private,
                                                                     artworkStream);
             Assert.AreEqual(title, uploadedTrack.Title);
             Assert.AreEqual(description, uploadedTrack.Description);
@@ -146,7 +146,7 @@ namespace SoundCloud.API.Client.Test.Subresources
             }
         }
 
-        public static byte[] ReadAll(Stream stream)
+        private static byte[] ReadAll(Stream stream)
         {
             var buffer = new byte[16 * 1024];
             using (var memoryStream = new MemoryStream())

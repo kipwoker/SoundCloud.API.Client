@@ -14,6 +14,26 @@ namespace SoundCloud.API.Client
 {
     public class SoundCloudConnector : ISoundCloudConnector
     {
+        public IAnonymousSoundCloudClient AnonymousConnect()
+        {
+            var soundCloudRawClient = CreateSCRawClient(null);
+            return new AnonymousSoundCloudClient(new OEmbed(soundCloudRawClient));
+        }
+
+        public IUnauthorizedSoundCloudClient UnauthorizedConnect(string clientId, string clientSecret)
+        {
+            var credentials = new SCCredentials
+            {
+                ClientId = clientId,
+                ClientSecret = clientSecret
+            };
+
+            var soundCloudRawClient = CreateSCRawClient(credentials);
+            var soundCloudClient = new UnauthorizedSoundCloudClient(CreateSubresourceFactory(soundCloudRawClient));
+
+            return soundCloudClient;
+        }
+
         public ISoundCloudClient DirectConnect(string clientId, string clientSecret, string userName, string password)
         {
             var credentials = new SCCredentials
@@ -94,19 +114,24 @@ namespace SoundCloud.API.Client
         {
             return new SoundCloudClient(
                 soundCloudRawClient.AccessToken,
-                new SubresourceFactory(
-                    soundCloudRawClient,
-                    PaginationValidator.Default,
-                    TrackConverter.Default,
-                    UserConverter.Default,
-                    PlaylistConverter.Default,
-                    CommentConverter.Default,
-                    GroupConverter.Default,
-                    WebProfileConverter.Default,
-                    ConnectionConverter.Default,
-                    ActivityResultConverter.Default,
-                    ApplicationConverter.Default
-                    ));
+                CreateSubresourceFactory(soundCloudRawClient));
+        }
+
+        private static SubresourceFactory CreateSubresourceFactory(ISoundCloudRawClient soundCloudRawClient)
+        {
+            return new SubresourceFactory(
+                soundCloudRawClient,
+                PaginationValidator.Default,
+                TrackConverter.Default,
+                UserConverter.Default,
+                PlaylistConverter.Default,
+                CommentConverter.Default,
+                GroupConverter.Default,
+                WebProfileConverter.Default,
+                ConnectionConverter.Default,
+                ActivityResultConverter.Default,
+                ApplicationConverter.Default
+                );
         }
 
         private static SoundCloudRawClient CreateSCRawClient(SCCredentials credentials)

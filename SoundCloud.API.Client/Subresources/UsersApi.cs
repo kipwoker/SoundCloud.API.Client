@@ -28,13 +28,13 @@ namespace SoundCloud.API.Client.Subresources
         {
             paginationValidator.Validate(offset, limit);
 
-            var parameters = new Dictionary<string, object> ();
+            var parameters = new Dictionary<string, object>();
             if (!string.IsNullOrEmpty(query))
             {
                 parameters.Add("q", query);
             }
-            
-            var users = soundCloudRawClient.Request<User[]>(prefix, string.Empty, HttpMethod.Get, parameters.SetPagination(offset, limit));
+
+            var users = soundCloudRawClient.Request<User[]>(prefix, string.Empty, HttpMethod.Get, parameters: parameters.SetPagination(offset, limit));
             return users.Select(userConverter.Convert).ToArray();
         }
     }

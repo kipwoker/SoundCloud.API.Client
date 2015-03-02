@@ -6,15 +6,16 @@ using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Subresources.Helpers;
+using SoundCloud.API.Client.Subresources.Public;
 
 namespace SoundCloud.API.Client.Subresources
 {
-    public class UserApi : IUserApi
+    public class UserApi : IUserApi, IPublicUserApi
     {
         private readonly string userId;
         internal readonly ISoundCloudRawClient soundCloudRawClient;
         internal readonly IPaginationValidator paginationValidator;
-        internal readonly IUserConverter userConverter;
+        private readonly IUserConverter userConverter;
         private readonly ITrackConverter trackConverter;
         private readonly IPlaylistConverter playlistConverter;
         internal readonly ICommentConverter commentConverter;

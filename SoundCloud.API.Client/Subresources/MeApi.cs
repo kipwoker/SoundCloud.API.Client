@@ -57,7 +57,7 @@ namespace SoundCloud.API.Client.Subresources
                 { "service", serviceType.GetParameterName() },
                 { "redirect_uri", redirectUri}
             };
-            var unsavedConnection = soundCloudRawClient.Request<UnsavedConnection>(prefix, "connections", HttpMethod.Post, parameters);
+            var unsavedConnection = soundCloudRawClient.Request<UnsavedConnection>(prefix, "connections", HttpMethod.Post, parameters: parameters);
             return unsavedConnection == null ? null : unsavedConnection.AuthorizeUrl;
         }
 
@@ -68,7 +68,7 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCActivityResult GetActivityQueryResult(string queryId)
         {
-            var activityResult = soundCloudRawClient.Request<ActivityResult>(prefix, "activities", HttpMethod.Get, new Dictionary<string, object> { { "uuid[to]", queryId } });
+            var activityResult = soundCloudRawClient.Request<ActivityResult>(prefix, "activities", HttpMethod.Get, parameters: new Dictionary<string, object> { { "uuid[to]", queryId } });
             return activityResultConverter.Convert(activityResult);
         }
 
@@ -109,7 +109,7 @@ namespace SoundCloud.API.Client.Subresources
                 parameters.Add("cursor", cursorToNext);
             }
 
-            var activityResult = soundCloudRawClient.Request<ActivityResult>(prefix, command, HttpMethod.Get, parameters);
+            var activityResult = soundCloudRawClient.Request<ActivityResult>(prefix, command, HttpMethod.Get, parameters: parameters);
             return activityResultConverter.Convert(activityResult);
         }
     }

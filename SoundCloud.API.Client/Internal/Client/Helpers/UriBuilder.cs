@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SoundCloud.API.Client.Objects.Auth;
 
 namespace SoundCloud.API.Client.Internal.Client.Helpers
 {
@@ -69,6 +70,16 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers
 
             uri = new System.UriBuilder(uri) { Query = (uri.Query + "&" + queryString).TrimStart('&', '?') }.Uri;
             return this;
+        }
+
+        public IUriBuilder AddCredentials(SCCredentials credentials, SCAccessToken accessToken)
+        {
+            if (credentials == null)
+                return this;
+
+            return accessToken == null
+                 ? AddClientId(credentials.ClientId)
+                 : AddToken(accessToken.AccessToken);
         }
 
         public Uri Build()
