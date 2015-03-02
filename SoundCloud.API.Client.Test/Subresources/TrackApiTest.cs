@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using NUnit.Framework;
@@ -131,6 +132,35 @@ namespace SoundCloud.API.Client.Test.Subresources
             {
                 var bytes = ReadAll(stream);
                 Assert.IsTrue(bytes.Length > 0);
+            }
+        }
+
+        [Test]
+        [Ignore("For debug issue #1")]
+        public void TestIssue1()
+        {
+            var trackIds = new[]
+            {
+                "190613982",
+                "190614460",
+                "190614417",
+                "190634160",
+                "190614339",
+                "190612009",
+                "190614800",
+                "190614360",
+                "190611995"
+            };
+
+            foreach (var trackId in trackIds)
+            {
+                Debug.Write(trackId + Environment.NewLine);
+                var track = soundCloudClient.Track(trackId);
+                using (var stream = track.GetStream())
+                {
+                    var bytes = ReadAll(stream);
+                    Assert.IsTrue(bytes.Length > 0);
+                }
             }
         }
 

@@ -25,7 +25,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             Func<int, string, string> buildExceptionMessage;
             var request = BuildRequest(uriBuilder, method, parameters, body, out buildExceptionMessage);
 
-            return GetResponse(request, buildExceptionMessage);
+            return GetContent(request, buildExceptionMessage);
         }
 
         public Stream RequestStream(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
@@ -33,7 +33,8 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             Func<int, string, string> buildExceptionMessage;
             var request = BuildRequest(uriBuilder, method, parameters, body, out buildExceptionMessage);
 
-            return request.GetResponse().GetResponseStream();
+            var response = GetResponse(request, (statusCode, content) => string.Format("RequestStream exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uriBuilder.Build(), method, statusCode, content));
+            return response.GetResponseStream();
         }
 
         public string Upload(IUriBuilder uriBuilder, Dictionary<string, object> parameters, params File[] files)
@@ -106,7 +107,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
                     s.Write(footer, 0, footer.Length);
                 }
 
-                return GetResponse(request, (statusCode, content) =>
+                return GetContent(request, (statusCode, content) =>
                                             string.Format("Upload failed. Parameters: uri = {0}. Files: {1}. Response: {2} - {3}",
                                                 uri.AbsoluteUri,
                                                 string.Join(";", files.Select(x => x.Path)),
@@ -153,16 +154,11 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             return request;
         }
 
-        private static string GetResponse(WebRequest request, Func<int, string, string> buildExceptionMessage)
+        private static HttpWebResponse GetResponse(WebRequest request, Func<int, string, string> buildExceptionMessage)
         {
             try
             {
-                using (var response = (HttpWebResponse)request.GetResponse())
-                using (var responseStream = response.GetResponseStream())
-                {
-                    var content = SmartReadContent(response, responseStream);
-                    return content;
-                }
+                return (HttpWebResponse)request.GetResponse();
             }
             catch (WebException ex)
             {
@@ -177,6 +173,16 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             {
                 const HttpStatusCode statusCode = HttpStatusCode.ServiceUnavailable;
                 throw new WebGatewayException(buildExceptionMessage((int)statusCode, string.Empty), statusCode, ex);
+            }
+        }
+
+        private static string GetContent(WebRequest request, Func<int, string, string> buildExceptionMessage)
+        {
+            using (var response = GetResponse(request, buildExceptionMessage))
+            using (var responseStream = response.GetResponseStream())
+            {
+                var content = SmartReadContent(response, responseStream);
+                return content;
             }
         }
 
