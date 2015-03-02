@@ -77,9 +77,12 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers
             if (credentials == null)
                 return this;
 
-            return accessToken == null
-                 ? AddClientId(credentials.ClientId)
-                 : AddToken(accessToken.AccessToken);
+            if (accessToken != null)
+            {
+                AddToken(accessToken.AccessToken);
+            }
+
+            return AddClientId(credentials.ClientId);
         }
 
         public Uri Build()

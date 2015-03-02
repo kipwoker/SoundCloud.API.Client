@@ -89,7 +89,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client.Helpers
 
         [Test]
         [TestCase("http://fake.org/", false, "", "", "http://fake.org/")]
-        [TestCase("http://fake.org/", true, "808", "t0ken", "http://fake.org/?oauth_token=t0ken")]
+        [TestCase("http://fake.org/", true, "808", "t0ken", "http://fake.org/?oauth_token=t0ken&client_id=808")]
         [TestCase("http://fake.org/", true, "808", "", "http://fake.org/?client_id=808")]
         public void TestAddCredentials(string baseUrl, bool needCredentials, string clientId, string accessToken, string expected)
         {
