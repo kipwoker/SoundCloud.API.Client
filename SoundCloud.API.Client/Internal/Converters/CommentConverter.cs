@@ -7,8 +7,6 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class CommentConverter : ICommentConverter
     {
-        internal static readonly ICommentConverter Default = new CommentConverter(UserConverter.Default, DateTimeConverter.Default);
-
         private readonly IUserConverter userConverter;
         private readonly IDateTimeConverter dateTimeConverter;
 

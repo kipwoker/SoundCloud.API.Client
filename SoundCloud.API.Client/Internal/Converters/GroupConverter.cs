@@ -7,14 +7,13 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class GroupConverter : IGroupConverter
     {
-        private readonly IDateTimeConverter dateTimeConverter;
         private readonly IUserConverter userConverter;
-        internal static readonly IGroupConverter Default = new GroupConverter(DateTimeConverter.Default, UserConverter.Default);
+        private readonly IDateTimeConverter dateTimeConverter;
 
-        private GroupConverter(IDateTimeConverter dateTimeConverter, IUserConverter userConverter)
+        internal GroupConverter(IUserConverter userConverter, IDateTimeConverter dateTimeConverter)
         {
-            this.dateTimeConverter = dateTimeConverter;
             this.userConverter = userConverter;
+            this.dateTimeConverter = dateTimeConverter;
         }
 
         public SCGroup Convert(Group @group)

@@ -6,8 +6,6 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class UserConverter : IUserConverter
     {
-        internal static readonly IUserConverter Default = new UserConverter();
-
         public SCUser Convert(User user)
         {
             if (user == null)

@@ -17,7 +17,7 @@ namespace SoundCloud.API.Client.Test
             base.TestFixtureSetUp();
 
             var settingsJson = File.ReadAllText(Environment.CurrentDirectory + (IsUnix() ? "/" : @"\")  + "settings.json", Encoding.UTF8);
-            settings = JsonSerializer.Default.Deserialize<Settings>(settingsJson);
+            settings = new JsonSerializer().Deserialize<Settings>(settingsJson);
 
             ISoundCloudConnector soundCloudConnector = new SoundCloudConnector();
             soundCloudClient = soundCloudConnector.DirectConnect(settings.ClientId, settings.ClientSecret, settings.UserName, settings.Password);

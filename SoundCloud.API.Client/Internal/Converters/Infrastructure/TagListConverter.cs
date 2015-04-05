@@ -6,8 +6,6 @@ namespace SoundCloud.API.Client.Internal.Converters.Infrastructure
 {
     internal class TagListConverter : ITagListConverter
     {
-        internal static readonly ITagListConverter Default = new TagListConverter();
-
         private const char whitespace = ' ';
         private const char quote = '"';
 

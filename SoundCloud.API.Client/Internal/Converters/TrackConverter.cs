@@ -9,14 +9,12 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class TrackConverter : ITrackConverter
     {
-        internal static readonly ITrackConverter Default = new TrackConverter(UserConverter.Default, TagListConverter.Default, ApplicationConverter.Default, DateTimeConverter.Default);
-
         private readonly IUserConverter userConverter;
         private readonly ITagListConverter tagListConverter;
         private readonly IApplicationConverter applicationConverter;
         private readonly IDateTimeConverter dateTimeConverter;
-
-        private TrackConverter(IUserConverter userConverter, ITagListConverter tagListConverter, IApplicationConverter applicationConverter, IDateTimeConverter dateTimeConverter)
+        
+        internal TrackConverter(IUserConverter userConverter, ITagListConverter tagListConverter, IApplicationConverter applicationConverter, IDateTimeConverter dateTimeConverter)
         {
             this.userConverter = userConverter;
             this.tagListConverter = tagListConverter;

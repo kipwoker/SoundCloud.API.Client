@@ -14,12 +14,6 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
 {
     internal class WebGateway : IWebGateway
     {
-        internal static readonly IWebGateway Default = new WebGateway();
-
-        private WebGateway()
-        {
-        }
-
         public string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
         {
             Func<int, string, string> buildExceptionMessage;

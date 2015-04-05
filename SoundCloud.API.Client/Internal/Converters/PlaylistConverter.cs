@@ -15,9 +15,8 @@ namespace SoundCloud.API.Client.Internal.Converters
         private readonly ITrackConverter trackConverter;
         private readonly ITagListConverter tagListConverter;
         private readonly IDateTimeConverter dateTimeConverter;
-        internal static readonly IPlaylistConverter Default = new PlaylistConverter(UserConverter.Default, TrackConverter.Default, TagListConverter.Default, DateTimeConverter.Default);
 
-        private PlaylistConverter(IUserConverter userConverter, ITrackConverter trackConverter, ITagListConverter tagListConverter, IDateTimeConverter dateTimeConverter)
+        internal PlaylistConverter(IUserConverter userConverter, ITrackConverter trackConverter, ITagListConverter tagListConverter, IDateTimeConverter dateTimeConverter)
         {
             this.userConverter = userConverter;
             this.trackConverter = trackConverter;

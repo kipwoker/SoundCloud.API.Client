@@ -9,9 +9,8 @@ namespace SoundCloud.API.Client.Internal.Converters
     internal class ConnectionConverter : IConnectionConverter
     {
         private readonly IDateTimeConverter dateTimeConverter;
-        internal static readonly IConnectionConverter Default = new ConnectionConverter(DateTimeConverter.Default);
 
-        private ConnectionConverter(IDateTimeConverter dateTimeConverter)
+        internal ConnectionConverter(IDateTimeConverter dateTimeConverter)
         {
             this.dateTimeConverter = dateTimeConverter;
         }

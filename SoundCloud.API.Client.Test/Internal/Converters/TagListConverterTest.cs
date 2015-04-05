@@ -8,12 +8,14 @@ namespace SoundCloud.API.Client.Test.Internal.Converters
     public class TagListConverterTest : TestBase
     {
         private TagListConverter tagListConverter;
+        private JsonSerializer jsonSerializer;
 
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
 
             tagListConverter = new TagListConverter();
+            jsonSerializer = new JsonSerializer();
         }
 
         [Test]
@@ -25,7 +27,8 @@ namespace SoundCloud.API.Client.Test.Internal.Converters
                 MachineTags = new[] { new SCMachineTag { Namespace = "five", Key = "six", Value = "seven" }, new SCMachineTag { Namespace = "eight", Key = "nine", Value = "ten eleven twelve" } }
             };
             var actual = tagListConverter.Convert("one two \"three four\" five:six=seven \"eight:nine=ten eleven twelve\"");
-            Assert.AreEqual(JsonSerializer.Default.Serialize(expected), JsonSerializer.Default.Serialize(actual));
+            
+            Assert.AreEqual(jsonSerializer.Serialize(expected), jsonSerializer.Serialize(actual));
         }
 
         [Test]
@@ -35,7 +38,7 @@ namespace SoundCloud.API.Client.Test.Internal.Converters
         {
             var expected = new SCTagList();
             var actual = tagListConverter.Convert(input);
-            Assert.AreEqual(JsonSerializer.Default.Serialize(expected), JsonSerializer.Default.Serialize(actual));
+            Assert.AreEqual(jsonSerializer.Serialize(expected), jsonSerializer.Serialize(actual));
         }
 
         [Test]

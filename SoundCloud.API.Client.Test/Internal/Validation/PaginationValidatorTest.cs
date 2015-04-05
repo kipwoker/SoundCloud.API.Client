@@ -12,7 +12,7 @@ namespace SoundCloud.API.Client.Test.Internal.Validation
         {
             base.SetUp();
 
-            paginationValidator = PaginationValidator.Default;
+            paginationValidator = new PaginationValidator();
         }
 
         [Test]

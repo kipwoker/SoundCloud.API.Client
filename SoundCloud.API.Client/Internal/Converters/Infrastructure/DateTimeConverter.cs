@@ -5,8 +5,6 @@ namespace SoundCloud.API.Client.Internal.Converters.Infrastructure
 {
     internal class DateTimeConverter : IDateTimeConverter
     {
-        internal static readonly IDateTimeConverter Default = new DateTimeConverter();
-
         public DateTimeOffset Convert(string dateTime)
         {
             return DateTimeOffset.Parse(dateTime, CultureInfo.InvariantCulture);

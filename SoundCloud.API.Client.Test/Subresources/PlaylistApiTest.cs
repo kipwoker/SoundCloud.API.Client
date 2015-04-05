@@ -13,7 +13,8 @@ namespace SoundCloud.API.Client.Test.Subresources
                 return;
 
             var playlist = soundCloudClient.Playlist(playlists[0].Id).GetPlaylist();
-            Assert.AreEqual(JsonSerializer.Default.Serialize(playlists[0]), JsonSerializer.Default.Serialize(playlist));
+            var jsonSerializer = new JsonSerializer();
+            Assert.AreEqual(jsonSerializer.Serialize(playlists[0]), jsonSerializer.Serialize(playlist));
         }
     }
 }

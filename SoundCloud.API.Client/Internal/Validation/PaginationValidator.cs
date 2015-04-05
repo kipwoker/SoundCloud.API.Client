@@ -5,8 +5,6 @@ namespace SoundCloud.API.Client.Internal.Validation
 {
     internal class PaginationValidator : IPaginationValidator
     {
-        internal static readonly IPaginationValidator Default = new PaginationValidator();
-
         private readonly Dictionary<ValidationParams, ValidationModel> validations = new Dictionary<ValidationParams, ValidationModel>
         {
             {ValidationParams.Offset, new ValidationModel{ PublicPropertyName = "offset", MinValue = 0, MaxValue = 8000}},

@@ -45,7 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnonymousSoundCloudClient.cs" />
+    <Compile Include="Factories\ISoundCloudClientBuilder.cs" />
+    <Compile Include="Factories\ISubresourceFactoryBuilder.cs" />
+    <Compile Include="Factories\SoundCloudClientBuilder.cs" />
+    <Compile Include="Factories\SubresourceFactoryBuilder.cs" />
     <Compile Include="IAnonymousSoundCloudClient.cs" />
+    <Compile Include="Internal\Client\Factories\ISoundCloudRawClientFactory.cs" />
+    <Compile Include="Internal\Client\Factories\SoundCloudRawClientFactory.cs" />
     <Compile Include="Internal\Client\Helpers\Domain.cs" />
     <Compile Include="Internal\Client\Helpers\Factories\IUriBuilderFactory.cs" />
     <Compile Include="Internal\Client\Helpers\Factories\UriBuilderFactory.cs" />

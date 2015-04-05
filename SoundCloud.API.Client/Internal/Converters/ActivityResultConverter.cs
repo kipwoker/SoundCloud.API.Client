@@ -16,8 +16,6 @@ namespace SoundCloud.API.Client.Internal.Converters
         private readonly IUserConverter userConverter;
         private readonly IPlaylistConverter playlistConverter;
         private readonly IDateTimeConverter dateTimeConverter;
-        internal static readonly IActivityResultConverter Default = 
-            new ActivityResultConverter(TrackConverter.Default, CommentConverter.Default, UserConverter.Default, PlaylistConverter.Default, DateTimeConverter.Default);
 
         internal ActivityResultConverter(
             ITrackConverter trackConverter, 

@@ -11,7 +11,7 @@ namespace SoundCloud.API.Client.Internal.Client
     internal interface ISoundCloudRawClient
     {
         SCCredentials Credentials { get; }
-        SCAccessToken AccessToken { get; }
+        SCAccessToken AccessToken { get; set; }
         T Request<T>(string prefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, string responseType = "json", Domain domain = Domain.Api) where T : class;
         void Request(string prefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, Domain domain = Domain.Api);
         Stream RequestStream(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, Domain domain = Domain.Api);

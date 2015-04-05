@@ -7,8 +7,6 @@ namespace SoundCloud.API.Client.Internal.Converters.Auth
 {
     internal class AccessTokenConverter : IAccessTokenConverter
     {
-        internal static readonly IAccessTokenConverter Default = new AccessTokenConverter();
-
         public SCAccessToken Convert(AccessToken accessToken)
         {
             if (accessToken == null)

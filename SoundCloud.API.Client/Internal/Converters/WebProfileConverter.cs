@@ -7,9 +7,8 @@ namespace SoundCloud.API.Client.Internal.Converters
     internal class WebProfileConverter : IWebProfileConverter
     {
         private readonly IDateTimeConverter dateTimeConverter;
-        internal static readonly IWebProfileConverter Default = new WebProfileConverter(DateTimeConverter.Default);
 
-        private WebProfileConverter(IDateTimeConverter dateTimeConverter)
+        internal WebProfileConverter(IDateTimeConverter dateTimeConverter)
         {
             this.dateTimeConverter = dateTimeConverter;
         }

@@ -5,8 +5,6 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Serialization
 {
     internal class JsonSerializer : ISerializer
     {
-        internal static readonly ISerializer Default = new JsonSerializer();
-
         private static readonly JsonConverter[] customConverters = { new JsonActivityConverter() };
 
         public string Serialize<T>(T obj)
