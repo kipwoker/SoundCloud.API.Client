@@ -1,7 +1,7 @@
 
 ##SoundCloud.API.Client
 
-[![Build Status](https://travis-ci.org/kipwoker/SoundCloud.API.Client.svg?branch=master)](https://travis-ci.org/kipwoker/SoundCloud.API.Client)
+[![Build Status](https://travis-ci.org/kipwoker/SoundCloud.API.Client.svg?branch=v1.0.0)](https://travis-ci.org/kipwoker/SoundCloud.API.Client)
 
 # About
 .NET API implementation  https://developers.soundcloud.com/docs/api/reference
