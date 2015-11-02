@@ -22,6 +22,8 @@ namespace SoundCloud.API.Client
 
         IResolveApi Resolve { get; }
 
+        IExploreApi Explore { get; }
+
         IOEmbed OEmbed { get; } 
     }
 }

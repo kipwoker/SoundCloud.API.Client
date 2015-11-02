@@ -52,5 +52,10 @@ namespace SoundCloud.API.Client.Objects
         public SCEmbeddableBy EmbeddableBy { get; set; }
         public long? OriginalContentSize { get; set; }
         public SCApplication CreatedWith { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{1} ({2}, {3})", User.UserName, Title, Id, PermalinkUrl);
+        }
     }
 }

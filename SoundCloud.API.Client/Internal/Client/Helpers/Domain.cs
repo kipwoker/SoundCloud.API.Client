@@ -8,6 +8,9 @@ namespace SoundCloud.API.Client.Internal.Client.Helpers
         Api,
 
         [Parameter("https://soundcloud.com/")]
-        Direct
+        Direct,
+
+        [Parameter("https://api-v2.soundcloud.com/")]
+        ApiV2
     }
 }

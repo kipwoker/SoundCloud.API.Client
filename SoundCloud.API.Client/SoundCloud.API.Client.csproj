@@ -65,11 +65,13 @@
     <Compile Include="Internal\Converters\Auth\IAccessTokenConverter.cs" />
     <Compile Include="Internal\Converters\CommentConverter.cs" />
     <Compile Include="Internal\Converters\ConnectionConverter.cs" />
+    <Compile Include="Internal\Converters\ExploreCategoryConverter.cs" />
     <Compile Include="Internal\Converters\GroupConverter.cs" />
     <Compile Include="Internal\Converters\IActivityResultConverter.cs" />
     <Compile Include="Internal\Converters\IApplicationConverter.cs" />
     <Compile Include="Internal\Converters\ICommentConverter.cs" />
     <Compile Include="Internal\Converters\IConnectionConverter.cs" />
+    <Compile Include="Internal\Converters\IExploreCategoryConverter.cs" />
     <Compile Include="Internal\Converters\IGroupConverter.cs" />
     <Compile Include="Internal\Converters\Infrastructure\DateTimeConverter.cs" />
     <Compile Include="Internal\Converters\Infrastructure\IDateTimeConverter.cs" />
@@ -109,9 +111,12 @@
     <Compile Include="Internal\Objects\Auth\AccessToken.cs" />
     <Compile Include="Internal\Objects\Comment.cs" />
     <Compile Include="Internal\Objects\Connection.cs" />
+    <Compile Include="Internal\Objects\ExploreCategoryList.cs" />
+    <Compile Include="Internal\Objects\ExploreTrackList.cs" />
     <Compile Include="Internal\Objects\Group.cs" />
     <Compile Include="Internal\Objects\Playlist.cs" />
     <Compile Include="Internal\Objects\Track.cs" />
+    <Compile Include="Internal\Objects\TrackCollection.cs" />
     <Compile Include="Internal\Objects\UnsavedConnection.cs" />
     <Compile Include="Internal\Objects\User.cs" />
     <Compile Include="Internal\Objects\WebProfile.cs" />
@@ -131,6 +136,7 @@
     <Compile Include="Objects\SCApplication.cs" />
     <Compile Include="Objects\SCComment.cs" />
     <Compile Include="Objects\SCConnection.cs" />
+    <Compile Include="Objects\SCExploreCategory.cs" />
     <Compile Include="Objects\SCGroup.cs" />
     <Compile Include="Objects\SCOEmbed.cs" />
     <Compile Include="Objects\SCPlaylist.cs" />
@@ -157,6 +163,7 @@
     <Compile Include="SoundCloudConnector.cs" />
     <Compile Include="Subresources\AuthApi.cs" />
     <Compile Include="Subresources\CommentApi.cs" />
+    <Compile Include="Subresources\ExploreApi.cs" />
     <Compile Include="Subresources\Factories\ISubresourceFactory.cs" />
     <Compile Include="Subresources\Factories\SubresourceFactory.cs" />
     <Compile Include="Subresources\GroupApi.cs" />
@@ -170,6 +177,7 @@
     <Compile Include="Subresources\IAppApi.cs" />
     <Compile Include="Subresources\IAuthApi.cs" />
     <Compile Include="Subresources\ICommentApi.cs" />
+    <Compile Include="Subresources\IExploreApi.cs" />
     <Compile Include="Subresources\IGroupApi.cs" />
     <Compile Include="Subresources\IGroupsApi.cs" />
     <Compile Include="Subresources\IMeApi.cs" />

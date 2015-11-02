@@ -18,7 +18,7 @@ namespace SoundCloud.API.Client.Test.Subresources
             base.TestFixtureSetUp();
 
             tracksApi = soundCloudClient.Tracks;
-            tracksSearcher = () => tracksApi.BeginSearch(SCFilter.All);
+            tracksSearcher = () => tracksApi.BeginSearch(SCFilter.All, false);
         }
 
         [Test]
@@ -26,20 +26,20 @@ namespace SoundCloud.API.Client.Test.Subresources
         [TestCase(SCFilter.Public)]
         public void TestSearchByFilter(SCFilter filter)
         {
-            TestCollection((o,c) =>tracksApi.BeginSearch(filter).Exec(SCOrder.CreatedAt, o, c), 0 ,50);
+            TestCollection((o,c) =>tracksApi.BeginSearch(filter, false).Exec(SCOrder.CreatedAt, o, c), 0 ,50);
         }
 
         [Test]
         public void TestSearchDownloadable()
         {
-            var tracks = tracksApi.BeginSearch(SCFilter.Downloadable).Exec();
+            var tracks = tracksApi.BeginSearch(SCFilter.Downloadable, false).Exec();
             Assert.IsTrue(tracks.All(x => x.Downloadable.HasValue && x.Downloadable.Value));
         }
 
         [Test]
         public void TestSearchStreamable()
         {
-            var tracks = tracksApi.BeginSearch(SCFilter.Streamable).Exec();
+            var tracks = tracksApi.BeginSearch(SCFilter.Streamable, false).Exec();
             Assert.IsTrue(tracks.All(x => x.Streamable.HasValue && x.Streamable.Value));
         }
 
@@ -171,6 +171,13 @@ namespace SoundCloud.API.Client.Test.Subresources
         public void TestSearchByTypes()
         {
             TestCollection((o, c) => tracksSearcher().Types(SCTrackType.Podcast, SCTrackType.Recording).Exec(SCOrder.CreatedAt, o, c), 0, 50);
+        }
+
+        [Test]
+        public void TestNewSeachApi()
+        {
+            var tracks = tracksApi.BeginSearch(SCFilter.All, true).Query("Boat That's Capsized").Exec();
+            Assert.IsTrue(tracks.Any(x => x.Title.Contains("Boat That's Capsized")));
         }
     }
 }

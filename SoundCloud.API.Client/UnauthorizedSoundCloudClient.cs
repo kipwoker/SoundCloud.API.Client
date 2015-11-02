@@ -17,6 +17,7 @@ namespace SoundCloud.API.Client
             Me = subresourceFactory.CreateMe();
             Groups = subresourceFactory.CreateGroups();
             Resolve = subresourceFactory.CreateResolve();
+            Explore = subresourceFactory.CreateExplore();
             OEmbed = subresourceFactory.CreateOEmbed();
         }
 
@@ -59,6 +60,9 @@ namespace SoundCloud.API.Client
         }
 
         public IResolveApi Resolve { get; private set; }
+
+        public IExploreApi Explore { get; private set; }
+
         public IOEmbed OEmbed { get; private set; }
     }
 }

@@ -17,6 +17,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
         private readonly IConnectionConverter connectionConverter;
         private readonly IActivityResultConverter activityResultConverter;
         private readonly IApplicationConverter applicationConverter;
+        private readonly IExploreCategoryConverter exploreCategoryConverter;
 
         public SubresourceFactory(
             ISoundCloudRawClient soundCloudRawClient,
@@ -29,7 +30,8 @@ namespace SoundCloud.API.Client.Subresources.Factories
             IWebProfileConverter webProfileConverter,
             IConnectionConverter connectionConverter,
             IActivityResultConverter activityResultConverter,
-            IApplicationConverter applicationConverter)
+            IApplicationConverter applicationConverter,
+            IExploreCategoryConverter exploreCategoryConverter)
         {
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
@@ -42,6 +44,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
             this.connectionConverter = connectionConverter;
             this.activityResultConverter = activityResultConverter;
             this.applicationConverter = applicationConverter;
+            this.exploreCategoryConverter = exploreCategoryConverter;
         }
 
         public IUserApi CreateUser(string userId)
@@ -98,6 +101,11 @@ namespace SoundCloud.API.Client.Subresources.Factories
         public IResolveApi CreateResolve()
         {
             return new ResolveApi(soundCloudRawClient, groupConverter, userConverter, trackConverter, playlistConverter);
+        }
+
+        public IExploreApi CreateExplore()
+        {
+            return new ExploreApi(soundCloudRawClient, paginationValidator, exploreCategoryConverter, trackConverter);
         }
 
         public IOEmbed CreateOEmbed()

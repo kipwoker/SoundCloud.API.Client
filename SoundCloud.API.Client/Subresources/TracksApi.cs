@@ -10,6 +10,7 @@ using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Objects.TrackPieces;
 using SoundCloud.API.Client.Subresources.Helpers;
 using File = SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading.File;
+using System;
 
 namespace SoundCloud.API.Client.Subresources
 {
@@ -19,6 +20,8 @@ namespace SoundCloud.API.Client.Subresources
         private readonly IPaginationValidator paginationValidator;
         private readonly ITrackConverter trackConverter;
         private const string prefix = "tracks";
+        private const string searchPrefix = "search";
+        private const string searchCommand = "tracks";
 
         internal TracksApi(ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, ITrackConverter trackConverter)
         {
@@ -50,15 +53,29 @@ namespace SoundCloud.API.Client.Subresources
             return trackConverter.Convert(uploadedTrack);
         }
 
-        public ITracksSearcher BeginSearch(SCFilter filter)
+        public ITracksSearcher BeginSearch(SCFilter filter, bool useNewApi = true)
         {
+            Func<Dictionary<string, object>, SCTrack[]> search;
+            if (useNewApi)
+            {
+                search = parameters =>
+                {
+                    var tracks = soundCloudRawClient.Request<TrackCollection>(searchPrefix, searchCommand, HttpMethod.Get, parameters, responseType: string.Empty, domain: Internal.Client.Helpers.Domain.ApiV2);
+                    return tracks.Tracks.Select(trackConverter.Convert).ToArray();
+                };
+            }
+            else
+            {
+                search = parameters =>
+                {
+                    var tracks = soundCloudRawClient.Request<Track[]>(prefix, string.Empty, HttpMethod.Get, parameters);
+                    return tracks.Select(trackConverter.Convert).ToArray();
+                };
+            }
             return new TracksSearcher(filter, 
+                                      useNewApi,
                                       paginationValidator,
-                                      parameters =>
-                                      {
-                                          var tracks = soundCloudRawClient.Request<Track[]>(prefix, string.Empty, HttpMethod.Get, parameters);
-                                          return tracks.Select(trackConverter.Convert).ToArray();
-                                      });
+                                      search);
         }
     }
 }
