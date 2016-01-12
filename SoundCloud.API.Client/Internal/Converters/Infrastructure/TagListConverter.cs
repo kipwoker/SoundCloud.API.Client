@@ -67,24 +67,24 @@ namespace SoundCloud.API.Client.Internal.Converters.Infrastructure
 
         private static IEnumerable<string> ParseTags(string tagList)
         {
-            if (tagList.Contains("\n"))
-            {
-                //invalid tags goes here
-                //sample:
-                //
-                //Studio
-                //Tag: Music
-                //Tag: Mix
-                //Tag: Word
-                //Tag: Folk
-                //Tag: Sanharib Assure
-                //Tag: assyrian
-                //Add tags
-                //
-                //it's whole string with \n
+            //if (tagList.Contains("\n"))
+            //{
+            //    //invalid tags goes here
+            //    //sample:
+            //    //
+            //    //Studio
+            //    //Tag: Music
+            //    //Tag: Mix
+            //    //Tag: Word
+            //    //Tag: Folk
+            //    //Tag: Sanharib Assure
+            //    //Tag: assyrian
+            //    //Add tags
+            //    //
+            //    //it's whole string with \n
 
-                return new[] {tagList};
-            }
+            //    return new[] {tagList};
+            //}
 
             var chars = tagList.ToCharArray();
             var separatorMode = true;
