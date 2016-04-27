@@ -109,6 +109,8 @@
     <Compile Include="Internal\Objects\ActivityResult.cs" />
     <Compile Include="Internal\Objects\Application.cs" />
     <Compile Include="Internal\Objects\Auth\AccessToken.cs" />
+    <Compile Include="Internal\Objects\ChartTrack.cs" />
+    <Compile Include="Internal\Objects\ChartTrackList.cs" />
     <Compile Include="Internal\Objects\Comment.cs" />
     <Compile Include="Internal\Objects\Connection.cs" />
     <Compile Include="Internal\Objects\ExploreCategoryList.cs" />
@@ -162,6 +164,7 @@
     <Compile Include="SoundCloudApiException.cs" />
     <Compile Include="SoundCloudConnector.cs" />
     <Compile Include="Subresources\AuthApi.cs" />
+    <Compile Include="Subresources\ChartApi.cs" />
     <Compile Include="Subresources\CommentApi.cs" />
     <Compile Include="Subresources\ExploreApi.cs" />
     <Compile Include="Subresources\Factories\ISubresourceFactory.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="Subresources\Helpers\ValidationHelper.cs" />
     <Compile Include="Subresources\IAppApi.cs" />
     <Compile Include="Subresources\IAuthApi.cs" />
+    <Compile Include="Subresources\IChartApi.cs" />
     <Compile Include="Subresources\ICommentApi.cs" />
     <Compile Include="Subresources\IExploreApi.cs" />
     <Compile Include="Subresources\IGroupApi.cs" />

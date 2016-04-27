@@ -139,7 +139,7 @@ namespace SoundCloud.API.Client.Internal.Objects
         [JsonProperty(PropertyName = "favoritings_count")]
         public int FavoritingsCount { get; set; }
 
-        [JsonProperty(PropertyName = "comment_count")]
+        [JsonProperty(PropertyName = "comment_count", NullValueHandling = NullValueHandling.Ignore)]
         public int CommentsCount { get; set; }
 
         [JsonProperty(PropertyName = "attachments_uri")]

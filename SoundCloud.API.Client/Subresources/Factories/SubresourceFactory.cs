@@ -108,6 +108,11 @@ namespace SoundCloud.API.Client.Subresources.Factories
             return new ExploreApi(soundCloudRawClient, paginationValidator, exploreCategoryConverter, trackConverter);
         }
 
+        public IChartApi CreateChart()
+        {
+            return new ChartApi(soundCloudRawClient, paginationValidator, trackConverter);
+        }
+
         public IOEmbed CreateOEmbed()
         {
             return new OEmbed(soundCloudRawClient);

@@ -28,6 +28,8 @@ namespace SoundCloud.API.Client
 
         IExploreApi Explore { get; }
 
+        IChartApi Chart { get; }
+
         IOEmbed OEmbed { get; }
     }
 }

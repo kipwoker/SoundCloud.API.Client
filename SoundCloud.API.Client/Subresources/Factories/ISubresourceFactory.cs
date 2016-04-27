@@ -14,6 +14,7 @@
         IAppApi CreateApp(string applicationId);
         IResolveApi CreateResolve();
         IExploreApi CreateExplore();
+        IChartApi CreateChart();
         IOEmbed CreateOEmbed();
     }
 }
