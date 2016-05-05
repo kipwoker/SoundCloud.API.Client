@@ -15,6 +15,8 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Serialization.Custom
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, Newtonsoft.Json.JsonSerializer serializer)
         {
+            serializer.NullValueHandling = NullValueHandling.Ignore;
+            serializer.DefaultValueHandling = DefaultValueHandling.Populate;
             var jsonObject = JObject.Load(reader);
 
             var target = Create(objectType, jsonObject);

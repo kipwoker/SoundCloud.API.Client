@@ -14,18 +14,18 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
 {
     internal class WebGateway : IWebGateway
     {
-        public string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
+        public string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, string accessToken)
         {
             Func<int, string, string> buildExceptionMessage;
-            var request = BuildRequest(uriBuilder, method, parameters, body, out buildExceptionMessage);
+            var request = BuildRequest(uriBuilder, method, parameters, body, accessToken, out buildExceptionMessage);
 
             return GetContent(request, buildExceptionMessage);
         }
 
-        public Stream RequestStream(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body)
+        public Stream RequestStream(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, string accessToken)
         {
             Func<int, string, string> buildExceptionMessage;
-            var request = BuildRequest(uriBuilder, method, parameters, body, out buildExceptionMessage);
+            var request = BuildRequest(uriBuilder, method, parameters, body, accessToken, out buildExceptionMessage);
 
             var response = GetResponse(request, (statusCode, content) => string.Format("RequestStream exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uriBuilder.Build(), method, statusCode, content));
             return response.GetResponseStream();
@@ -117,7 +117,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             }
         }
 
-        private static WebRequest BuildRequest(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, out Func<int, string, string> buildExceptionMessage)
+        private static WebRequest BuildRequest(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, string acessToken, out Func<int, string, string> buildExceptionMessage)
         {
             var uri = uriBuilder.AddQueryParameters(parameters).Build();
             var request = WebRequest.Create(uri);
@@ -142,6 +142,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
             }
 
             request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+            request.Headers.Add("Authorization", "OAuth " + acessToken);
 
             buildExceptionMessage = (statusCode, content) =>
                 string.Format("WebRequest exception. Parameters: method = {1}, uri = {0}. Response: {2} - {3}.", uri.AbsoluteUri, method, statusCode, content);

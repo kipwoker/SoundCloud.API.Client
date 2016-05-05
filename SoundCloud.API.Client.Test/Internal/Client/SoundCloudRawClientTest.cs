@@ -60,7 +60,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 uriBuilder.Expect(f => f.AddCredentials(scCredentials, scAccessToken)).Return(uriBuilder);
                 uriBuilderFactory.Expect(f => f.Create(Domain.Api.GetParameterName() + "prefix/command.json")).Return(uriBuilder);
 
-                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, bytes)).Return("response");
+                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, bytes, scAccessToken.AccessToken)).Return("response");
 
                 serializer.Expect(f => f.Deserialize<EmptyClass>("response")).Return(expected);
             }
@@ -86,7 +86,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client
                 uriBuilder.Expect(f => f.AddCredentials(scCredentials, null)).Return(uriBuilder);
                 uriBuilderFactory.Expect(f => f.Create(Domain.Api.GetParameterName() + "prefix/command")).Return(uriBuilder);
                 
-                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, null)).Return("response");
+                webGateway.Expect(f => f.Request(uriBuilder, method, parameters, null, "")).Return("response");
             }
 
             var soundCloudRawClient = new SoundCloudRawClient(scCredentials, uriBuilderFactory, webGateway, serializer)

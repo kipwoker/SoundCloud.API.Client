@@ -73,7 +73,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         public void TestSearchByTags()
         {
             var tracks = tracksSearcher().Tags("folk", "indie").Exec();
-            var invalidTracks = tracks.Where(x => !(x.TagList.Tags.Select(y => y.ToLower()).Contains("indie") || x.TagList.Tags.Select(y => y.ToLower()).Contains("folk"))).ToArray();
+            var invalidTracks = tracks.Where(x => !(x.TagList.Tags.Select(y => (y.ToLowerInvariant().Contains("indie") || y.ToLowerInvariant().Contains("folk"))).Any(b => b))).ToArray();
             Assert.AreEqual(0, invalidTracks.Length);
         }
 

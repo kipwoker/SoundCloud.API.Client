@@ -4,7 +4,7 @@ namespace SoundCloud.API.Client.Internal.Objects.Activities
 {
     internal class ActivityPlaylist : ActivityBase, IActivity<Playlist>
     {
-        [JsonProperty(PropertyName = "origin")]
+        [JsonProperty(PropertyName = "origin", NullValueHandling = NullValueHandling.Ignore)]
         public Playlist Origin { get; set; }
     }
 }

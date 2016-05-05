@@ -6,7 +6,7 @@ namespace SoundCloud.API.Client.Internal.Objects
 {
     internal class ChartTrackList
     {
-        [JsonProperty(PropertyName = "collection")]
+        [JsonProperty(PropertyName = "collection", NullValueHandling = NullValueHandling.Ignore)]
         public List<ChartTrack> Tracks { get; set; }
     }
 }

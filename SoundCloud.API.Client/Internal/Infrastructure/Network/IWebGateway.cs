@@ -8,8 +8,8 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Network
 {
     internal interface IWebGateway
     {
-        string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body);
-        Stream RequestStream(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body);
+        string Request(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, string accessToken);
+        Stream RequestStream(IUriBuilder uriBuilder, HttpMethod method, Dictionary<string, object> parameters, byte[] body, string accessToken);
         string Upload(IUriBuilder uriBuilder, Dictionary<string, object> parameters, params File[] files);
     }
 }

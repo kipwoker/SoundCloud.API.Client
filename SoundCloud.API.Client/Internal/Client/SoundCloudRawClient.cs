@@ -55,14 +55,18 @@ namespace SoundCloud.API.Client.Internal.Client
 
         public Stream RequestStream(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, Domain domain = Domain.Api)
         {
+            string token = "";
+            if (AccessToken != null) token = AccessToken.AccessToken;
             var uriBuilder = CreateUriBuilder(domain, apiPrefix, command, string.Empty);
-            return webGateway.RequestStream(uriBuilder, method, parameters, body);
+            return webGateway.RequestStream(uriBuilder, method, parameters, body, token);
         }
 
         private string GetResponse(Domain domain, string prefix, string command, HttpMethod method, Dictionary<string, object> parameters, byte[] body, string responseType)
         {
+            string token = "";
+            if (AccessToken != null) token = AccessToken.AccessToken;
             var uriBuilder = CreateUriBuilder(domain, prefix, command, responseType);
-            var response = webGateway.Request(uriBuilder, method, parameters, body);
+            var response = webGateway.Request(uriBuilder, method, parameters, body, token);
             return response;
         }
 

@@ -40,5 +40,14 @@ namespace SoundCloud.API.Client.Test.Subresources
             var tracks = chartApi.GetTracks(categories.First());
             Assert.IsTrue(tracks.Count() > 0);
         }
+
+        [Test]
+        public void TestDubstepCategory()
+        {
+            var categories = exploreApi.GetExploreCategories();
+            var tracks = chartApi.GetTracks(categories.First(ec => ec.Name == "Dubstep"));
+            Assert.IsTrue(tracks.Count() > 0);
+        }
+
     }
 }
