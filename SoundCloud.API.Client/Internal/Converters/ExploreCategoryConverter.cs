@@ -1,5 +1,4 @@
-﻿using System;
-using SoundCloud.API.Client.Internal.Objects;
+﻿using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Objects;
 using System.Linq;
 

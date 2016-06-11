@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace SoundCloud.API.Client.Objects
+﻿namespace SoundCloud.API.Client.Objects
 {
     public class SCExploreCategory
     {

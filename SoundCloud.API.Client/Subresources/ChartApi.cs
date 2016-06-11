@@ -8,7 +8,6 @@ using SoundCloud.API.Client.Internal.Objects;
 using SoundCloud.API.Client.Internal.Validation;
 using SoundCloud.API.Client.Objects;
 using SoundCloud.API.Client.Subresources.Helpers;
-using System.Text.RegularExpressions;
 
 namespace SoundCloud.API.Client.Subresources
 {

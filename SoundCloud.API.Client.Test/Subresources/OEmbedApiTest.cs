@@ -63,7 +63,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         public void TestWithoutParametersJsonP(string url)
         {
             var embed = oEmbed.BeginQuery(url).ExecuteJsonP();
-            Assert.IsNotNullOrEmpty(embed);
+            Assert.IsFalse(string.IsNullOrEmpty(embed));
 
             Assert.IsTrue(embed.Contains("\"width\":\"100%\""));
         }
@@ -84,7 +84,7 @@ namespace SoundCloud.API.Client.Test.Subresources
                               .SetMaxWidth(42)
                               .SetShowComments(false)
                               .ExecuteJsonP();
-            Assert.IsNotNullOrEmpty(embed);
+            Assert.IsFalse(string.IsNullOrEmpty(embed));
 
             Assert.IsTrue(embed.Contains("auto_play=True"));
             Assert.IsTrue(embed.Contains("callback=dropTable%28%29"));

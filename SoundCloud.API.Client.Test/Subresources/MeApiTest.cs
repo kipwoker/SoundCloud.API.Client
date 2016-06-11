@@ -28,7 +28,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         public void TestPostConnection(SCServiceType serviceType)
         {
             var authUrl = soundCloudClient.Me.PostConnection(serviceType, "http://github.com");
-            Assert.IsNotNullOrEmpty(authUrl);
+            Assert.IsFalse(string.IsNullOrEmpty(authUrl));
         }
 
         [Test]
