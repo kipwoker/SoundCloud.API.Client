@@ -4,28 +4,28 @@ namespace SoundCloud.API.Client.Internal.Objects
 {
     internal class Connection
     {
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
         public string Id { get; set; }
 
-        [JsonProperty(PropertyName = "display_name")]
+        [JsonProperty(PropertyName = "display_name", NullValueHandling = NullValueHandling.Ignore)]
         public string DisplayName { get; set; }
 
-        [JsonProperty(PropertyName = "created_at")]
+        [JsonProperty(PropertyName = "created_at", NullValueHandling = NullValueHandling.Ignore)]
         public string CreatedAt { get; set; }
 
-        [JsonProperty(PropertyName = "service")]
+        [JsonProperty(PropertyName = "service", NullValueHandling = NullValueHandling.Ignore)]
         public string Service { get; set; }
 
-        [JsonProperty(PropertyName = "type")]
+        [JsonProperty(PropertyName = "type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
 
-        [JsonProperty(PropertyName = "post_favorite")]
+        [JsonProperty(PropertyName = "post_favorite", NullValueHandling = NullValueHandling.Ignore)]
         public bool PostFavorite { get; set; }
 
-        [JsonProperty(PropertyName = "post_publish")]
+        [JsonProperty(PropertyName = "post_publish", NullValueHandling = NullValueHandling.Ignore)]
         public bool PostPublish { get; set; }
 
-        [JsonProperty(PropertyName = "uri")]
+        [JsonProperty(PropertyName = "uri", NullValueHandling = NullValueHandling.Ignore)]
         public string Uri { get; set; } 
     }
 }

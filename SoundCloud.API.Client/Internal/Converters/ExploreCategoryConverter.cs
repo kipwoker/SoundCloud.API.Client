@@ -10,7 +10,7 @@ namespace SoundCloud.API.Client.Internal.Converters
         {
             if (categoryList == null)
             {
-                return null;
+                return new SCExploreCategory[0];
             }
 
             return categoryList.MusicCategoryNames.Select(cn => new SCExploreCategory { Name = cn }).ToArray();

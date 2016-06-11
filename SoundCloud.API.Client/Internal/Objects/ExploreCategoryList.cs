@@ -1,14 +1,19 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace SoundCloud.API.Client.Internal.Objects
 {
     internal class ExploreCategoryList
     {
-        [JsonProperty(PropertyName = "music")]
-        public List<string> MusicCategoryNames { get; set; }
+        public ExploreCategoryList()
+        {
+            MusicCategoryNames = new string[0];
+            AudioCategoryNames = new string[0];
+        }
 
-        [JsonProperty(PropertyName = "audio")]
-        public List<string> AudioCategoryNames { get; set; }
+        [JsonProperty(PropertyName = "music", NullValueHandling = NullValueHandling.Ignore)]
+        public string[] MusicCategoryNames { get; set; }
+
+        [JsonProperty(PropertyName = "audio", NullValueHandling = NullValueHandling.Ignore)]
+        public string[] AudioCategoryNames { get; set; }
     }
 }

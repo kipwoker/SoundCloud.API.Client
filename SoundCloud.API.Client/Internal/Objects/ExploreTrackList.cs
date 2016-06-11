@@ -1,11 +1,15 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
 
 namespace SoundCloud.API.Client.Internal.Objects
 {
     internal class ExploreTrackList
     {
+        public ExploreTrackList()
+        {
+            Tracks = new Track[0];
+        }
+
         [JsonProperty(PropertyName = "tracks", NullValueHandling = NullValueHandling.Ignore)]
-        public List<Track> Tracks { get; set; }
+        public Track[] Tracks { get; set; }
     }
 }

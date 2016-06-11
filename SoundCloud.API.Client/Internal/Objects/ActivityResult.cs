@@ -5,13 +5,18 @@ namespace SoundCloud.API.Client.Internal.Objects
 {
     internal class ActivityResult
     {
-        [JsonProperty(PropertyName = "next_href")]
+        public ActivityResult()
+        {
+            Activities = new ActivityBase[0];
+        }
+
+        [JsonProperty(PropertyName = "next_href", NullValueHandling = NullValueHandling.Ignore)]
         public string NextHref { get; set; }
 
-        [JsonProperty(PropertyName = "future_href")]
+        [JsonProperty(PropertyName = "future_href", NullValueHandling = NullValueHandling.Ignore)]
         public string FutureHref { get; set; }
 
-        [JsonProperty(PropertyName = "collection")]
+        [JsonProperty(PropertyName = "collection", NullValueHandling = NullValueHandling.Ignore)]
         public ActivityBase[] Activities { get; set; }
     }
 }

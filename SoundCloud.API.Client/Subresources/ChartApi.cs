@@ -30,11 +30,12 @@ namespace SoundCloud.API.Client.Subresources
         {
             paginationValidator.Validate(offset, limit);
 
-            var parameters = new Dictionary<string, object>();
-            parameters.Add("kind", "top");
+            var parameters = new Dictionary<string, object> { { "kind", "top" } };
 
             //Build genre paramter
-            var processed = (category == null || category.Name == "Popular+Music") ? "all-music" : new String(System.Uri.UnescapeDataString(category.Name).Where(ch => Char.IsLetterOrDigit(ch)).ToArray()).ToLower();
+            var processed = category == null || category.Name == "Popular+Music"
+                ? "all-music"
+                : new string(Uri.UnescapeDataString(category.Name).Where(char.IsLetterOrDigit).ToArray()).ToLower();
             var g = string.Format("soundcloud%3Agenres%3A{0}", processed);
             parameters.Add("genre", g);
             parameters.Add("linked_partitioning", 1);
