@@ -55,7 +55,7 @@ namespace SoundCloud.API.Client.Test.Internal.Client.Helpers
             Assert.AreEqual(expected, actual.AbsoluteUri);
         }
 
-        private readonly object[] testAddQueryParamsSource =
+        private static readonly object[] testAddQueryParamsSource =
         {
             new object[] {"http://fake.org/", new Dictionary<string, object> {{"p1", "one"}}, "http://fake.org/?p1=one"},
             new object[] {"http://fake.org/", new Dictionary<string, object> {{"", "one"}}, "http://fake.org/"},

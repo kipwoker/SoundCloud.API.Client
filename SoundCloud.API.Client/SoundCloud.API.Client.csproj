@@ -124,6 +124,10 @@
     <Compile Include="Internal\Objects\WebProfile.cs" />
     <Compile Include="Internal\Validation\IPaginationValidator.cs" />
     <Compile Include="Internal\Validation\PaginationValidator.cs" />
+    <Compile Include="Internal\Versioning\Tracks\CompositeSearchParametersBuilder.cs" />
+    <Compile Include="Internal\Versioning\Tracks\IVersionDependentSearchParametersBuilder.cs" />
+    <Compile Include="Internal\Versioning\Tracks\V1SearchParametersBuilder.cs" />
+    <Compile Include="Internal\Versioning\Tracks\V2SearchParametersBuilder.cs" />
     <Compile Include="ISoundCloudClient.cs" />
     <Compile Include="ISoundCloudConnector.cs" />
     <Compile Include="Objects\ActivityPieces\SCActivityTag.cs" />
@@ -159,6 +163,7 @@
     <Compile Include="Objects\TrackPieces\SCState.cs" />
     <Compile Include="Objects\TrackPieces\SCTagList.cs" />
     <Compile Include="Objects\TrackPieces\SCTrackType.cs" />
+    <Compile Include="Objects\Versioning\SCApiVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoundCloudClient.cs" />
     <Compile Include="SoundCloudApiException.cs" />
@@ -201,6 +206,7 @@
     <Compile Include="Subresources\ResolveApi.cs" />
     <Compile Include="Subresources\TrackApi.cs" />
     <Compile Include="Subresources\TracksApi.cs" />
+    <Compile Include="Internal\Versioning\Tracks\ISearchParametersBuilder.cs" />
     <Compile Include="Subresources\UserApi.cs" />
     <Compile Include="Subresources\IUsersApi.cs" />
     <Compile Include="Subresources\UsersApi.cs" />

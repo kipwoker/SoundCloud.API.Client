@@ -14,14 +14,7 @@ namespace SoundCloud.API.Client.Internal.Infrastructure.Serialization
 
         public T Deserialize<T>(string json)
         {
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(json, customConverters);
-            }
-            catch (System.Exception ex)
-            {
-                throw;
-            }
+            return JsonConvert.DeserializeObject<T>(json, customConverters);
         }
     }
 }

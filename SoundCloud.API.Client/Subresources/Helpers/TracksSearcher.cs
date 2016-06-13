@@ -19,7 +19,7 @@ namespace SoundCloud.API.Client.Subresources.Helpers
         private readonly Func<Dictionary<string, object>, SCTrack[]> search;
         private readonly Dictionary<string, object> searchParameters;
 
-        internal TracksSearcher(SCFilter filter, bool useNewApi, IPaginationValidator paginationValidator, Func<Dictionary<string, object>, SCTrack[]> search)
+        internal TracksSearcher(SCFilter filter, IPaginationValidator paginationValidator, Func<Dictionary<string, object>, SCTrack[]> search)
         {
             if (filter == SCFilter.Private)
             {

@@ -11,3 +11,4 @@ SoundCloud.API.Client/obj/*
 /*.suo
 /SoundCloud.API.Client.Web/*.user
 /SoundCloud.API.Client/NuGet.exe
+/.vs/config

@@ -8,7 +8,7 @@ namespace SoundCloud.API.Client.Test
     {
         protected MockRepository mocks;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public virtual void TestFixtureSetUp()
         {
             

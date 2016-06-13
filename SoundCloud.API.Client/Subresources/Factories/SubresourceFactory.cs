@@ -1,6 +1,7 @@
 ﻿using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Validation;
+using SoundCloud.API.Client.Internal.Versioning.Tracks;
 
 namespace SoundCloud.API.Client.Subresources.Factories
 {
@@ -18,6 +19,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
         private readonly IActivityResultConverter activityResultConverter;
         private readonly IApplicationConverter applicationConverter;
         private readonly IExploreCategoryConverter exploreCategoryConverter;
+        private readonly ISearchParametersBuilder searchParametersBuilder;
 
         public SubresourceFactory(
             ISoundCloudRawClient soundCloudRawClient,
@@ -31,7 +33,8 @@ namespace SoundCloud.API.Client.Subresources.Factories
             IConnectionConverter connectionConverter,
             IActivityResultConverter activityResultConverter,
             IApplicationConverter applicationConverter,
-            IExploreCategoryConverter exploreCategoryConverter)
+            IExploreCategoryConverter exploreCategoryConverter,
+            ISearchParametersBuilder searchParametersBuilder)
         {
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
@@ -45,6 +48,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
             this.activityResultConverter = activityResultConverter;
             this.applicationConverter = applicationConverter;
             this.exploreCategoryConverter = exploreCategoryConverter;
+            this.searchParametersBuilder = searchParametersBuilder;
         }
 
         public IUserApi CreateUser(string userId)
@@ -64,7 +68,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
 
         public ITracksApi CreateTracks()
         {
-            return new TracksApi(soundCloudRawClient, paginationValidator, trackConverter);
+            return new TracksApi(soundCloudRawClient, paginationValidator, trackConverter, searchParametersBuilder);
         }
 
         public IPlaylistApi CreatePlaylist(string playlistId)

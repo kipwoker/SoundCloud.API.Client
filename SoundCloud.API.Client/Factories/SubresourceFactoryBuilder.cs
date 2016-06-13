@@ -2,6 +2,7 @@
 using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Converters.Infrastructure;
 using SoundCloud.API.Client.Internal.Validation;
+using SoundCloud.API.Client.Internal.Versioning.Tracks;
 using SoundCloud.API.Client.Subresources.Factories;
 
 namespace SoundCloud.API.Client.Factories
@@ -19,6 +20,7 @@ namespace SoundCloud.API.Client.Factories
         private readonly IConnectionConverter connectionConverter;
         private readonly IActivityResultConverter activityResultConverter;
         private readonly IExploreCategoryConverter exploreCategoryConverter;
+        private readonly ISearchParametersBuilder searchParametersBuilder;
 
         public SubresourceFactoryBuilder()
         {
@@ -36,6 +38,7 @@ namespace SoundCloud.API.Client.Factories
             connectionConverter = new ConnectionConverter(dateTimeConverter);
             activityResultConverter = new ActivityResultConverter(trackConverter, commentConverter, userConverter, playlistConverter, dateTimeConverter);
             exploreCategoryConverter = new ExploreCategoryConverter();
+            searchParametersBuilder = new CompositeSearchParametersBuilder(new IVersionDependentSearchParametersBuilder[] { new V1SearchParametersBuilder(), new V2SearchParametersBuilder() });
         }
 
         public ISubresourceFactory CreateSubresourceFactory(ISoundCloudRawClient soundCloudRawClient)
@@ -52,7 +55,8 @@ namespace SoundCloud.API.Client.Factories
                 connectionConverter, 
                 activityResultConverter, 
                 applicationConverter,
-                exploreCategoryConverter);
+                exploreCategoryConverter,
+                searchParametersBuilder);
         }
     }
 }

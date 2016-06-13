@@ -16,7 +16,7 @@ namespace SoundCloud.API.Client.Test
         {
             base.TestFixtureSetUp();
 
-            var settingsJson = File.ReadAllText(Environment.CurrentDirectory + (IsUnix() ? "/" : @"\")  + "settings.json", Encoding.UTF8);
+            var settingsJson = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "settings.json"), Encoding.UTF8);
             settings = new JsonSerializer().Deserialize<Settings>(settingsJson);
 
             ISoundCloudConnector soundCloudConnector = new SoundCloudConnector();
@@ -30,12 +30,12 @@ namespace SoundCloud.API.Client.Test
                 settings.TestGroupId = soundCloudClient.Me.GetGroups().First(x => x.Creator.Id == me.Id).Id;
             }
         }
-        
+
         protected class Settings
         {
-            public string ClientId { get; set; } 
-            public string ClientSecret { get; set; } 
-            public string UserName { get; set; } 
+            public string ClientId { get; set; }
+            public string ClientSecret { get; set; }
+            public string UserName { get; set; }
             public string Password { get; set; }
             public string TestUserId { get; set; }
             public string TestTrackId { get; set; }
@@ -82,12 +82,6 @@ namespace SoundCloud.API.Client.Test
             var actual = selector(expectedId);
 
             Assert.AreEqual(expectedId, idGetter(actual));
-        }
-
-        private static bool IsUnix()
-        {
-            var platform = (int) Environment.OSVersion.Platform;
-            return platform == 4 || platform == 128;
         }
     }
 }

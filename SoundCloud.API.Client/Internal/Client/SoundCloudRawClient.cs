@@ -33,7 +33,7 @@ namespace SoundCloud.API.Client.Internal.Client
             where T : class 
         {
             var response = GetResponse(domain, apiPrefix, command, method, parameters, body, responseType);
-            return typeof(T) == typeof(string) ? (response as T) : serializer.Deserialize<T>(response);
+            return typeof(T) == typeof(string) ? response as T : serializer.Deserialize<T>(response);
         }
 
         public void Request(string apiPrefix, string command, HttpMethod method, Dictionary<string, object> parameters = null, byte[] body = null, Domain domain = Domain.Api)

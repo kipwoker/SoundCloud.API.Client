@@ -3,6 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
 using SoundCloud.API.Client.Objects.TrackPieces;
+using SoundCloud.API.Client.Objects.Versioning;
 using SoundCloud.API.Client.Subresources;
 using SoundCloud.API.Client.Subresources.Helpers;
 
@@ -18,7 +19,7 @@ namespace SoundCloud.API.Client.Test.Subresources
             base.TestFixtureSetUp();
 
             tracksApi = soundCloudClient.Tracks;
-            tracksSearcher = () => tracksApi.BeginSearch(SCFilter.All, false);
+            tracksSearcher = () => tracksApi.BeginSearch(SCFilter.All, SCApiVersion.V1);
         }
 
         [Test]
@@ -26,20 +27,20 @@ namespace SoundCloud.API.Client.Test.Subresources
         [TestCase(SCFilter.Public)]
         public void TestSearchByFilter(SCFilter filter)
         {
-            TestCollection((o,c) =>tracksApi.BeginSearch(filter, false).Exec(SCOrder.CreatedAt, o, c), 0 ,50);
+            TestCollection((o,c) =>tracksApi.BeginSearch(filter, SCApiVersion.V1).Exec(SCOrder.CreatedAt, o, c), 0 ,50);
         }
 
         [Test]
         public void TestSearchDownloadable()
         {
-            var tracks = tracksApi.BeginSearch(SCFilter.Downloadable, false).Exec();
+            var tracks = tracksApi.BeginSearch(SCFilter.Downloadable, SCApiVersion.V1).Exec();
             Assert.IsTrue(tracks.All(x => x.Downloadable.HasValue && x.Downloadable.Value));
         }
 
         [Test]
         public void TestSearchStreamable()
         {
-            var tracks = tracksApi.BeginSearch(SCFilter.Streamable, false).Exec();
+            var tracks = tracksApi.BeginSearch(SCFilter.Streamable, SCApiVersion.V1).Exec();
             Assert.IsTrue(tracks.All(x => x.Streamable.HasValue && x.Streamable.Value));
         }
 
@@ -176,7 +177,7 @@ namespace SoundCloud.API.Client.Test.Subresources
         [Test]
         public void TestNewSeachApi()
         {
-            var tracks = tracksApi.BeginSearch(SCFilter.All, true).Query("Boat That's Capsized").Exec();
+            var tracks = tracksApi.BeginSearch(SCFilter.All, SCApiVersion.V2).Query("Boat That's Capsized").Exec();
             Assert.IsTrue(tracks.Any(x => x.Title.Contains("Boat That's Capsized")));
         }
     }

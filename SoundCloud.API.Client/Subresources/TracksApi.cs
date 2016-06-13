@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using SoundCloud.API.Client.Internal.Client;
 using SoundCloud.API.Client.Internal.Converters;
 using SoundCloud.API.Client.Internal.Infrastructure.Objects;
@@ -11,6 +10,9 @@ using SoundCloud.API.Client.Objects.TrackPieces;
 using SoundCloud.API.Client.Subresources.Helpers;
 using File = SoundCloud.API.Client.Internal.Infrastructure.Objects.Uploading.File;
 using System;
+using System.Linq;
+using SoundCloud.API.Client.Internal.Versioning.Tracks;
+using SoundCloud.API.Client.Objects.Versioning;
 
 namespace SoundCloud.API.Client.Subresources
 {
@@ -19,15 +21,15 @@ namespace SoundCloud.API.Client.Subresources
         private readonly ISoundCloudRawClient soundCloudRawClient;
         private readonly IPaginationValidator paginationValidator;
         private readonly ITrackConverter trackConverter;
+        private readonly ISearchParametersBuilder searchParametersBuilder;
         private const string prefix = "tracks";
-        private const string searchPrefix = "search";
-        private const string searchCommand = "tracks";
 
-        internal TracksApi(ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, ITrackConverter trackConverter)
+        internal TracksApi(ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, ITrackConverter trackConverter, ISearchParametersBuilder searchParametersBuilder)
         {
             this.soundCloudRawClient = soundCloudRawClient;
             this.paginationValidator = paginationValidator;
             this.trackConverter = trackConverter;
+            this.searchParametersBuilder = searchParametersBuilder;
         }
 
         public SCTrack UploadTrack(Stream trackFileStream, string title, string description, SCSharing sharing, Stream artworkFileStream)
@@ -53,29 +55,13 @@ namespace SoundCloud.API.Client.Subresources
             return trackConverter.Convert(uploadedTrack);
         }
 
-        public ITracksSearcher BeginSearch(SCFilter filter, bool useNewApi = true)
+        public ITracksSearcher BeginSearch(SCFilter filter, SCApiVersion version)
         {
-            Func<Dictionary<string, object>, SCTrack[]> search;
-            if (useNewApi)
-            {
-                search = parameters =>
-                {
-                    var tracks = soundCloudRawClient.Request<TrackCollection>(searchPrefix, searchCommand, HttpMethod.Get, parameters, responseType: string.Empty, domain: Internal.Client.Helpers.Domain.ApiV2);
-                    return tracks.Tracks.Select(trackConverter.Convert).ToArray();
-                };
-            }
-            else
-            {
-                search = parameters =>
-                {
-                    var tracks = soundCloudRawClient.Request<Track[]>(prefix, string.Empty, HttpMethod.Get, parameters);
-                    return tracks.Select(trackConverter.Convert).ToArray();
-                };
-            }
+            var internalTracksSearch = searchParametersBuilder.BuildGetter(version, soundCloudRawClient);
+            Func<Dictionary<string, object>, SCTrack[]> publicTracksSearch = parameters => internalTracksSearch(parameters).Select(trackConverter.Convert).ToArray();
             return new TracksSearcher(filter, 
-                                      useNewApi,
                                       paginationValidator,
-                                      search);
+                                      publicTracksSearch);
         }
     }
 }

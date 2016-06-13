@@ -39,11 +39,6 @@ namespace SoundCloud.API.Client.Test.Subresources
             trackApi.UpdateTrack(track);
             track = trackApi.GetTrack();
             Assert.AreEqual(newTitle, track.Title);
-
-            track.Title = title;
-            trackApi.UpdateTrack(track);
-            track = trackApi.GetTrack();
-            Assert.AreEqual(title, track.Title);
         }
 
         [Test]
