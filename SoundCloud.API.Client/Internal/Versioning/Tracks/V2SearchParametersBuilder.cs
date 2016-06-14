@@ -20,7 +20,7 @@ namespace SoundCloud.API.Client.Internal.Versioning.Tracks
             return parameters =>
             {
                 var tracks = soundCloudRawClient.Request<TrackCollection>(prefix, command, HttpMethod.Get, parameters, responseType: string.Empty, domain: Domain.ApiV2);
-                return tracks.Tracks;
+                return tracks.Collection;
             };
         }
     }

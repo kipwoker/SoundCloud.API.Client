@@ -16,7 +16,7 @@ namespace SoundCloud.API.Client.Subresources
         private readonly IPaginationValidator paginationValidator;
         private readonly IExploreCategoryConverter exploreCategoryConverter;
         private readonly ITrackConverter trackConverter;
-        private const string prefix = "explore";
+        private const string prefix = "explore/sounds";
         private const string categoryCommand = "categories";
 
         internal ExploreApi(ISoundCloudRawClient soundCloudRawClient, IPaginationValidator paginationValidator, IExploreCategoryConverter exploreCategoryConverter, ITrackConverter trackConverter)
@@ -28,7 +28,7 @@ namespace SoundCloud.API.Client.Subresources
         }
         public SCExploreCategory[] GetExploreCategories()
         {
-            var categories = soundCloudRawClient.Request<ExploreCategoryList>(prefix, categoryCommand, HttpMethod.Get, domain: Internal.Client.Helpers.Domain.ApiV2, responseType: string.Empty);
+            var categories = soundCloudRawClient.Request<ExploreCategoryCollection>(prefix, categoryCommand, HttpMethod.Get, domain: Internal.Client.Helpers.Domain.Api, responseType: string.Empty);
             return exploreCategoryConverter.Convert(categories);
         }
 
@@ -38,8 +38,8 @@ namespace SoundCloud.API.Client.Subresources
 
             var parameters = new Dictionary<string, object>();
 
-            var tracks = soundCloudRawClient.Request<ExploreTrackList>(prefix, category.Name, HttpMethod.Get, parameters: parameters.SetPagination(offset, limit), domain: Internal.Client.Helpers.Domain.ApiV2, responseType: string.Empty);
-            return tracks.Tracks.Select(trackConverter.Convert).ToArray();
+            var tracks = soundCloudRawClient.Request<ExploreTrackCollection>(prefix, category.Name, HttpMethod.Get, parameters: parameters.SetPagination(offset, limit), domain: Internal.Client.Helpers.Domain.ApiV2, responseType: string.Empty);
+            return tracks.Collection.Select(trackConverter.Convert).ToArray();
         }
     }
 }

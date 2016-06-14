@@ -6,14 +6,14 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal class ExploreCategoryConverter : IExploreCategoryConverter
     {
-        public SCExploreCategory[] Convert(ExploreCategoryList categoryList)
+        public SCExploreCategory[] Convert(ExploreCategoryCollection categoryCollection)
         {
-            if (categoryList == null)
+            if (categoryCollection == null)
             {
                 return new SCExploreCategory[0];
             }
 
-            return categoryList.MusicCategoryNames.Select(cn => new SCExploreCategory { Name = cn }).ToArray();
+            return categoryCollection.MusicCategoryNames.Select(cn => new SCExploreCategory { Name = cn }).ToArray();
         }
     }
 }

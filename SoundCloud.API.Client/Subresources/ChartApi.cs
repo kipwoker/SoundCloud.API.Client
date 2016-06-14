@@ -11,7 +11,7 @@ using SoundCloud.API.Client.Subresources.Helpers;
 
 namespace SoundCloud.API.Client.Subresources
 {
-    class ChartApi : IChartApi
+    public class ChartApi : IChartApi
     {
         private readonly ISoundCloudRawClient soundCloudRawClient;
         private readonly IPaginationValidator paginationValidator;
@@ -40,8 +40,8 @@ namespace SoundCloud.API.Client.Subresources
             parameters.Add("genre", g);
             parameters.Add("linked_partitioning", 1);
 
-            var tracks = soundCloudRawClient.Request<ChartTrackList>(prefix, command, HttpMethod.Get, parameters: parameters.SetPagination(offset, limit), domain: Internal.Client.Helpers.Domain.ApiV2, responseType: string.Empty);
-            return tracks.Tracks.Select(ct => trackConverter.Convert(ct.Track)).ToArray();
+            var tracks = soundCloudRawClient.Request<ChartTrackCollection>(prefix, command, HttpMethod.Get, parameters: parameters.SetPagination(offset, limit), domain: Internal.Client.Helpers.Domain.ApiV2, responseType: string.Empty);
+            return tracks.Collection.Select(ct => trackConverter.Convert(ct.Track)).ToArray();
         }
     }
 }

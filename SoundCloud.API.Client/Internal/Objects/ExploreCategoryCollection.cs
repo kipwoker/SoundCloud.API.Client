@@ -2,9 +2,9 @@
 
 namespace SoundCloud.API.Client.Internal.Objects
 {
-    internal class ExploreCategoryList
+    internal class ExploreCategoryCollection
     {
-        public ExploreCategoryList()
+        public ExploreCategoryCollection()
         {
             MusicCategoryNames = new string[0];
             AudioCategoryNames = new string[0];

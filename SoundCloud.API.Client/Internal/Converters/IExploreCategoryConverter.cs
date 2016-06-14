@@ -5,6 +5,6 @@ namespace SoundCloud.API.Client.Internal.Converters
 {
     internal interface IExploreCategoryConverter
     {
-        SCExploreCategory[] Convert(ExploreCategoryList categoryList);
+        SCExploreCategory[] Convert(ExploreCategoryCollection categoryCollection);
     }
 }

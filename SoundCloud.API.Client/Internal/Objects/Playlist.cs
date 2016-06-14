@@ -93,7 +93,7 @@ namespace SoundCloud.API.Client.Internal.Objects
         [JsonProperty(PropertyName = "user", NullValueHandling = NullValueHandling.Ignore)]
         public User User { get; set; }
 
-        [JsonProperty(PropertyName = "tracks", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "tracks")]
         public Track[] Tracks { get; set; }
 
         [JsonProperty(PropertyName = "embeddable_by", NullValueHandling = NullValueHandling.Ignore)]

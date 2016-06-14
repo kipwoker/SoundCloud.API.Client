@@ -83,8 +83,8 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCUser[] GetFollowings(int offset = 0, int limit = 50)
         {
-            var users = soundCloudRawClient.GetCollection<User>(paginationValidator, prefix, "followings", offset, limit);
-            return users.Select(userConverter.Convert).ToArray();
+            var users = soundCloudRawClient.GetCollectionBatch<UserCollection, User>(paginationValidator, prefix, "followings", offset, limit);
+            return users.Collection.Select(userConverter.Convert).ToArray();
         }
 
         public SCUser GetFollowing(string followingUserId)
@@ -105,8 +105,8 @@ namespace SoundCloud.API.Client.Subresources
 
         public SCUser[] GetFollowers(int offset = 0, int limit = 50)
         {
-            var users = soundCloudRawClient.GetCollection<User>(paginationValidator, prefix, "followers", offset, limit);
-            return users.Select(userConverter.Convert).ToArray();
+            var users = soundCloudRawClient.GetCollectionBatch<UserCollection, User>(paginationValidator, prefix, "followers", offset, limit);
+            return users.Collection.Select(userConverter.Convert).ToArray();
         }
 
         public SCUser GetFollower(string followerUserId)

@@ -3,14 +3,14 @@ using SoundCloud.API.Client.Internal.Objects.Interfaces;
 
 namespace SoundCloud.API.Client.Internal.Objects
 {
-    internal class TrackCollection : IEntityCollection<Track>
+    internal class ExploreTrackCollection : IEntityCollection<Track>
     {
-        public TrackCollection()
+        public ExploreTrackCollection()
         {
             Collection = new Track[0];
         }
 
-        [JsonProperty(PropertyName = "collection", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "tracks", NullValueHandling = NullValueHandling.Ignore)]
         public Track[] Collection { get; set; }
     }
 }
