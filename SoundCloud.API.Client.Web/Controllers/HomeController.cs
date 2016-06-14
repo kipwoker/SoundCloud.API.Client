@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using Newtonsoft.Json;
 using SoundCloud.API.Client.Objects.Auth;
 
 namespace SoundCloud.API.Client.Web.Controllers
@@ -7,8 +8,8 @@ namespace SoundCloud.API.Client.Web.Controllers
     {
         private readonly ISoundCloudConnector soundCloudConnector = new SoundCloudConnector();
 
-        private const string clientId = "";
-        private const string clientSecret = "";
+        private const string clientId = "a34c1840bdd5975277f0414b69d2f299";
+        private const string clientSecret = "b86b39b4d170821d0541cc0d0028f73f";
 
         private const string redirectUri = "http://localhost:50086/Home/GetCode";
 
@@ -37,7 +38,7 @@ namespace SoundCloud.API.Client.Web.Controllers
 
             var user = soundCloudClient.Me.GetUser();
 
-            return Content(string.Format("Your full name is {0}. Current token: {1}", user.FullName, accessToken.AccessToken));
+            return Content(string.Format("Your full name is {0}. Current token: {1}", user.FullName, JsonConvert.SerializeObject(accessToken)));
         }
     }
 }
