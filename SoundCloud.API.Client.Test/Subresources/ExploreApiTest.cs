@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
+using SoundCloud.API.Client.Objects.ExplorePieces;
 using SoundCloud.API.Client.Subresources;
 
 namespace SoundCloud.API.Client.Test.Subresources
@@ -16,17 +17,9 @@ namespace SoundCloud.API.Client.Test.Subresources
         }
 
         [Test]
-        public void TestGetExploreCategories()
-        {
-            var categories = exploreApi.GetExploreCategories();
-            Assert.IsTrue(categories.Any());
-            Assert.IsTrue(categories.Any(c => c.Name.Contains("Rock")));
-        }
-
-        [Test]
         public void TestGetTracks()
         {
-            var tracks = exploreApi.GetTracks(exploreApi.GetExploreCategories().First());
+            var tracks = exploreApi.GetTracks(SCExploreCategory.Create(SCExploreCategoryType.Ambient));
             Assert.IsTrue(tracks.Any());
         }
 

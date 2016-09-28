@@ -18,7 +18,6 @@ namespace SoundCloud.API.Client.Subresources.Factories
         private readonly IConnectionConverter connectionConverter;
         private readonly IActivityResultConverter activityResultConverter;
         private readonly IApplicationConverter applicationConverter;
-        private readonly IExploreCategoryConverter exploreCategoryConverter;
         private readonly ISearchParametersBuilder searchParametersBuilder;
 
         public SubresourceFactory(
@@ -33,7 +32,6 @@ namespace SoundCloud.API.Client.Subresources.Factories
             IConnectionConverter connectionConverter,
             IActivityResultConverter activityResultConverter,
             IApplicationConverter applicationConverter,
-            IExploreCategoryConverter exploreCategoryConverter,
             ISearchParametersBuilder searchParametersBuilder)
         {
             this.soundCloudRawClient = soundCloudRawClient;
@@ -47,7 +45,6 @@ namespace SoundCloud.API.Client.Subresources.Factories
             this.connectionConverter = connectionConverter;
             this.activityResultConverter = activityResultConverter;
             this.applicationConverter = applicationConverter;
-            this.exploreCategoryConverter = exploreCategoryConverter;
             this.searchParametersBuilder = searchParametersBuilder;
         }
 
@@ -109,7 +106,7 @@ namespace SoundCloud.API.Client.Subresources.Factories
 
         public IExploreApi CreateExplore()
         {
-            return new ExploreApi(soundCloudRawClient, paginationValidator, exploreCategoryConverter, trackConverter);
+            return new ExploreApi(soundCloudRawClient, paginationValidator, trackConverter);
         }
 
         public IChartApi CreateChart()

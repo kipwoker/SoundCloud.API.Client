@@ -19,7 +19,6 @@ namespace SoundCloud.API.Client.Factories
         private readonly IWebProfileConverter webProfileConverter;
         private readonly IConnectionConverter connectionConverter;
         private readonly IActivityResultConverter activityResultConverter;
-        private readonly IExploreCategoryConverter exploreCategoryConverter;
         private readonly ISearchParametersBuilder searchParametersBuilder;
 
         public SubresourceFactoryBuilder()
@@ -37,25 +36,23 @@ namespace SoundCloud.API.Client.Factories
             webProfileConverter = new WebProfileConverter(dateTimeConverter);
             connectionConverter = new ConnectionConverter(dateTimeConverter);
             activityResultConverter = new ActivityResultConverter(trackConverter, commentConverter, userConverter, playlistConverter, dateTimeConverter);
-            exploreCategoryConverter = new ExploreCategoryConverter();
             searchParametersBuilder = new CompositeSearchParametersBuilder(new IVersionDependentSearchParametersBuilder[] { new V1SearchParametersBuilder(), new V2SearchParametersBuilder() });
         }
 
         public ISubresourceFactory CreateSubresourceFactory(ISoundCloudRawClient soundCloudRawClient)
         {
             return new SubresourceFactory(
-                soundCloudRawClient, 
-                paginationValidator, 
-                trackConverter, 
-                userConverter, 
-                playlistConverter, 
-                commentConverter, 
-                groupConverter, 
-                webProfileConverter, 
-                connectionConverter, 
-                activityResultConverter, 
+                soundCloudRawClient,
+                paginationValidator,
+                trackConverter,
+                userConverter,
+                playlistConverter,
+                commentConverter,
+                groupConverter,
+                webProfileConverter,
+                connectionConverter,
+                activityResultConverter,
                 applicationConverter,
-                exploreCategoryConverter,
                 searchParametersBuilder);
         }
     }

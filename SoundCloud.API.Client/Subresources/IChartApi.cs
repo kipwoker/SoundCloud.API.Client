@@ -1,4 +1,5 @@
 ﻿using SoundCloud.API.Client.Objects;
+using SoundCloud.API.Client.Objects.ExplorePieces;
 
 namespace SoundCloud.API.Client.Subresources
 {
