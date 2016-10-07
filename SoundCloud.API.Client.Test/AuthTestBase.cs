@@ -7,6 +7,7 @@ using SoundCloud.API.Client.Internal.Infrastructure.Serialization;
 
 namespace SoundCloud.API.Client.Test
 {
+    [Category("Network")]
     public abstract class AuthTestBase : TestBase
     {
         protected ISoundCloudClient soundCloudClient;
