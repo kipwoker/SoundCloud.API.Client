@@ -14,7 +14,8 @@ Build and use SoundCloud.API.Client.dll or inject via nuget: https://www.nuget.o
 
 
 # HowTo 
-Direct connection via username and password. Good for debugging and tests.
+### Direct connection
+Via username and password. Good for debugging and tests.
 ```c#
 ISoundCloudConnector soundCloudConnector = new SoundCloudConnector();
 soundCloudClient = soundCloudConnector.DirectConnect("clientId", "clientSecret", "username", "password");
@@ -22,8 +23,7 @@ var user = soundCloudClient.User("42").GetUser();
 Console.WriteLine(user.Id); //42
 ```
 
-OAuth connection.
-
+### OAuth connection
 First of all go to your app page and fill 'Redirect URI for Authentication' field with your redirect_uri.
 
 In my example I used this value: http://localhost:50086/Home/GetCode
