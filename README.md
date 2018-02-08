@@ -1,5 +1,5 @@
 
-##SoundCloud.API.Client
+## SoundCloud.API.Client
 
 [![Build status](https://ci.appveyor.com/api/projects/status/3fqmw8xcssk3tq7e/branch/master?svg=true)](https://ci.appveyor.com/project/kipwoker/soundcloud-api-client/branch/master)
 
@@ -9,7 +9,7 @@
 # Warning
 If you run tests frequently from one account, soundcloud may ban it.
 
-#Install
+# Install
 Build and use SoundCloud.API.Client.dll or inject via nuget: https://www.nuget.org/packages/SoundCloud.API.Client
 
 
@@ -75,7 +75,7 @@ public class HomeController : Controller
 ```
 If your token expires you can use soundCloudConnector.RefreshToken.
 
-#Interface
+# Interface
 All methods reside in SoundCloudClient:
 ```c#
 public interface ISoundCloudClient
@@ -147,7 +147,7 @@ var embed = soundCloudClient.OEmbed
 							.ExecuteJson();
 ```
 
-#Tests
+# Tests
 If you want to run tests, you should fill settings.json first.
 
 Full path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
@@ -162,7 +162,7 @@ Full path: .\SoundCloud.API.Client\SoundCloud.API.Client.Test\settings.json
 ```
 You can also specify optional fields here: TestGroupId, TestTrackId, TestUserId
 
-#What's next
+# What's next
 It's almost stable right now. You can check out tests with your credentials.
 
 Furthermore I want to implement api console into web-project like it's done here: https://developers.soundcloud.com/console
